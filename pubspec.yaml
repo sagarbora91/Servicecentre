@@ -13,19 +13,16 @@ environment:
   flutter: ">=3.22.0"
 
 dependencies:
+  # Kept alphabetical for the sort_pub_dependencies lint.
+  # firebase_* are bootstrap-only in M0; real config via `flutterfire configure`.
+  firebase_app_check: ^0.3.1
+  firebase_core: ^3.6.0
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-
-  # State management + routing
   flutter_riverpod: ^2.5.1
   go_router: ^14.2.0
-
-  # Firebase bootstrap (core + App Check). Real config arrives via
-  # `flutterfire configure` (human-run) — see lib/firebase_options.dart.
-  firebase_core: ^3.6.0
-  firebase_app_check: ^0.3.1
 
 dev_dependencies:
   flutter_test:

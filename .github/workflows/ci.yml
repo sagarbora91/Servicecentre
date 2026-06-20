@@ -2,6 +2,10 @@ name: CI
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,16 +17,44 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: flutter gen-l10n
-      # build_runner (freezed / riverpod_generator / json_serializable) lands in
-      # M2 when codegen dependencies are added:
-      # - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter analyze
-      - run: flutter test --coverage
-      # Coverage gate (>= 80% on lib/features/**/{data,domain}) is wired in M2,
-      # once those layers exist and produce coverage.
+      - name: Analyze
+        run: flutter analyze 2>&1 | tee analyze.txt
+      - name: Test
+        run: flutter test --coverage 2>&1 | tee test.txt
+      # build_runner (freezed / riverpod_generator) lands in M2; coverage gate too.
+
+      # Publishes analyze/test output to a publicly-readable check-run so failures
+      # can be inspected without downloading auth-gated logs.
+      - name: Publish command output on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const tail = (f) => {
+              try { return fs.readFileSync(f, 'utf8').slice(-7000); }
+              catch (_) { return '(no output captured)'; }
+            };
+            const summary =
+              '### flutter analyze\n```\n' + tail('analyze.txt') + '\n```\n' +
+              '### flutter test\n```\n' + tail('test.txt') + '\n```';
+            try {
+              await github.rest.checks.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'ci-output',
+                head_sha: context.sha,
+                status: 'completed',
+                conclusion: 'neutral',
+                output: {
+                  title: 'CI command output',
+                  summary: summary.slice(0, 65000),
+                },
+              });
+            } catch (e) {
+              core.warning('Failed to publish ci-output check: ' + e.message);
+            }
 
   # NOTE: the Cloud Functions CI job (Node 20: npm ci + lint + test) is added in
-  # M8, when functions/ has a real package.json. It was intentionally removed
-  # from M0: a job-level `if: hashFiles(...)` is evaluated before checkout and is
-  # rejected as an invalid workflow file, which fails the entire run with zero
-  # jobs. Re-add it gated on a path filter or a prior detect job at M8.
+  # M8, when functions/ has a real package.json. A job-level `if: hashFiles(...)`
+  # is rejected as an invalid workflow file, so gate it differently then.

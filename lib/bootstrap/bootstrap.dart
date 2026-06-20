@@ -1,3 +1,7 @@
+// The broad catch in [bootstrap] is intentional: during M0 the Firebase config
+// is a placeholder, so initialization is expected to throw and is tolerated so
+// the app still boots. M1 makes Firebase init mandatory and revisits this.
+// ignore_for_file: avoid_catches_without_on_clauses
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +26,6 @@ Future<void> bootstrap() async {
       appleProvider: AppleProvider.debug,
     );
   } catch (error, stackTrace) {
-    // ignore: avoid_catches_without_on_clauses
     // Expected until `flutterfire configure` is run. Log and continue so M0
     // still boots; M1 makes Firebase initialization mandatory.
     debugPrint('Firebase init skipped (placeholder config): $error');
