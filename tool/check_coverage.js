@@ -24,6 +24,7 @@ for (const rec of records) {
   if (!sfMatch) continue;
   const file = sfMatch[1].trim().replace(/\\/g, '/');
   if (!SCOPE.test(file)) continue;
+  if (/\.(g|freezed)\.dart$/.test(file)) continue; // skip generated code
   const lf = parseInt((rec.match(/LF:(\d+)/) || [])[1] || '0', 10);
   const lh = parseInt((rec.match(/LH:(\d+)/) || [])[1] || '0', 10);
   if (lf === 0) continue; // no coverable lines (e.g. abstract interface)

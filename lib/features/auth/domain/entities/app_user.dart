@@ -1,21 +1,28 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'user_role.dart';
+
+part 'app_user.freezed.dart';
 
 /// A staff member's profile, mirrored from `users/{uid}` (BUILD_BRIEF §5.1).
 ///
-/// Hand-written immutable value type for M1. It migrates to a `freezed` model
-/// in M2 when `build_runner` is introduced; the public shape is kept stable so
-/// the migration is mechanical.
-class AppUser {
+/// freezed value type: equality, `hashCode`, and `copyWith` are generated. The
+/// Firestore mapping is custom (the doc id [uid] lives outside the data map and
+/// an unrecognized role yields `null`), so [fromMap]/[toMap] are hand-written.
+@freezed
+abstract class AppUser with _$AppUser {
+  const AppUser._();
+
   /// Creates a staff profile.
-  const AppUser({
-    required this.uid,
-    required this.name,
-    required this.role,
-    required this.phone,
-    required this.active,
-    this.email,
-    this.branchId,
-  });
+  const factory AppUser({
+    required String uid,
+    required String name,
+    required UserRole role,
+    required String phone,
+    required bool active,
+    String? email,
+    String? branchId,
+  }) = _AppUser;
 
   /// Builds an [AppUser] from a Firestore document's [uid] and [data].
   ///
@@ -35,28 +42,7 @@ class AppUser {
     );
   }
 
-  /// Firebase Auth UID; also the document id in `users/{uid}`.
-  final String uid;
-
-  /// Display name.
-  final String name;
-
-  /// Assigned role (source of truth for access).
-  final UserRole role;
-
-  /// Contact phone number.
-  final String phone;
-
-  /// Whether the account is active. Inactive accounts are denied access.
-  final bool active;
-
-  /// Sign-in email, if the account uses email/password.
-  final String? email;
-
-  /// Branch this user belongs to.
-  final String? branchId;
-
-  /// Serializes back to a Firestore-friendly map.
+  /// Serializes back to a Firestore-friendly map (excludes the doc-id [uid]).
   Map<String, dynamic> toMap() => {
         'name': name,
         'role': role.name,
@@ -65,20 +51,4 @@ class AppUser {
         if (email != null) 'email': email,
         if (branchId != null) 'branchId': branchId,
       };
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is AppUser &&
-          other.uid == uid &&
-          other.name == name &&
-          other.role == role &&
-          other.phone == phone &&
-          other.active == active &&
-          other.email == email &&
-          other.branchId == branchId;
-
-  @override
-  int get hashCode =>
-      Object.hash(uid, name, role, phone, active, email, branchId);
 }

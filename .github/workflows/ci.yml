@@ -23,8 +23,8 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: flutter gen-l10n
-      # build_runner (freezed / riverpod_generator) lands in M2 when codegen
-      # dependencies are added.
+      - name: Codegen (build_runner)
+        run: dart run build_runner build --delete-conflicting-outputs 2>&1 | tee build_runner.txt
       - name: Analyze
         run: flutter analyze --fatal-infos --fatal-warnings 2>&1 | tee analyze.txt
       - name: Test
@@ -46,6 +46,7 @@ jobs:
               catch (_) { return '(no output captured)'; }
             };
             const summary =
+              '### build_runner\n```\n' + tail('build_runner.txt') + '\n```\n' +
               '### flutter analyze\n```\n' + tail('analyze.txt') + '\n```\n' +
               '### flutter test\n```\n' + tail('test.txt') + '\n```\n' +
               '### coverage (data+domain)\n```\n' + tail('coverage_report.txt') + '\n```';
