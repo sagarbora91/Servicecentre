@@ -11,8 +11,6 @@ part 'app_user.freezed.dart';
 /// an unrecognized role yields `null`), so [fromMap]/[toMap] are hand-written.
 @freezed
 abstract class AppUser with _$AppUser {
-  const AppUser._();
-
   /// Creates a staff profile.
   const factory AppUser({
     required String uid,
@@ -23,6 +21,8 @@ abstract class AppUser with _$AppUser {
     String? email,
     String? branchId,
   }) = _AppUser;
+
+  const AppUser._();
 
   /// Builds an [AppUser] from a Firestore document's [uid] and [data].
   ///

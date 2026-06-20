@@ -24,7 +24,7 @@ jobs:
       - run: flutter pub get
       - run: flutter gen-l10n
       - name: Codegen (build_runner)
-        run: dart run build_runner build --delete-conflicting-outputs 2>&1 | tee build_runner.txt
+        run: dart run build_runner build 2>&1 | tee build_runner.txt
       - name: Analyze
         run: flutter analyze --fatal-infos --fatal-warnings 2>&1 | tee analyze.txt
       - name: Test
