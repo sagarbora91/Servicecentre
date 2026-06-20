@@ -26,13 +26,22 @@ Future<void> _pumpForm(
   required FakeFirebaseFirestore firestore,
   AppUser? existing,
 }) async {
+  final container = ProviderContainer(
+    overrides: [
+      firestoreProvider.overrideWithValue(firestore),
+      currentUserProvider
+          .overrideWith((ref) => Stream<AppUser?>.value(_owner())),
+    ],
+  );
+  addTearDown(container.dispose);
+  // Nothing in this isolated tree watches the signed-in profile, so warm it
+  // before interacting; otherwise the controller reads it mid-load and the
+  // acting uid is blank. In the real app it is always watched (router/home).
+  await container.read(currentUserProvider.future);
+
   await tester.pumpWidget(
-    ProviderScope(
-      overrides: [
-        firestoreProvider.overrideWithValue(firestore),
-        currentUserProvider
-            .overrideWith((ref) => Stream<AppUser?>.value(_owner())),
-      ],
+    UncontrolledProviderScope(
+      container: container,
       child: MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
