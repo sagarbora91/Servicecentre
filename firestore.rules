@@ -1,0 +1,47 @@
+rules_version = '2';
+
+// M0 skeleton (from BUILD_BRIEF.md §5.3). Per-collection rules are expanded and
+// emulator-tested in M2. Default-deny is in force until then.
+//
+// NOTE: the parts write rule references a 'store' role that is NOT in the
+// users.role enum (§5.1: owner|supervisor|counter|technician). Reconcile this
+// open question with the owner in M2 before relying on it. [PLACEHOLDER: role set]
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function role() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    function isStaff() {
+      return signedIn() && role() in ['owner', 'supervisor', 'counter', 'technician'];
+    }
+    function canFinance() {
+      return signedIn() && role() in ['owner', 'supervisor'];
+    }
+
+    match /jobs/{id} {
+      allow read, write: if isStaff();
+    }
+    match /invoices/{id} {
+      allow read, write: if canFinance();
+    }
+    match /payments/{id} {
+      allow read, write: if canFinance();
+    }
+    match /parts/{id} {
+      allow read: if isStaff();
+      allow write: if signedIn() && role() in ['owner', 'supervisor'];
+    }
+    match /users/{id} {
+      allow read: if isStaff();
+      allow write: if signedIn() && role() == 'owner';
+    }
+
+    // Default deny — anything not explicitly allowed above is blocked.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

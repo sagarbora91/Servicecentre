@@ -1,0 +1,35 @@
+# Dart / Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.packages
+.pub-cache/
+.pub/
+coverage/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.log
+
+# Generated localization (regenerated via `flutter gen-l10n`)
+lib/app/l10n/app_localizations*.dart
+
+# Environment config — real values are git-ignored; commit only *.example.json
+/config/dev.json
+/config/staging.json
+/config/prod.json
+
+# Firebase local
+.firebase/
+firebase-debug.log
+*-debug.log
+
+# Claude Code (local session settings)
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

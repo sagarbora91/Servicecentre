@@ -1,0 +1,7 @@
+{
+  "ENV": "dev",
+  "FIREBASE_PROJECT_ID": "[scsa-dev]",
+  "DEFAULT_BRANCH_ID": "[PLACEHOLDER: branch list — confirm with owner]",
+  "DEMO": "true",
+  "USE_EMULATORS": "true"
+}

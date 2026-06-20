@@ -1,0 +1,9 @@
+# Localization config (flutter gen-l10n). Generates AppLocalizations from the
+# ARB files in lib/app/l10n into a non-synthetic package so imports are explicit.
+arb-dir: lib/app/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+output-dir: lib/app/l10n
+synthetic-package: false
+nullable-getter: false

@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "appTitle": "Service Centre",
+  "@appTitle": {
+    "description": "Application title shown in the app bar and task switcher."
+  },
+  "homePlaceholderMessage": "Setup in progress — features arrive milestone by milestone.",
+  "@homePlaceholderMessage": {
+    "description": "Message on the temporary M0 home screen."
+  }
+}

@@ -1,0 +1,11 @@
+rules_version = '2';
+
+// M0 skeleton. Storage paths (intake/delivery photos, attachments) are scoped
+// and tested in M6 (photos) and M3 (jobs). Default-deny until then.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
