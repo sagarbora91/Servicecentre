@@ -49,3 +49,15 @@ final class UnexpectedFailure extends Failure {
   /// Creates an unexpected failure.
   const UnexpectedFailure(super.message);
 }
+
+/// A requested document or entity could not be found.
+final class NotFoundFailure extends Failure {
+  /// Creates a not-found failure.
+  const NotFoundFailure(super.message);
+}
+
+/// A stock operation was rejected because it would drive on-hand below zero.
+final class InsufficientStockFailure extends Failure {
+  /// Creates an insufficient-stock failure.
+  const InsufficientStockFailure(super.message);
+}

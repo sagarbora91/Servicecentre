@@ -6,6 +6,21 @@ abstract final class Collections {
   /// `users/{uid}` — staff accounts and their roles.
   static const String users = 'users';
 
+  /// `customers/{id}` — customer records.
+  static const String customers = 'customers';
+
+  /// `watches/{id}` — customer watches under service.
+  static const String watches = 'watches';
+
+  /// `jobs/{id}` — service jobs.
+  static const String jobs = 'jobs';
+
+  /// `parts/{id}` — inventory parts.
+  static const String parts = 'parts';
+
+  /// `stockMovements/{id}` — append-only stock ledger.
+  static const String stockMovements = 'stockMovements';
+
   /// `activityLog/{id}` — append-only audit trail for every write.
   static const String activityLog = 'activityLog';
 }
