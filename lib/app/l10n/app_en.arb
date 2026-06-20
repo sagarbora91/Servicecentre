@@ -116,5 +116,101 @@
   "comingSoon": "Coming in a later milestone.",
   "@comingSoon": {
     "description": "Placeholder body for screens not yet built."
+  },
+  "staffEmpty": "No staff yet. Add your first team member.",
+  "@staffEmpty": {
+    "description": "Empty state on the manage-staff screen."
+  },
+  "addStaff": "Add staff",
+  "@addStaff": {
+    "description": "Label for the add-staff action and the create form title."
+  },
+  "editStaff": "Edit staff",
+  "@editStaff": {
+    "description": "Title of the staff edit form."
+  },
+  "staffNameLabel": "Name",
+  "@staffNameLabel": {
+    "description": "Label for the staff name field."
+  },
+  "staffPhoneLabel": "Phone",
+  "@staffPhoneLabel": {
+    "description": "Label for the staff phone field."
+  },
+  "staffEmailLabel": "Email (optional)",
+  "@staffEmailLabel": {
+    "description": "Label for the optional staff email field."
+  },
+  "staffUidLabel": "Sign-in account ID",
+  "@staffUidLabel": {
+    "description": "Label for the staff sign-in account id (uid) field."
+  },
+  "staffUidHelper": "The staff member's existing sign-in account ID. Creating new logins from here arrives in a later update.",
+  "@staffUidHelper": {
+    "description": "Helper text explaining the uid field (no account creation yet)."
+  },
+  "staffRoleLabel": "Role",
+  "@staffRoleLabel": {
+    "description": "Label for the staff role dropdown."
+  },
+  "nameRequired": "Enter a name",
+  "@nameRequired": {
+    "description": "Validation message when the staff name is empty."
+  },
+  "phoneRequired": "Enter a phone number",
+  "@phoneRequired": {
+    "description": "Validation message when the staff phone is empty."
+  },
+  "uidRequired": "Enter the sign-in account ID",
+  "@uidRequired": {
+    "description": "Validation message when the staff uid is empty."
+  },
+  "saveButton": "Save",
+  "@saveButton": {
+    "description": "Label of the save button on the staff form."
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Label of a cancel action in dialogs."
+  },
+  "staffSaved": "Staff saved",
+  "@staffSaved": {
+    "description": "Snackbar shown after a staff member is created or edited."
+  },
+  "staffUpdated": "Staff updated",
+  "@staffUpdated": {
+    "description": "Snackbar shown after activating or deactivating staff."
+  },
+  "saveFailed": "Couldn't save. Please try again.",
+  "@saveFailed": {
+    "description": "Snackbar shown when a staff write fails."
+  },
+  "editAction": "Edit",
+  "@editAction": {
+    "description": "Staff row menu action to edit the member."
+  },
+  "deactivateAction": "Deactivate",
+  "@deactivateAction": {
+    "description": "Staff row menu action / confirm button to deactivate."
+  },
+  "reactivateAction": "Reactivate",
+  "@reactivateAction": {
+    "description": "Staff row menu action to reactivate a disabled member."
+  },
+  "inactiveBadge": "Inactive",
+  "@inactiveBadge": {
+    "description": "Badge shown beside a deactivated staff member."
+  },
+  "confirmDeactivateTitle": "Deactivate this account?",
+  "@confirmDeactivateTitle": {
+    "description": "Title of the deactivate-confirmation dialog."
+  },
+  "confirmDeactivateBody": "They'll lose access until reactivated.",
+  "@confirmDeactivateBody": {
+    "description": "Body of the deactivate-confirmation dialog."
+  },
+  "branchNotConfigured": "No branch is set for your account yet. Ask the owner to set one.",
+  "@branchNotConfigured": {
+    "description": "Shown on manage-staff when the user has no branch id."
   }
 }

@@ -55,6 +55,15 @@ void main() {
       expect(find.byKey(const Key('roleChip')), findsOneWidget);
     });
 
+    testWidgets('owner can reach the manage-staff screen', (tester) async {
+      final container = await pumpAppSignedIn(tester, role: UserRole.owner);
+
+      container.read(routerProvider).go(Routes.adminUsers);
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('adminUsersScreen')), findsOneWidget);
+    });
+
     testWidgets('signed-in user without a profile sees the no-role message',
         (tester) async {
       await pumpAppSignedIn(tester, role: null);

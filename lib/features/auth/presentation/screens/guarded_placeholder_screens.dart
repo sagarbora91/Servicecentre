@@ -21,23 +21,6 @@ class BillingScreen extends StatelessWidget {
   }
 }
 
-/// Placeholder for staff management, reachable only by the owner. Real role
-/// assignment UI is fleshed out later; this exercises the owner-only guard.
-class AdminUsersScreen extends StatelessWidget {
-  /// Creates the admin-users placeholder.
-  const AdminUsersScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return _Placeholder(
-      key: const Key('adminUsersScreen'),
-      title: l10n.adminUsersTitle,
-      message: l10n.comingSoon,
-    );
-  }
-}
-
 class _Placeholder extends StatelessWidget {
   const _Placeholder({
     required this.title,

@@ -6,6 +6,7 @@ import '../features/auth/presentation/auth_guard.dart';
 import '../features/auth/presentation/providers/auth_providers.dart';
 import '../features/auth/presentation/screens/guarded_placeholder_screens.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
+import '../features/auth/presentation/screens/manage_staff_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
 
 /// Provides the app's [GoRouter] with auth-aware redirects (M1).
@@ -51,7 +52,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.adminUsers,
         name: 'adminUsers',
-        builder: (context, state) => const AdminUsersScreen(),
+        builder: (context, state) => const ManageStaffScreen(),
       ),
     ],
   );

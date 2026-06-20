@@ -33,6 +33,8 @@ firebase-debug.log
 
 # Claude Code (local session settings)
 .claude/
+# Session handoff working doc (not part of the app)
+/HANDOFF.md
 
 # OS
 .DS_Store
