@@ -57,14 +57,17 @@ class FirestoreUsersRepository implements UsersRepository {
     try {
       final doc = _users.doc(user.uid);
       final exists = (await doc.get()).exists;
-      await doc.set(<String, dynamic>{
-        ...user.toMap(),
-        'updatedAt': FieldValue.serverTimestamp(),
-        if (!exists) ...<String, dynamic>{
-          'createdAt': FieldValue.serverTimestamp(),
-          'createdBy': by,
+      await doc.set(
+        <String, dynamic>{
+          ...user.toMap(),
+          'updatedAt': FieldValue.serverTimestamp(),
+          if (!exists) ...<String, dynamic>{
+            'createdAt': FieldValue.serverTimestamp(),
+            'createdBy': by,
+          },
         },
-      }, SetOptions(merge: true));
+        SetOptions(merge: true),
+      );
       return const Ok(null);
     } on Object catch (e) {
       return Err(UnexpectedFailure(e.toString()));
