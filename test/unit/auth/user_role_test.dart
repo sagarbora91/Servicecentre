@@ -22,6 +22,7 @@ void main() {
       expect(UserRole.supervisor.canFinance, isTrue);
       expect(UserRole.counter.canFinance, isFalse);
       expect(UserRole.technician.canFinance, isFalse);
+      expect(UserRole.store.canFinance, isFalse);
     });
 
     test('canManageUsers is true only for owner', () {
@@ -29,6 +30,15 @@ void main() {
       expect(UserRole.supervisor.canManageUsers, isFalse);
       expect(UserRole.counter.canManageUsers, isFalse);
       expect(UserRole.technician.canManageUsers, isFalse);
+      expect(UserRole.store.canManageUsers, isFalse);
+    });
+
+    test('canManageInventory is true for owner, supervisor, and store', () {
+      expect(UserRole.owner.canManageInventory, isTrue);
+      expect(UserRole.supervisor.canManageInventory, isTrue);
+      expect(UserRole.store.canManageInventory, isTrue);
+      expect(UserRole.counter.canManageInventory, isFalse);
+      expect(UserRole.technician.canManageInventory, isFalse);
     });
   });
 }

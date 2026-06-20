@@ -142,6 +142,7 @@ String roleLabel(UserRole role, AppLocalizations l10n) => switch (role) {
       UserRole.supervisor => l10n.roleSupervisor,
       UserRole.counter => l10n.roleCounter,
       UserRole.technician => l10n.roleTechnician,
+      UserRole.store => l10n.roleStore,
     };
 
 class _CenteredMessage extends StatelessWidget {

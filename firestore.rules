@@ -28,7 +28,8 @@ service cloud.firestore {
     // matches the client guard (RoleHomeScreen shows a "deactivated" message).
     function isStaff() {
       return signedIn() && profileExists() && profile().active == true &&
-        profile().role in ['owner', 'supervisor', 'counter', 'technician'];
+        profile().role in
+          ['owner', 'supervisor', 'counter', 'technician', 'store'];
     }
     function canFinance() {
       return isStaff() && profile().role in ['owner', 'supervisor'];
@@ -45,7 +46,8 @@ service cloud.firestore {
     }
     match /parts/{id} {
       allow read: if isStaff();
-      allow write: if isStaff() && profile().role in ['owner', 'supervisor'];
+      allow write: if isStaff() &&
+        profile().role in ['owner', 'supervisor', 'store'];
     }
     match /users/{id} {
       // Any signed-in user may read their own profile (so the app can discover

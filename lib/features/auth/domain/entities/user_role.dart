@@ -14,7 +14,11 @@ enum UserRole {
   counter,
 
   /// Repairs jobs; no finance or user management.
-  technician;
+  technician,
+
+  /// Store / inventory keeper: manages parts and stock, but no finance or user
+  /// management. Ratified addition to the §5.1 role list.
+  store;
 
   /// Parses a stored role string, returning `null` if it is missing or
   /// unrecognized (e.g. a future role this build does not know about).
@@ -30,4 +34,8 @@ enum UserRole {
 
   /// Whether this role may manage staff accounts and assign roles.
   bool get canManageUsers => this == owner;
+
+  /// Whether this role may manage inventory (parts/stock writes).
+  bool get canManageInventory =>
+      this == owner || this == supervisor || this == store;
 }

@@ -85,6 +85,10 @@
   "@roleTechnician": {
     "description": "Label for the technician role."
   },
+  "roleStore": "Store keeper",
+  "@roleStore": {
+    "description": "Label for the store/inventory-keeper role."
+  },
   "noRoleAssigned": "Your account has no role yet. Ask the owner to assign one.",
   "@noRoleAssigned": {
     "description": "Shown when a signed-in user has no/invalid profile."

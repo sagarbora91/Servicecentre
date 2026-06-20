@@ -20,6 +20,7 @@
   "roleSupervisor": "पर्यवेक्षक",
   "roleCounter": "काउंटर",
   "roleTechnician": "तंत्रज्ञ",
+  "roleStore": "भांडारपाल",
   "noRoleAssigned": "तुमच्या खात्याला अद्याप भूमिका नाही. मालकाला भूमिका नेमायला सांगा.",
   "accountDeactivated": "तुमचे खाते निष्क्रिय करण्यात आले आहे. मालकाशी संपर्क साधा.",
   "openBilling": "बिलिंग",
