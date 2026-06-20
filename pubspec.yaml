@@ -14,8 +14,10 @@ environment:
 
 dependencies:
   # Kept alphabetical for the sort_pub_dependencies lint.
-  # firebase_* are bootstrap-only in M0; real config via `flutterfire configure`.
+  # Real Firebase config arrives via `flutterfire configure` (human step).
+  cloud_firestore: ^5.4.0
   firebase_app_check: ^0.3.1
+  firebase_auth: ^5.3.0
   firebase_core: ^3.6.0
   flutter:
     sdk: flutter
@@ -25,8 +27,13 @@ dependencies:
   go_router: ^14.2.0
 
 dev_dependencies:
+  fake_cloud_firestore: ^3.0.3
+  firebase_auth_mocks: ^0.14.1
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  mocktail: ^1.0.4
   very_good_analysis: ^6.0.0
 
 flutter:

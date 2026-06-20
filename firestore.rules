@@ -1,24 +1,37 @@
 rules_version = '2';
 
-// M0 skeleton (from BUILD_BRIEF.md §5.3). Per-collection rules are expanded and
-// emulator-tested in M2. Default-deny is in force until then.
+// Auth & role rules (M1). Per-collection rules for the remaining entities are
+// expanded and emulator-tested in M2. Default-deny is in force for anything not
+// matched below.
 //
-// NOTE: the parts write rule references a 'store' role that is NOT in the
-// users.role enum (§5.1: owner|supervisor|counter|technician). Reconcile this
-// open question with the owner in M2 before relying on it. [PLACEHOLDER: role set]
+// The client route guards (lib/.../auth_guard.dart) mirror these checks; the
+// server rules here are the real enforcement.
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() {
       return request.auth != null;
     }
-    function role() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    function profileExists() {
+      return exists(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      );
     }
+    function profile() {
+      return get(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data;
+    }
+    function role() {
+      return profile().role;
+    }
+    // Active staff with a recognized role. Inactive accounts are denied, which
+    // matches the client guard (RoleHomeScreen shows a "deactivated" message).
     function isStaff() {
-      return signedIn() && role() in ['owner', 'supervisor', 'counter', 'technician'];
+      return signedIn() && profileExists() && profile().active == true &&
+        profile().role in ['owner', 'supervisor', 'counter', 'technician'];
     }
     function canFinance() {
-      return signedIn() && role() in ['owner', 'supervisor'];
+      return isStaff() && profile().role in ['owner', 'supervisor'];
     }
 
     match /jobs/{id} {
@@ -32,11 +45,14 @@ service cloud.firestore {
     }
     match /parts/{id} {
       allow read: if isStaff();
-      allow write: if signedIn() && role() in ['owner', 'supervisor'];
+      allow write: if isStaff() && profile().role in ['owner', 'supervisor'];
     }
     match /users/{id} {
-      allow read: if isStaff();
-      allow write: if signedIn() && role() == 'owner';
+      // Any signed-in user may read their own profile (so the app can discover
+      // its own role/active status); staff may read others. Only the owner may
+      // create/modify staff docs and thus assign roles.
+      allow read: if (signedIn() && request.auth.uid == id) || isStaff();
+      allow write: if isStaff() && profile().role == 'owner';
     }
 
     // Default deny — anything not explicitly allowed above is blocked.

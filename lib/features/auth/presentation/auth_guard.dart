@@ -1,0 +1,81 @@
+import '../domain/entities/app_user.dart';
+import '../domain/entities/user_role.dart';
+
+/// Route path constants, shared by the router and the guard so the two never
+/// drift apart.
+abstract final class Routes {
+  const Routes._();
+
+  /// Role-aware landing screen for signed-in staff.
+  static const String home = '/';
+
+  /// Public sign-in screen.
+  static const String login = '/login';
+
+  /// Finance area (estimates/invoices/payments) — finance roles only.
+  static const String billing = '/billing';
+
+  /// Staff management — owner only.
+  static const String adminUsers = '/admin/users';
+}
+
+/// Routes reachable without signing in.
+const Set<String> _publicRoutes = {Routes.login};
+
+/// Per-route role requirements. A route absent here is reachable by any active,
+/// signed-in staff member; a present route additionally requires one of the
+/// listed roles. These mirror — and must stay consistent with —
+/// `firestore.rules`.
+const Map<String, Set<UserRole>> routeRoleRequirements = {
+  Routes.billing: {UserRole.owner, UserRole.supervisor},
+  Routes.adminUsers: {UserRole.owner},
+};
+
+/// The roles allowed at [location], or `null` if the route has no role
+/// restriction beyond being signed in. Matches a path and its sub-paths.
+Set<UserRole>? requiredRolesFor(String location) {
+  for (final entry in routeRoleRequirements.entries) {
+    if (location == entry.key || location.startsWith('${entry.key}/')) {
+      return entry.value;
+    }
+  }
+  return null;
+}
+
+/// Pure redirect decision used by the GoRouter `redirect` callback.
+///
+/// Kept side-effect free so every role/route combination is unit-testable
+/// without a widget tree.
+///
+/// - While auth is still loading ([authLoading]), stay put.
+/// - Signed out: allow public routes, otherwise go to [Routes.login].
+/// - Signed in on a public route: go to [Routes.home].
+/// - Signed in on a role-guarded route without an active, permitted profile:
+///   bounce to [Routes.home] (which explains the lack of access).
+///
+/// Returns the path to redirect to, or `null` to proceed.
+String? resolveRedirect({
+  required bool authLoading,
+  required String? uid,
+  required AppUser? user,
+  required String location,
+}) {
+  if (authLoading) return null;
+
+  final isPublic = _publicRoutes.contains(location);
+
+  if (uid == null) {
+    return isPublic ? null : Routes.login;
+  }
+
+  if (isPublic) return Routes.home;
+
+  final required = requiredRolesFor(location);
+  if (required != null) {
+    final permitted =
+        user != null && user.active && required.contains(user.role);
+    if (!permitted) return Routes.home;
+  }
+
+  return null;
+}

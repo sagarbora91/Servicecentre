@@ -1,21 +1,69 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'home_placeholder_screen.dart';
+import '../features/auth/presentation/auth_guard.dart';
+import '../features/auth/presentation/providers/auth_providers.dart';
+import '../features/auth/presentation/screens/guarded_placeholder_screens.dart';
+import '../features/auth/presentation/screens/login_screen.dart';
+import '../features/auth/presentation/screens/role_home_screen.dart';
 
-/// Provides the app's [GoRouter].
+/// Provides the app's [GoRouter] with auth-aware redirects (M1).
 ///
-/// M0 exposes a single placeholder home route. Role-based route guards and the
-/// real feature routes (board, job detail, etc.) are added from M1 onward.
+/// Redirect logic is delegated to the pure [resolveRedirect] so it is
+/// unit-testable; the router refreshes whenever auth state or the current
+/// user's profile changes.
 final routerProvider = Provider<GoRouter>((ref) {
+  final refresh = _AuthRefreshNotifier(ref);
+  ref.onDispose(refresh.dispose);
+
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: Routes.home,
+    refreshListenable: refresh,
+    redirect: (context, state) {
+      final authState = ref.read(authUidProvider);
+      final user = ref.read(currentUserProvider).valueOrNull;
+      return resolveRedirect(
+        authLoading: authState.isLoading,
+        uid: authState.valueOrNull,
+        user: user,
+        location: state.matchedLocation,
+      );
+    },
     routes: [
       GoRoute(
-        path: '/',
+        path: Routes.login,
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: Routes.home,
         name: 'home',
-        builder: (context, state) => const HomePlaceholderScreen(),
+        builder: (context, state) => const RoleHomeScreen(),
+      ),
+      GoRoute(
+        path: Routes.billing,
+        name: 'billing',
+        builder: (context, state) => const BillingScreen(),
+      ),
+      GoRoute(
+        path: Routes.adminUsers,
+        name: 'adminUsers',
+        builder: (context, state) => const AdminUsersScreen(),
       ),
     ],
   );
 });
+
+/// Bridges Riverpod auth providers to a [Listenable] so [GoRouter] re-runs its
+/// redirect when sign-in state or the user's profile changes.
+///
+/// The `ref.listen` subscriptions are owned by `routerProvider` and torn down
+/// automatically when it is disposed, so no manual cleanup is needed here.
+class _AuthRefreshNotifier extends ChangeNotifier {
+  _AuthRefreshNotifier(Ref ref) {
+    ref
+      ..listen(authUidProvider, (_, __) => notifyListeners())
+      ..listen(currentUserProvider, (_, __) => notifyListeners());
+  }
+}

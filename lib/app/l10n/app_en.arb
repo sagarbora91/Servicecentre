@@ -4,8 +4,113 @@
   "@appTitle": {
     "description": "Application title shown in the app bar and task switcher."
   },
-  "homePlaceholderMessage": "Setup in progress — features arrive milestone by milestone.",
-  "@homePlaceholderMessage": {
-    "description": "Message on the temporary M0 home screen."
+  "loginTitle": "Sign in",
+  "@loginTitle": {
+    "description": "Title of the login screen."
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for the email field on the login form."
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for the password field on the login form."
+  },
+  "signInButton": "Sign in",
+  "@signInButton": {
+    "description": "Label of the sign-in submit button."
+  },
+  "signOutButton": "Sign out",
+  "@signOutButton": {
+    "description": "Label/tooltip of the sign-out action."
+  },
+  "emailRequired": "Enter your email",
+  "@emailRequired": {
+    "description": "Validation message when the email field is empty."
+  },
+  "emailInvalid": "Enter a valid email",
+  "@emailInvalid": {
+    "description": "Validation message when the email is malformed."
+  },
+  "passwordRequired": "Enter your password",
+  "@passwordRequired": {
+    "description": "Validation message when the password field is empty."
+  },
+  "authErrorInvalidCredentials": "Incorrect email or password.",
+  "@authErrorInvalidCredentials": {
+    "description": "Shown when sign-in credentials do not match."
+  },
+  "authErrorUserDisabled": "This account has been disabled.",
+  "@authErrorUserDisabled": {
+    "description": "Shown when the account is disabled."
+  },
+  "authErrorNetwork": "No connection. Check your network and try again.",
+  "@authErrorNetwork": {
+    "description": "Shown when sign-in fails due to connectivity."
+  },
+  "authErrorTooManyRequests": "Too many attempts. Try again later.",
+  "@authErrorTooManyRequests": {
+    "description": "Shown when sign-in is throttled."
+  },
+  "authErrorUnknown": "Something went wrong. Please try again.",
+  "@authErrorUnknown": {
+    "description": "Generic sign-in error fallback."
+  },
+  "genericError": "Something went wrong.",
+  "@genericError": {
+    "description": "Generic error message for failed data loads."
+  },
+  "welcomeUser": "Welcome, {name}",
+  "@welcomeUser": {
+    "description": "Greeting on the home screen.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "roleOwner": "Owner",
+  "@roleOwner": {
+    "description": "Label for the owner role."
+  },
+  "roleSupervisor": "Supervisor",
+  "@roleSupervisor": {
+    "description": "Label for the supervisor role."
+  },
+  "roleCounter": "Counter",
+  "@roleCounter": {
+    "description": "Label for the counter role."
+  },
+  "roleTechnician": "Technician",
+  "@roleTechnician": {
+    "description": "Label for the technician role."
+  },
+  "noRoleAssigned": "Your account has no role yet. Ask the owner to assign one.",
+  "@noRoleAssigned": {
+    "description": "Shown when a signed-in user has no/invalid profile."
+  },
+  "accountDeactivated": "Your account has been deactivated. Contact the owner.",
+  "@accountDeactivated": {
+    "description": "Shown when a signed-in user's account is inactive."
+  },
+  "openBilling": "Billing",
+  "@openBilling": {
+    "description": "Button that opens the billing area."
+  },
+  "openAdminUsers": "Manage staff",
+  "@openAdminUsers": {
+    "description": "Button that opens staff management."
+  },
+  "billingTitle": "Billing",
+  "@billingTitle": {
+    "description": "Title of the billing screen."
+  },
+  "adminUsersTitle": "Manage staff",
+  "@adminUsersTitle": {
+    "description": "Title of the staff management screen."
+  },
+  "comingSoon": "Coming in a later milestone.",
+  "@comingSoon": {
+    "description": "Placeholder body for screens not yet built."
   }
 }
