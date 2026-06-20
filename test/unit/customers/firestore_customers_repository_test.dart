@@ -391,7 +391,7 @@ void main() {
   });
 
   group('watchesForCustomer', () {
-    test('streams a customer\'s watches ordered by brand', () async {
+    test("streams a customer's watches ordered by brand", () async {
       await fs.collection('watches').add(<String, dynamic>{
         'customerId': 'c1',
         'brand': 'Titan',

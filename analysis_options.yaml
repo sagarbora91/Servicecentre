@@ -23,3 +23,9 @@ linter:
     # 80 columns is overly restrictive for doc comments and long string literals;
     # dart format still targets 80 for wrappable code.
     lines_longer_than_80_chars: false
+    # Explicit default-valued arguments are kept for readability, especially in
+    # test fixtures.
+    avoid_redundant_argument_values: false
+    # Doc comments reference sibling domain types (e.g. Job) in prose without
+    # importing them, which would create needless coupling.
+    comment_references: false

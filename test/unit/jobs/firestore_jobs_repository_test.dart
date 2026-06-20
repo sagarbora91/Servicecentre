@@ -12,12 +12,6 @@ import 'package:service_centre_app/features/jobs/domain/entities/warranty_type.d
 
 class _MockFirestore extends Mock implements FirebaseFirestore {}
 
-class _MockCollection extends Mock
-    implements CollectionReference<Map<String, dynamic>> {}
-
-class _MockDoc extends Mock
-    implements DocumentReference<Map<String, dynamic>> {}
-
 /// A full `jobs/{id}` document exercising every field the repository maps,
 /// including nested `qc`, `partsUsed`, and `statusHistory`.
 Map<String, dynamic> _fullDoc({
@@ -526,22 +520,18 @@ void main() {
 
   group('FirestoreJobsRepository failure mapping (mocked Firestore)', () {
     late _MockFirestore firestore;
-    late _MockCollection collection;
-    late _MockDoc doc;
     late FirestoreJobsRepository repo;
 
     setUp(() {
       firestore = _MockFirestore();
-      collection = _MockCollection();
-      doc = _MockDoc();
-      when(() => firestore.collection('jobs')).thenReturn(collection);
-      when(() => collection.doc(any())).thenReturn(doc);
-      when(() => collection.doc()).thenReturn(doc); // no-arg doc() in createJob
       repo = FirestoreJobsRepository(firestore: firestore);
     });
 
+    // Every repo method resolves `firestore.collection('jobs')` first, so
+    // throwing there exercises each try/catch without mocking the sealed
+    // CollectionReference/DocumentReference types.
     test('getJob maps permission-denied to PermissionFailure', () async {
-      when(() => doc.get()).thenThrow(
+      when(() => firestore.collection('jobs')).thenThrow(
         FirebaseException(plugin: 'firestore', code: 'permission-denied'),
       );
 
@@ -552,7 +542,7 @@ void main() {
     });
 
     test('getJob maps an unexpected error to UnexpectedFailure', () async {
-      when(() => doc.get()).thenThrow(Exception('boom'));
+      when(() => firestore.collection('jobs')).thenThrow(Exception('boom'));
 
       final result = await repo.getJob('j1');
 
@@ -560,7 +550,7 @@ void main() {
     });
 
     test('moveStatus maps permission-denied to PermissionFailure', () async {
-      when(() => doc.update(any())).thenThrow(
+      when(() => firestore.collection('jobs')).thenThrow(
         FirebaseException(plugin: 'firestore', code: 'permission-denied'),
       );
 
@@ -570,7 +560,7 @@ void main() {
     });
 
     test('moveStatus maps an unexpected error to UnexpectedFailure', () async {
-      when(() => doc.update(any())).thenThrow(Exception('boom'));
+      when(() => firestore.collection('jobs')).thenThrow(Exception('boom'));
 
       final result = await repo.moveStatus('j1', JobStatus.qc, 'u1');
 
@@ -578,7 +568,7 @@ void main() {
     });
 
     test('createJob maps an unexpected error to UnexpectedFailure', () async {
-      when(() => doc.set(any())).thenThrow(Exception('boom'));
+      when(() => firestore.collection('jobs')).thenThrow(Exception('boom'));
 
       final result = await repo.createJob(
         jobNo: 'J-001',

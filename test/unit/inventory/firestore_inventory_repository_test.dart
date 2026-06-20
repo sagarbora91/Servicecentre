@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:service_centre_app/core/errors/failure.dart';
@@ -30,8 +31,8 @@ Part _part({
 
 Future<void> _seedPart(
   FakeFirebaseFirestore fs, {
-  String id = 'p1',
   required int onHand,
+  String id = 'p1',
   int reserved = 0,
   String branchId = 'b1',
 }) {
@@ -193,8 +194,8 @@ void main() {
       final created = await repo.createPart(withSize, by: 'u1');
       final plain = await repo.createPart(_part(id: 'p2', onHand: 1), by: 'u1');
 
-      final a = await fs.collection('parts').doc(created.valueOrNull!).get();
-      final b = await fs.collection('parts').doc(plain.valueOrNull!).get();
+      final a = await fs.collection('parts').doc(created.valueOrNull).get();
+      final b = await fs.collection('parts').doc(plain.valueOrNull).get();
       expect(a.data()!['size'], '18mm');
       expect(a.data()!['mfgDate'], isA<Timestamp>());
       expect(b.data()!.containsKey('size'), isFalse);

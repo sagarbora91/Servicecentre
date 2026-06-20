@@ -1,4 +1,4 @@
-/// How a [Job]'s repair is covered for billing (BUILD_BRIEF.md §5.1).
+/// How a Job's repair is covered for billing (BUILD_BRIEF.md §5.1).
 ///
 /// Stored in `jobs/{id}.warrantyType` as a snake_case wire string; nullable
 /// until the job is billed.
