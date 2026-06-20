@@ -16,7 +16,10 @@ linter:
     # The codebase consistently uses relative imports within lib/; don't also
     # demand package: self-imports (the two lints are mutually exclusive).
     always_use_package_imports: false
-    # Hand-written value types (e.g. AppUser) define ==/hashCode and are
-    # effectively immutable; they migrate to freezed in M2, which restores the
-    # @immutable guarantee. Don't require the annotation in the meantime.
+    # Hand-written value types historically defined ==/hashCode; now superseded
+    # by freezed, but keep this off so any remaining hand-written value type is
+    # not forced to add @immutable.
     avoid_equals_and_hash_code_on_mutable_classes: false
+    # 80 columns is overly restrictive for doc comments and long string literals;
+    # dart format still targets 80 for wrappable code.
+    lines_longer_than_80_chars: false

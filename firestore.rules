@@ -49,6 +49,18 @@ service cloud.firestore {
       allow write: if isStaff() &&
         profile().role in ['owner', 'supervisor', 'store'];
     }
+    match /customers/{id} {
+      allow read, write: if isStaff();
+    }
+    match /watches/{id} {
+      allow read, write: if isStaff();
+    }
+    match /stockMovements/{id} {
+      // Append-only stock ledger: staff record movements; never edited/deleted.
+      allow read: if isStaff();
+      allow create: if isStaff();
+      allow update, delete: if false;
+    }
     match /users/{id} {
       // Any signed-in user may read their own profile (so the app can discover
       // its own role/active status); staff may read others. Only the owner may

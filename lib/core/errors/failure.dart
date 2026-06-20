@@ -61,3 +61,10 @@ final class InsufficientStockFailure extends Failure {
   /// Creates an insufficient-stock failure.
   const InsufficientStockFailure(super.message);
 }
+
+/// An operation conflicts with existing data — e.g. a duplicate unique value
+/// such as a customer phone already used within the branch.
+final class ConflictFailure extends Failure {
+  /// Creates a conflict failure.
+  const ConflictFailure(super.message);
+}
