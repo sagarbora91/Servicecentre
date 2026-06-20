@@ -13,26 +13,16 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: flutter gen-l10n
-      # build_runner (freezed / riverpod_generator / json_serializable) is added
-      # in M2 when codegen dependencies land; enable the step then:
+      # build_runner (freezed / riverpod_generator / json_serializable) lands in
+      # M2 when codegen dependencies are added:
       # - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter analyze
       - run: flutter test --coverage
       # Coverage gate (>= 80% on lib/features/**/{data,domain}) is wired in M2,
       # once those layers exist and produce coverage.
 
-  functions:
-    runs-on: ubuntu-latest
-    # Skips until Cloud Functions exist (M8).
-    if: ${{ hashFiles('functions/package.json') != '' }}
-    defaults:
-      run:
-        working-directory: functions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
+  # NOTE: the Cloud Functions CI job (Node 20: npm ci + lint + test) is added in
+  # M8, when functions/ has a real package.json. It was intentionally removed
+  # from M0: a job-level `if: hashFiles(...)` is evaluated before checkout and is
+  # rejected as an invalid workflow file, which fails the entire run with zero
+  # jobs. Re-add it gated on a path filter or a prior detect job at M8.
