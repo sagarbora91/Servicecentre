@@ -20,7 +20,7 @@ jobs:
       # build_runner (freezed / riverpod_generator) lands in M2 when codegen
       # dependencies are added.
       - name: Analyze
-        run: flutter analyze 2>&1 | tee analyze.txt
+        run: flutter analyze --fatal-infos --fatal-warnings 2>&1 | tee analyze.txt
       - name: Test
         run: flutter test --coverage 2>&1 | tee test.txt
       - name: Coverage gate (data+domain >= 80%)

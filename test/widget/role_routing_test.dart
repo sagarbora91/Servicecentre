@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:service_centre_app/app/router.dart';
 import 'package:service_centre_app/features/auth/domain/entities/user_role.dart';
 import 'package:service_centre_app/features/auth/presentation/auth_guard.dart';

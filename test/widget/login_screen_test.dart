@@ -42,10 +42,10 @@ Future<void> _pumpLogin(WidgetTester tester, Result<void> signInResult) async {
         authRepositoryProvider
             .overrideWithValue(_StubAuthRepository(signInResult)),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const LoginScreen(),
+        home: LoginScreen(),
       ),
     ),
   );

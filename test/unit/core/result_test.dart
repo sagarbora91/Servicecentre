@@ -22,10 +22,10 @@ void main() {
     });
 
     test('switch exhaustively matches both variants', () {
-      Result<String> classify(bool ok) =>
+      Result<String> classify({required bool ok}) =>
           ok ? const Ok('yes') : const Err(UnexpectedFailure('no'));
 
-      final message = switch (classify(true)) {
+      final message = switch (classify(ok: true)) {
         Ok<String>(:final value) => value,
         Err<String>(:final failure) => failure.message,
       };

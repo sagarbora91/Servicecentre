@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/errors/failure.dart';
-import '../../../../core/errors/result.dart';
 import '../providers/auth_providers.dart';
 
 /// Orchestrates the sign-in action and exposes its in-flight state, so the

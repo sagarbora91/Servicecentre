@@ -12,6 +12,11 @@ analyzer:
 
 linter:
   rules:
-    # M0 keeps the very_good_analysis defaults. Project-specific overrides are
-    # added intentionally as they come up — not pre-emptively relaxed.
     public_member_api_docs: false
+    # The codebase consistently uses relative imports within lib/; don't also
+    # demand package: self-imports (the two lints are mutually exclusive).
+    always_use_package_imports: false
+    # Hand-written value types (e.g. AppUser) define ==/hashCode and are
+    # effectively immutable; they migrate to freezed in M2, which restores the
+    # @immutable guarantee. Don't require the annotation in the meantime.
+    avoid_equals_and_hash_code_on_mutable_classes: false
