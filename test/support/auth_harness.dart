@@ -3,8 +3,8 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:service_centre_app/app/app.dart';
+import 'package:service_centre_app/core/firebase/firebase_providers.dart';
 import 'package:service_centre_app/features/auth/domain/entities/user_role.dart';
-import 'package:service_centre_app/features/auth/presentation/providers/auth_providers.dart';
 
 /// Pumps the full app wired to fake Firebase services and signed in as a user
 /// with the given [role]. Returns the container so tests can read providers

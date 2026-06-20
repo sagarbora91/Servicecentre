@@ -1,23 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/firebase/firebase_providers.dart';
 import '../../data/repositories/firebase_auth_repository.dart';
 import '../../domain/entities/app_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 
-/// Firebase Auth instance. Overridden in tests with a mock.
-final firebaseAuthProvider = Provider<FirebaseAuth>(
-  (ref) => FirebaseAuth.instance,
-);
-
-/// Firestore instance. Overridden in tests with `FakeFirebaseFirestore`.
-final firestoreProvider = Provider<FirebaseFirestore>(
-  (ref) => FirebaseFirestore.instance,
-);
-
-/// The app's [AuthRepository]. Override this (or the two providers above) in
-/// tests.
+/// The app's [AuthRepository]. Override this (or the Firebase providers in
+/// `core/firebase/firebase_providers.dart`) in tests.
 final authRepositoryProvider = Provider<AuthRepository>(
   (ref) => FirebaseAuthRepository(
     auth: ref.watch(firebaseAuthProvider),

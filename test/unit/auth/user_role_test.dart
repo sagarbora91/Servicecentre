@@ -1,0 +1,34 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:service_centre_app/features/auth/domain/entities/user_role.dart';
+
+void main() {
+  group('UserRole.fromName', () {
+    test('parses every known role by name', () {
+      for (final role in UserRole.values) {
+        expect(UserRole.fromName(role.name), role);
+      }
+    });
+
+    test('returns null for null, empty, or unknown names', () {
+      expect(UserRole.fromName(null), isNull);
+      expect(UserRole.fromName(''), isNull);
+      expect(UserRole.fromName('wizard'), isNull);
+    });
+  });
+
+  group('capabilities', () {
+    test('canFinance is true only for owner and supervisor', () {
+      expect(UserRole.owner.canFinance, isTrue);
+      expect(UserRole.supervisor.canFinance, isTrue);
+      expect(UserRole.counter.canFinance, isFalse);
+      expect(UserRole.technician.canFinance, isFalse);
+    });
+
+    test('canManageUsers is true only for owner', () {
+      expect(UserRole.owner.canManageUsers, isTrue);
+      expect(UserRole.supervisor.canManageUsers, isFalse);
+      expect(UserRole.counter.canManageUsers, isFalse);
+      expect(UserRole.technician.canManageUsers, isFalse);
+    });
+  });
+}

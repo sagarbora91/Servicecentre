@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:service_centre_app/app/app.dart';
-import 'package:service_centre_app/features/auth/presentation/providers/auth_providers.dart';
+import 'package:service_centre_app/core/firebase/firebase_providers.dart';
 
 /// End-to-end auth + role flow.
 ///

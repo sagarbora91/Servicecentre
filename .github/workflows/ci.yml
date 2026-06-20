@@ -17,27 +17,32 @@ jobs:
       - run: flutter --version
       - run: flutter pub get
       - run: flutter gen-l10n
+      # build_runner (freezed / riverpod_generator) lands in M2 when codegen
+      # dependencies are added.
       - name: Analyze
         run: flutter analyze 2>&1 | tee analyze.txt
       - name: Test
         run: flutter test --coverage 2>&1 | tee test.txt
-      # build_runner (freezed / riverpod_generator) lands in M2; coverage gate too.
+      - name: Coverage gate (data+domain >= 80%)
+        run: node tool/check_coverage.js 2>&1 | tee coverage_report.txt
 
-      # Publishes analyze/test output to a publicly-readable check-run so failures
-      # can be inspected without downloading auth-gated logs.
-      - name: Publish command output on failure
-        if: failure()
+      # Publishes analyze/test/coverage output to a publicly-readable check-run
+      # (auth-gated logs can't be downloaded anonymously). Runs always so the
+      # coverage number is visible on success too.
+      - name: Publish command output
+        if: always()
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
             const tail = (f) => {
-              try { return fs.readFileSync(f, 'utf8').slice(-7000); }
+              try { return fs.readFileSync(f, 'utf8').slice(-6000); }
               catch (_) { return '(no output captured)'; }
             };
             const summary =
               '### flutter analyze\n```\n' + tail('analyze.txt') + '\n```\n' +
-              '### flutter test\n```\n' + tail('test.txt') + '\n```';
+              '### flutter test\n```\n' + tail('test.txt') + '\n```\n' +
+              '### coverage (data+domain)\n```\n' + tail('coverage_report.txt') + '\n```';
             try {
               await github.rest.checks.create({
                 owner: context.repo.owner,
@@ -56,5 +61,4 @@ jobs:
             }
 
   # NOTE: the Cloud Functions CI job (Node 20: npm ci + lint + test) is added in
-  # M8, when functions/ has a real package.json. A job-level `if: hashFiles(...)`
-  # is rejected as an invalid workflow file, so gate it differently then.
+  # M8 when functions/ has a real package.json.

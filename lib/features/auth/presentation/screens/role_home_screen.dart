@@ -30,8 +30,7 @@ class RoleHomeScreen extends ConsumerWidget {
             key: const Key('signOutBtn'),
             tooltip: l10n.signOutButton,
             icon: const Icon(Icons.logout),
-            onPressed: () =>
-                unawaited(ref.read(authRepositoryProvider).signOut()),
+            onPressed: () => unawaited(_signOut(context, ref, l10n)),
           ),
         ],
       ),
@@ -63,6 +62,20 @@ class RoleHomeScreen extends ConsumerWidget {
     }
     return _Dashboard(user: user, l10n: l10n);
   }
+
+  Future<void> _signOut(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final result = await ref.read(authRepositoryProvider).signOut();
+    if (result.isErr) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.genericError)),
+      );
+    }
+  }
 }
 
 class _Dashboard extends StatelessWidget {
@@ -83,7 +96,11 @@ class _Dashboard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                l10n.welcomeUser(user.name),
+                l10n.welcomeUser(
+                  user.name.trim().isEmpty
+                      ? roleLabel(user.role, l10n)
+                      : user.name,
+                ),
                 style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),

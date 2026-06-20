@@ -48,6 +48,8 @@ Set<UserRole>? requiredRolesFor(String location) {
 /// without a widget tree.
 ///
 /// - While auth is still loading ([authLoading]), stay put.
+/// - Signed in but the profile is still loading ([profileLoading]) on a
+///   guarded route: stay put rather than bouncing an authorized user.
 /// - Signed out: allow public routes, otherwise go to [Routes.login].
 /// - Signed in on a public route: go to [Routes.home].
 /// - Signed in on a role-guarded route without an active, permitted profile:
@@ -56,6 +58,7 @@ Set<UserRole>? requiredRolesFor(String location) {
 /// Returns the path to redirect to, or `null` to proceed.
 String? resolveRedirect({
   required bool authLoading,
+  required bool profileLoading,
   required String? uid,
   required AppUser? user,
   required String location,
@@ -72,6 +75,9 @@ String? resolveRedirect({
 
   final required = requiredRolesFor(location);
   if (required != null) {
+    // Wait for the profile before deciding access, so an authorized user is
+    // not bounced during the profile-load window.
+    if (profileLoading) return null;
     final permitted =
         user != null && user.active && required.contains(user.role);
     if (!permitted) return Routes.home;

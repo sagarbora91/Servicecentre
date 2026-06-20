@@ -25,6 +25,16 @@ void main() {
       expect(result.isOk, isTrue);
     });
 
+    test('authStateChanges emits the signed-in uid', () async {
+      final repo = FirebaseAuthRepository(
+        auth: MockFirebaseAuth(signedIn: true, mockUser: MockUser(uid: 'u1')),
+        firestore: FakeFirebaseFirestore(),
+      );
+
+      expect(await repo.authStateChanges().first, 'u1');
+      expect(repo.currentUid, 'u1');
+    });
+
     test('signOut clears the current user', () async {
       final auth = MockFirebaseAuth(
         signedIn: true,
@@ -68,9 +78,7 @@ void main() {
         firestore: FakeFirebaseFirestore(),
       );
 
-      final user = await repo.watchUser('missing').first;
-
-      expect(user, isNull);
+      expect(await repo.watchUser('missing').first, isNull);
     });
 
     test('watchUser emits null when the role is unrecognized', () async {
@@ -118,32 +126,60 @@ void main() {
         return (failure! as AuthFailure).reason;
       }
 
-      test('wrong-password -> invalidCredentials', () async {
-        expect(
-          await reasonForCode('wrong-password'),
-          AuthFailureReason.invalidCredentials,
+      const cases = <String, AuthFailureReason>{
+        'invalid-credential': AuthFailureReason.invalidCredentials,
+        'invalid-email': AuthFailureReason.invalidCredentials,
+        'wrong-password': AuthFailureReason.invalidCredentials,
+        'user-not-found': AuthFailureReason.invalidCredentials,
+        'user-disabled': AuthFailureReason.userDisabled,
+        'network-request-failed': AuthFailureReason.network,
+        'too-many-requests': AuthFailureReason.tooManyRequests,
+        'something-odd': AuthFailureReason.unknown,
+      };
+
+      for (final entry in cases.entries) {
+        test('${entry.key} -> ${entry.value.name}', () async {
+          expect(await reasonForCode(entry.key), entry.value);
+        });
+      }
+    });
+
+    group('maps unexpected (non-Firebase) errors to UnexpectedFailure', () {
+      late _ThrowingAuth auth;
+      late FirebaseAuthRepository repo;
+
+      setUp(() {
+        auth = _ThrowingAuth();
+        repo = FirebaseAuthRepository(
+          auth: auth,
+          firestore: FakeFirebaseFirestore(),
         );
       });
 
-      test('user-disabled -> userDisabled', () async {
-        expect(
-          await reasonForCode('user-disabled'),
-          AuthFailureReason.userDisabled,
+      test('on signInWithEmail', () async {
+        when(
+          () => auth.signInWithEmailAndPassword(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(Exception('boom'));
+
+        final result = await repo.signInWithEmail(
+          email: 'a@b.com',
+          password: 'x',
         );
+
+        expect(result.isErr, isTrue);
+        expect(result.failureOrNull, isA<UnexpectedFailure>());
       });
 
-      test('network-request-failed -> network', () async {
-        expect(
-          await reasonForCode('network-request-failed'),
-          AuthFailureReason.network,
-        );
-      });
+      test('on signOut', () async {
+        when(() => auth.signOut()).thenThrow(Exception('boom'));
 
-      test('unrecognized code -> unknown', () async {
-        expect(
-          await reasonForCode('something-odd'),
-          AuthFailureReason.unknown,
-        );
+        final result = await repo.signOut();
+
+        expect(result.isErr, isTrue);
+        expect(result.failureOrNull, isA<UnexpectedFailure>());
       });
     });
   });

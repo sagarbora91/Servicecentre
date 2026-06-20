@@ -16,6 +16,7 @@ void main() {
     test('stays put while auth is still loading', () {
       final to = resolveRedirect(
         authLoading: true,
+        profileLoading: false,
         uid: null,
         user: null,
         location: Routes.billing,
@@ -27,6 +28,7 @@ void main() {
       test('protected route redirects to login', () {
         final to = resolveRedirect(
           authLoading: false,
+          profileLoading: false,
           uid: null,
           user: null,
           location: Routes.home,
@@ -37,6 +39,7 @@ void main() {
       test('login route is allowed', () {
         final to = resolveRedirect(
           authLoading: false,
+          profileLoading: false,
           uid: null,
           user: null,
           location: Routes.login,
@@ -49,6 +52,7 @@ void main() {
       test('login route redirects to home', () {
         final to = resolveRedirect(
           authLoading: false,
+          profileLoading: false,
           uid: 'u1',
           user: _user(UserRole.counter),
           location: Routes.login,
@@ -60,6 +64,7 @@ void main() {
         for (final role in UserRole.values) {
           final to = resolveRedirect(
             authLoading: false,
+            profileLoading: false,
             uid: 'u1',
             user: _user(role),
             location: Routes.home,
@@ -73,6 +78,7 @@ void main() {
         for (final role in UserRole.values) {
           final to = resolveRedirect(
             authLoading: false,
+            profileLoading: false,
             uid: 'u1',
             user: _user(role),
             location: Routes.billing,
@@ -89,6 +95,7 @@ void main() {
         for (final role in UserRole.values) {
           final to = resolveRedirect(
             authLoading: false,
+            profileLoading: false,
             uid: 'u1',
             user: _user(role),
             location: Routes.adminUsers,
@@ -104,6 +111,7 @@ void main() {
       test('inactive owner is bounced from a guarded route', () {
         final to = resolveRedirect(
           authLoading: false,
+          profileLoading: false,
           uid: 'u1',
           user: _user(UserRole.owner, active: false),
           location: Routes.adminUsers,
@@ -114,11 +122,24 @@ void main() {
       test('signed in without a profile is bounced from guarded routes', () {
         final to = resolveRedirect(
           authLoading: false,
+          profileLoading: false,
           uid: 'u1',
           user: null,
           location: Routes.billing,
         );
         expect(to, Routes.home);
+      });
+
+      test('stays put on a guarded route while the profile is still loading',
+          () {
+        final to = resolveRedirect(
+          authLoading: false,
+          profileLoading: true,
+          uid: 'u1',
+          user: null,
+          location: Routes.billing,
+        );
+        expect(to, isNull, reason: 'must not bounce before the profile loads');
       });
     });
   });

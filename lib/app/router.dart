@@ -22,11 +22,13 @@ final routerProvider = Provider<GoRouter>((ref) {
     refreshListenable: refresh,
     redirect: (context, state) {
       final authState = ref.read(authUidProvider);
-      final user = ref.read(currentUserProvider).valueOrNull;
+      final uid = authState.valueOrNull;
+      final userAsync = ref.read(currentUserProvider);
       return resolveRedirect(
         authLoading: authState.isLoading,
-        uid: authState.valueOrNull,
-        user: user,
+        profileLoading: uid != null && userAsync.isLoading,
+        uid: uid,
+        user: userAsync.valueOrNull,
         location: state.matchedLocation,
       );
     },
