@@ -9,6 +9,12 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # `shell: bash` runs with `-eo pipefail`, so `cmd | tee log.txt` fails the
+    # step when `cmd` fails. Without it the default shell has no pipefail and
+    # tee's exit code (always 0) masks analyze/test/coverage failures.
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2

@@ -1,4 +1,4 @@
-/// Domain-level failure types returned inside [Err] (see `result.dart`).
+/// Domain-level failure types returned inside an `Err` (see `result.dart`).
 ///
 /// Failures are intentionally free of Firebase types so they can cross into
 /// `domain`/`presentation`. The UI maps a failure's machine-readable reason to

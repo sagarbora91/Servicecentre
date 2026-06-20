@@ -10,10 +10,10 @@ import '../firebase_options.dart';
 
 /// Initializes Firebase and App Check before the app runs.
 ///
-/// During M0 the Firebase config is a placeholder ([DefaultFirebaseOptions]), so
-/// initialization is attempted but any failure is tolerated — the app still
-/// boots to its placeholder home. Real config arrives in M1 via
-/// `flutterfire configure`, after which this becomes a hard requirement.
+/// During M0 the Firebase config is a placeholder
+/// ([DefaultFirebaseOptions]), so initialization is attempted but any failure
+/// is tolerated — the app still boots to its placeholder home. Real config
+/// arrives in M1 via `flutterfire configure`, after which it is mandatory.
 Future<void> bootstrap() async {
   try {
     await Firebase.initializeApp(
