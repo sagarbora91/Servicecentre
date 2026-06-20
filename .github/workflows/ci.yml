@@ -83,7 +83,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
       - name: Install firebase-tools and test deps
         run: |
           npm i -g firebase-tools
