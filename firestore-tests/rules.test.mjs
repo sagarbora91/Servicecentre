@@ -11,7 +11,7 @@ import {
   assertSucceeds,
   initializeTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 let env;
 
@@ -137,4 +137,65 @@ test('stockMovements can be created by staff but never updated', async () => {
   await assertFails(
     setDoc(doc(db, 'stockMovements/m1'), { partId: 'p1', qty: 2 }),
   );
+});
+
+// --- activityLog: append-only audit trail ---
+
+test('activityLog: staff append, unauthenticated denied, no edits', async () => {
+  await seedUser('tech7', { role: 'technician', active: true });
+  const staff = env.authenticatedContext('tech7').firestore();
+  const anon = env.unauthenticatedContext().firestore();
+  await assertFails(setDoc(doc(anon, 'activityLog/a1'), { action: 'x' }));
+  await assertSucceeds(
+    setDoc(doc(staff, 'activityLog/a2'), {
+      actor: 'tech7',
+      action: 'job.deliver',
+      entity: 'jobs',
+      entityId: 'j1',
+    }),
+  );
+  // a2 now exists, so a second setDoc is an update -> denied (append-only).
+  await assertFails(setDoc(doc(staff, 'activityLog/a2'), { action: 'y' }));
+});
+
+// --- jobs: delivery gate mirrored in rules (CLAUDE.md #4 / Golden Rule 8) ---
+
+test('jobs update to delivered needs complete QC + a delivery photo',
+  async () => {
+    await seedUser('tech8', { role: 'technician', active: true });
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), 'jobs/jx'), {
+        status: 'ready',
+        branchId: 'b1',
+      });
+    });
+    const db = env.authenticatedContext('tech8').firestore();
+    // Incomplete (no QC / no photo) -> denied.
+    await assertFails(updateDoc(doc(db, 'jobs/jx'), { status: 'delivered' }));
+    // Complete QC + a delivery photo -> allowed.
+    await assertSucceeds(
+      updateDoc(doc(db, 'jobs/jx'), {
+        status: 'delivered',
+        qc: {
+          timekeeping: true,
+          gasket: true,
+          glassClean: true,
+          strap: true,
+          crown: true,
+        },
+        deliveryPhotos: ['delivery.jpg'],
+      }),
+    );
+  });
+
+test('jobs update to a non-delivered status needs no QC', async () => {
+  await seedUser('tech9', { role: 'technician', active: true });
+  await env.withSecurityRulesDisabled(async (ctx) => {
+    await setDoc(doc(ctx.firestore(), 'jobs/jy'), {
+      status: 'received',
+      branchId: 'b1',
+    });
+  });
+  const db = env.authenticatedContext('tech9').firestore();
+  await assertSucceeds(updateDoc(doc(db, 'jobs/jy'), { status: 'in_repair' }));
 });

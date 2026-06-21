@@ -35,8 +35,21 @@ service cloud.firestore {
       return isStaff() && profile().role in ['owner', 'supervisor'];
     }
 
+    function jobDeliveryGateOk(d) {
+      // Mirrors the client/repo delivery gate (CLAUDE.md #4): a job may only be
+      // set to `delivered` with a complete QC map AND >=1 delivery photo.
+      return d.status != 'delivered' || (
+        d.get('qc', {}).get('timekeeping', false) == true &&
+        d.get('qc', {}).get('gasket', false) == true &&
+        d.get('qc', {}).get('glassClean', false) == true &&
+        d.get('qc', {}).get('strap', false) == true &&
+        d.get('qc', {}).get('crown', false) == true &&
+        d.get('deliveryPhotos', []).size() >= 1
+      );
+    }
     match /jobs/{id} {
-      allow read, write: if isStaff();
+      allow read, create, delete: if isStaff();
+      allow update: if isStaff() && jobDeliveryGateOk(request.resource.data);
     }
     match /invoices/{id} {
       allow read, write: if canFinance();
@@ -67,6 +80,11 @@ service cloud.firestore {
       // create/modify staff docs and thus assign roles.
       allow read: if (signedIn() && request.auth.uid == id) || isStaff();
       allow write: if isStaff() && profile().role == 'owner';
+    }
+    match /activityLog/{id} {
+      // Append-only audit trail (CLAUDE.md #9): staff append, never edit/delete.
+      allow read, create: if isStaff();
+      allow update, delete: if false;
     }
 
     // Default deny — anything not explicitly allowed above is blocked.

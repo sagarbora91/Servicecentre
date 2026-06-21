@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/constants/collections.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
+import '../../../../core/firebase/activity_log.dart';
 import '../../../../core/firebase/converters.dart';
+import '../../domain/entities/delivery_gate.dart';
 import '../../domain/entities/job.dart';
 import '../../domain/entities/job_outcome.dart';
 import '../../domain/entities/job_part.dart';
@@ -46,6 +48,12 @@ class FirestoreJobsRepository implements JobsRepository {
       .orderBy('createdAt', descending: true)
       .snapshots()
       .map(_toJobList);
+
+  @override
+  Stream<Job?> watchJob(String id) => _jobs.doc(id).snapshots().map((snap) {
+        final data = snap.data();
+        return (snap.exists && data != null) ? _fromDoc(snap.id, data) : null;
+      });
 
   @override
   Future<Result<Job>> getJob(String id) async {
@@ -122,6 +130,17 @@ class FirestoreJobsRepository implements JobsRepository {
   Future<Result<void>> moveStatus(String id, JobStatus to, String by) async {
     try {
       final doc = _jobs.doc(id);
+      // Enforce the delivery gate on the way to `delivered`: re-read and check
+      // QC + a delivery photo, writing nothing if it isn't satisfied.
+      if (to == JobStatus.delivered) {
+        final snap = await doc.get();
+        final data = snap.data();
+        if (!snap.exists || data == null) {
+          return Err(NotFoundFailure('Job $id not found'));
+        }
+        final gate = deliveryGateResult(_fromDoc(snap.id, data));
+        if (gate != DeliveryGate.ready) return Err(_validationFor(gate));
+      }
       final entry = JobStatusChange(
         status: to,
         at: DateTime.now().toUtc(),
@@ -132,11 +151,105 @@ class FirestoreJobsRepository implements JobsRepository {
         'statusHistory': FieldValue.arrayUnion([_statusChangeToMap(entry)]),
         'updatedAt': FieldValue.serverTimestamp(),
       });
+      await writeActivityLog(
+        _firestore,
+        actor: by,
+        action: 'job.move.${to.toWire}',
+        entity: Collections.jobs,
+        entityId: id,
+        after: <String, dynamic>{'status': to.toWire},
+      );
       return const Ok(null);
     } on Object catch (e) {
       return Err(_failureFor(e));
     }
   }
+
+  @override
+  Future<Result<void>> updateQc(String id, JobQc qc, String by) async {
+    try {
+      final doc = _jobs.doc(id);
+      if (!(await doc.get()).exists) {
+        return Err(NotFoundFailure('Job $id not found'));
+      }
+      final qcMap = _qcToMap(qc);
+      await doc.update(<String, dynamic>{
+        'qc': qcMap,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      await writeActivityLog(
+        _firestore,
+        actor: by,
+        action: 'job.qc',
+        entity: Collections.jobs,
+        entityId: id,
+        after: qcMap,
+      );
+      return const Ok(null);
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
+  Future<Result<void>> deliver(
+    String id, {
+    required String by,
+    JobOutcome? outcome,
+    WarrantyType? warrantyType,
+  }) async {
+    try {
+      final doc = _jobs.doc(id);
+      final snap = await doc.get();
+      final data = snap.data();
+      if (!snap.exists || data == null) {
+        return Err(NotFoundFailure('Job $id not found'));
+      }
+      final gate = deliveryGateResult(_fromDoc(snap.id, data));
+      if (gate != DeliveryGate.ready) return Err(_validationFor(gate));
+      final entry = JobStatusChange(
+        status: JobStatus.delivered,
+        at: DateTime.now().toUtc(),
+        by: by,
+      );
+      await doc.update(<String, dynamic>{
+        'status': JobStatus.delivered.toWire,
+        'statusHistory': FieldValue.arrayUnion([_statusChangeToMap(entry)]),
+        if (outcome != null) 'outcome': outcome.toWire,
+        if (warrantyType != null) 'warrantyType': warrantyType.toWire,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      await writeActivityLog(
+        _firestore,
+        actor: by,
+        action: 'job.deliver',
+        entity: Collections.jobs,
+        entityId: id,
+        after: <String, dynamic>{'status': JobStatus.delivered.toWire},
+      );
+      return const Ok(null);
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  /// Maps a blocking [DeliveryGate] result to a [ValidationFailure]. Only called
+  /// when the gate is not [DeliveryGate.ready].
+  ValidationFailure _validationFor(DeliveryGate gate) => switch (gate) {
+        DeliveryGate.qcMissing || DeliveryGate.qcIncomplete =>
+          const ValidationFailure(
+            ValidationReason.deliveryQcIncomplete,
+            'QC checklist is incomplete',
+          ),
+        DeliveryGate.noDeliveryPhoto => const ValidationFailure(
+            ValidationReason.deliveryNoPhoto,
+            'At least one delivery photo is required',
+          ),
+        DeliveryGate.ready => const ValidationFailure(
+            ValidationReason.deliveryQcIncomplete,
+            'unreachable',
+          ),
+      };
 
   List<Job> _toJobList(QuerySnapshot<Map<String, dynamic>> snap) =>
       [for (final d in snap.docs) _fromDoc(d.id, d.data())];

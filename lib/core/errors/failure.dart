@@ -68,3 +68,25 @@ final class ConflictFailure extends Failure {
   /// Creates a conflict failure.
   const ConflictFailure(super.message);
 }
+
+/// Why a domain validation rule rejected an operation. The UI maps each to a
+/// localized message.
+enum ValidationReason {
+  /// Delivery was attempted without a complete QC checklist.
+  deliveryQcIncomplete,
+
+  /// Delivery was attempted without at least one delivery photo.
+  deliveryNoPhoto,
+}
+
+/// An operation violated a business rule (e.g. the job delivery gate). Distinct
+/// from [PermissionFailure] (a role/auth problem) and [ConflictFailure] (a data
+/// clash): the caller is allowed to act but the data does not yet satisfy the
+/// rule.
+final class ValidationFailure extends Failure {
+  /// Creates a validation failure with a classified [reason].
+  const ValidationFailure(this.reason, super.message);
+
+  /// The classified reason, used by the UI to pick a localized message.
+  final ValidationReason reason;
+}

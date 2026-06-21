@@ -1,6 +1,9 @@
 import '../../../../core/errors/result.dart';
 import '../entities/job.dart';
+import '../entities/job_outcome.dart';
+import '../entities/job_qc.dart';
 import '../entities/job_status.dart';
+import '../entities/warranty_type.dart';
 
 /// Contract for reading and mutating service [Job]s.
 ///
@@ -17,6 +20,10 @@ abstract interface class JobsRepository {
   /// Streams every job for [customerId], most recently created first, for the
   /// customer's service history.
   Stream<List<Job>> watchJobsForCustomer(String customerId);
+
+  /// Streams a single job by document [id], emitting `null` when it does not
+  /// exist. Backs the live job-detail screen.
+  Stream<Job?> watchJob(String id);
 
   /// Fetches a single job by document [id]. Returns a `NotFoundFailure` when no
   /// such job exists.
@@ -44,5 +51,24 @@ abstract interface class JobsRepository {
 
   /// Moves job [id] to status [to], appending `{status, at, by}` to its
   /// `statusHistory` and updating `status`. [by] is the acting user's uid.
+  ///
+  /// The delivery gate is enforced here too: moving to [JobStatus.delivered]
+  /// re-reads the job and returns `Err(ValidationFailure)` (writing nothing)
+  /// unless its QC map is complete AND it has at least one delivery photo.
   Future<Result<void>> moveStatus(String id, JobStatus to, String by);
+
+  /// Records/updates the QC checklist on job [id]. [by] is the acting uid.
+  Future<Result<void>> updateQc(String id, JobQc qc, String by);
+
+  /// Delivers job [id] (moves it to [JobStatus.delivered]), optionally recording
+  /// the [outcome] and [warrantyType]. [by] is the acting uid.
+  ///
+  /// Gated (CLAUDE.md #4): returns `Err(ValidationFailure)` writing nothing
+  /// unless the QC map is complete AND there is at least one delivery photo.
+  Future<Result<void>> deliver(
+    String id, {
+    required String by,
+    JobOutcome? outcome,
+    WarrantyType? warrantyType,
+  });
 }

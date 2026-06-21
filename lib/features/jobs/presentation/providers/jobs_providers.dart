@@ -25,3 +25,9 @@ final customerJobsProvider = StreamProvider.family<List<Job>, String>(
   (ref, customerId) =>
       ref.watch(jobsRepositoryProvider).watchJobsForCustomer(customerId),
 );
+
+/// Streams a single job by id (or `null` when missing). Backs the job-detail
+/// screen; `autoDispose` so it is dropped when detail leaves the tree.
+final jobByIdProvider = StreamProvider.autoDispose.family<Job?, String>(
+  (ref, id) => ref.watch(jobsRepositoryProvider).watchJob(id),
+);
