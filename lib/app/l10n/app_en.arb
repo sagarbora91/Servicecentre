@@ -280,5 +280,61 @@
   "jobStatusReturned": "Returned",
   "@jobStatusReturned": {
     "description": "Job status: returned without repair."
+  },
+  "jobIntakeTitle": "New job",
+  "@jobIntakeTitle": {
+    "description": "Title of the new-job intake screen."
+  },
+  "newJobButton": "New job",
+  "@newJobButton": {
+    "description": "Board FAB that opens new-job intake."
+  },
+  "intakeCustomerLabel": "Customer",
+  "@intakeCustomerLabel": {
+    "description": "Label for the customer picker on intake."
+  },
+  "intakeSelectCustomer": "Select a customer",
+  "@intakeSelectCustomer": {
+    "description": "Validation message when no customer is chosen."
+  },
+  "intakeNoCustomers": "No customers yet. Add one before creating a job.",
+  "@intakeNoCustomers": {
+    "description": "Shown on intake when the branch has no customers."
+  },
+  "intakeWatchLabel": "Watch (optional)",
+  "@intakeWatchLabel": {
+    "description": "Label for the optional watch picker on intake."
+  },
+  "intakeWatchNone": "No watch",
+  "@intakeWatchNone": {
+    "description": "Watch-picker option for no specific watch."
+  },
+  "intakeFaultLabel": "Fault",
+  "@intakeFaultLabel": {
+    "description": "Label for the fault field on intake."
+  },
+  "intakeFaultRequired": "Describe the fault",
+  "@intakeFaultRequired": {
+    "description": "Validation message when the fault is empty."
+  },
+  "intakeWorkLabel": "Work requested",
+  "@intakeWorkLabel": {
+    "description": "Label for the work-requested field on intake."
+  },
+  "intakeWorkRequired": "Describe the work requested",
+  "@intakeWorkRequired": {
+    "description": "Validation message when the work requested is empty."
+  },
+  "intakeTatLabel": "Turnaround (hours)",
+  "@intakeTatLabel": {
+    "description": "Label for the turnaround-hours field on intake."
+  },
+  "intakeTatInvalid": "Enter the turnaround in hours",
+  "@intakeTatInvalid": {
+    "description": "Validation message when turnaround is not a positive number."
+  },
+  "jobCreated": "Job created",
+  "@jobCreated": {
+    "description": "Snackbar shown after a job is created."
   }
 }

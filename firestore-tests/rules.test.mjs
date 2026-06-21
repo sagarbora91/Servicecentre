@@ -199,3 +199,13 @@ test('jobs update to a non-delivered status needs no QC', async () => {
   const db = env.authenticatedContext('tech9').firestore();
   await assertSucceeds(updateDoc(doc(db, 'jobs/jy'), { status: 'in_repair' }));
 });
+
+// --- counters: jobNo allocation, staff-only ---
+
+test('counters: staff may allocate, unauthenticated denied', async () => {
+  await seedUser('tech10', { role: 'technician', active: true });
+  const staff = env.authenticatedContext('tech10').firestore();
+  const anon = env.unauthenticatedContext().firestore();
+  await assertFails(setDoc(doc(anon, 'counters/MAIN_2606'), { seq: 1 }));
+  await assertSucceeds(setDoc(doc(staff, 'counters/MAIN_2606'), { seq: 1 }));
+});

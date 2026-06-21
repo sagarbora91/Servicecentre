@@ -68,5 +68,19 @@
   "jobStatusQc": "गुणवत्ता तपासणी",
   "jobStatusReady": "तयार",
   "jobStatusDelivered": "वितरित",
-  "jobStatusReturned": "परत केले"
+  "jobStatusReturned": "परत केले",
+  "jobIntakeTitle": "नवीन जॉब",
+  "newJobButton": "नवीन जॉब",
+  "intakeCustomerLabel": "ग्राहक",
+  "intakeSelectCustomer": "ग्राहक निवडा",
+  "intakeNoCustomers": "अद्याप ग्राहक नाहीत. जॉब तयार करण्यापूर्वी एक जोडा.",
+  "intakeWatchLabel": "घड्याळ (पर्यायी)",
+  "intakeWatchNone": "घड्याळ नाही",
+  "intakeFaultLabel": "दोष",
+  "intakeFaultRequired": "दोष नमूद करा",
+  "intakeWorkLabel": "विनंती केलेले काम",
+  "intakeWorkRequired": "विनंती केलेले काम नमूद करा",
+  "intakeTatLabel": "कालावधी (तास)",
+  "intakeTatInvalid": "कालावधी तासांत टाका",
+  "jobCreated": "जॉब तयार झाला"
 }

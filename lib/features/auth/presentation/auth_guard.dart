@@ -24,6 +24,9 @@ abstract final class Routes {
   /// Jobs area prefix (covers `/jobs/:id` detail etc.) — any active staff.
   static const String jobs = '/jobs';
 
+  /// New-job intake screen — any active staff.
+  static const String jobIntake = '/jobs/new';
+
   /// Path to a single job's detail screen.
   static String jobDetail(String id) => '/jobs/$id';
 }

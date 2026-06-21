@@ -86,6 +86,12 @@ service cloud.firestore {
       allow read, create: if isStaff();
       allow update, delete: if false;
     }
+    match /counters/{id} {
+      // Per-branch/month jobNo sequence counters; staff allocate inside a
+      // transaction. Never deleted (would reuse numbers).
+      allow read, create, update: if isStaff();
+      allow delete: if false;
+    }
 
     // Default deny — anything not explicitly allowed above is blocked.
     match /{document=**} {

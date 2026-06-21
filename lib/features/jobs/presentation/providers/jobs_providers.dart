@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/firebase/firebase_providers.dart';
+import '../../data/repositories/firestore_job_no_allocator.dart';
 import '../../data/repositories/firestore_jobs_repository.dart';
 import '../../domain/entities/job.dart';
+import '../../domain/repositories/job_no_allocator.dart';
 import '../../domain/repositories/jobs_repository.dart';
 
 /// The app's [JobsRepository]. Override this (or the Firebase providers in
@@ -30,4 +32,9 @@ final customerJobsProvider = StreamProvider.family<List<Job>, String>(
 /// screen; `autoDispose` so it is dropped when detail leaves the tree.
 final jobByIdProvider = StreamProvider.autoDispose.family<Job?, String>(
   (ref, id) => ref.watch(jobsRepositoryProvider).watchJob(id),
+);
+
+/// The app's [JobNoAllocator] (transactional `YYMM-NNNN` per-branch counter).
+final jobNoAllocatorProvider = Provider<JobNoAllocator>(
+  (ref) => FirestoreJobNoAllocator(firestore: ref.watch(firestoreProvider)),
 );

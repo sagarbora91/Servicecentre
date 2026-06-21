@@ -120,6 +120,17 @@ class FirestoreJobsRepository implements JobsRepository {
         'updatedAt': FieldValue.serverTimestamp(),
       });
       final snap = await doc.get();
+      await writeActivityLog(
+        _firestore,
+        actor: createdBy,
+        action: 'job.create',
+        entity: Collections.jobs,
+        entityId: doc.id,
+        after: <String, dynamic>{
+          'jobNo': jobNo,
+          'status': JobStatus.received.toWire,
+        },
+      );
       return Ok(_fromDoc(snap.id, snap.data()!));
     } on Object catch (e) {
       return Err(_failureFor(e));

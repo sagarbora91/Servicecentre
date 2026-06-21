@@ -9,6 +9,7 @@ import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/manage_staff_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
 import '../features/jobs/presentation/screens/board_screen.dart';
+import '../features/jobs/presentation/screens/intake_screen.dart';
 import '../features/jobs/presentation/screens/job_detail_screen.dart';
 
 /// Provides the app's [GoRouter] with auth-aware redirects (M1).
@@ -61,9 +62,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'board',
         builder: (context, state) => const BoardScreen(),
       ),
-      // NOTE: when /jobs/new (intake) and /jobs/search are added in later M3
-      // slices, register them BEFORE this param route — go_router matches
-      // greedily and would otherwise capture "new"/"search" as an :id.
+      // `/jobs/new` MUST be registered before the `/jobs/:id` param route —
+      // go_router matches greedily and would otherwise capture "new" as an :id.
+      GoRoute(
+        path: Routes.jobIntake,
+        name: 'jobIntake',
+        builder: (context, state) => const IntakeScreen(),
+      ),
       GoRoute(
         path: '${Routes.jobs}/:id',
         name: 'jobDetail',

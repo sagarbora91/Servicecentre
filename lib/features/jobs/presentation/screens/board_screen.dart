@@ -38,6 +38,14 @@ class BoardScreen extends ConsumerWidget {
           onPressed: () => context.go(Routes.home),
         ),
       ),
+      floatingActionButton: branchId == null
+          ? null
+          : FloatingActionButton.extended(
+              key: const Key('newJobFab'),
+              onPressed: () => context.go(Routes.jobIntake),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.newJobButton),
+            ),
       body: branchId == null
           ? _Centered(
               key: const Key('boardNoBranch'),

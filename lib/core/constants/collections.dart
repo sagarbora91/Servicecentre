@@ -23,4 +23,8 @@ abstract final class Collections {
 
   /// `activityLog/{id}` — append-only audit trail for every write.
   static const String activityLog = 'activityLog';
+
+  /// `counters/{branchId_YYMM}` — transactional sequence counters backing
+  /// per-branch, per-month job numbers (see `JobNoAllocator`).
+  static const String counters = 'counters';
 }
