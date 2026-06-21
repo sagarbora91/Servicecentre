@@ -209,9 +209,13 @@ class _JobCard extends StatelessWidget {
                 children: [
                   Icon(Icons.event_outlined, size: 14, color: dueColor),
                   const SizedBox(width: 4),
-                  Text(
-                    '${l10n.jobDueLabel} $dueText',
-                    style: theme.textTheme.bodySmall?.copyWith(color: dueColor),
+                  Flexible(
+                    child: Text(
+                      '${l10n.jobDueLabel} $dueText',
+                      overflow: TextOverflow.ellipsis,
+                      style:
+                          theme.textTheme.bodySmall?.copyWith(color: dueColor),
+                    ),
                   ),
                   if (overdue) ...[
                     const SizedBox(width: 6),
