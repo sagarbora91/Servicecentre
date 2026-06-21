@@ -449,5 +449,65 @@
   "labelTitle": "Box label",
   "@labelTitle": {
     "description": "Title of the QR box-label screen."
+  },
+  "openCustomers": "Customers",
+  "@openCustomers": {
+    "description": "Home button that opens the customer list."
+  },
+  "customersTitle": "Customers",
+  "@customersTitle": {
+    "description": "Title of the customer list screen."
+  },
+  "customerSearchHint": "Search by name or phone",
+  "@customerSearchHint": {
+    "description": "Hint text in the customer search field."
+  },
+  "customersEmpty": "No customers yet.",
+  "@customersEmpty": {
+    "description": "Empty state when the branch has no customers."
+  },
+  "customersNoMatch": "No matching customers.",
+  "@customersNoMatch": {
+    "description": "Shown when the customer filter matches none."
+  },
+  "customerDetailTitle": "Customer",
+  "@customerDetailTitle": {
+    "description": "Title of the customer detail screen."
+  },
+  "customerNotFound": "Customer not found.",
+  "@customerNotFound": {
+    "description": "Shown on detail when the customer does not exist."
+  },
+  "customerPhoneLabel": "Phone",
+  "@customerPhoneLabel": {
+    "description": "Customer detail field label for phone."
+  },
+  "customerEmailLabel": "Email",
+  "@customerEmailLabel": {
+    "description": "Customer detail field label for email."
+  },
+  "customerAddressLabel": "Address",
+  "@customerAddressLabel": {
+    "description": "Customer detail field label for address."
+  },
+  "customerVisitsLabel": "Visits",
+  "@customerVisitsLabel": {
+    "description": "Customer detail field label for the service count."
+  },
+  "watchesSection": "Watches",
+  "@watchesSection": {
+    "description": "Customer detail section title for watches."
+  },
+  "noWatches": "No watches recorded.",
+  "@noWatches": {
+    "description": "Empty state for a customer's watches."
+  },
+  "serviceHistorySection": "Service history",
+  "@serviceHistorySection": {
+    "description": "Customer detail section title for past jobs."
+  },
+  "noServiceHistory": "No past jobs.",
+  "@noServiceHistory": {
+    "description": "Empty state for a customer's service history."
   }
 }

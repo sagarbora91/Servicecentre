@@ -40,6 +40,7 @@ Map<String, dynamic> jobDoc({
   bool isRework = false,
   Map<String, dynamic>? qc,
   List<String> deliveryPhotos = const [],
+  DateTime? createdAt,
 }) =>
     <String, dynamic>{
       'id': id,
@@ -54,6 +55,7 @@ Map<String, dynamic> jobDoc({
       'paymentStatus': paymentStatus,
       'isRework': isRework,
       'deliveryPhotos': deliveryPhotos,
+      'createdAt': Timestamp.fromDate((createdAt ?? DateTime.utc(2026)).toUtc()),
       if (qc != null) 'qc': qc,
     };
 

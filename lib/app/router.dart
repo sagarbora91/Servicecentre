@@ -12,6 +12,8 @@ import '../features/jobs/presentation/screens/board_screen.dart';
 import '../features/jobs/presentation/screens/intake_screen.dart';
 import '../features/jobs/presentation/screens/job_detail_screen.dart';
 import '../features/jobs/presentation/screens/job_search_screen.dart';
+import '../features/customers/presentation/screens/customer_detail_screen.dart';
+import '../features/customers/presentation/screens/customer_list_screen.dart';
 import '../features/jobs/presentation/screens/qr_label_screen.dart';
 
 /// Provides the app's [GoRouter] with auth-aware redirects (M1).
@@ -89,6 +91,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'jobDetail',
         builder: (context, state) =>
             JobDetailScreen(jobId: state.pathParameters['id'] ?? ''),
+      ),
+      GoRoute(
+        path: Routes.customers,
+        name: 'customers',
+        builder: (context, state) => const CustomerListScreen(),
+      ),
+      GoRoute(
+        path: '${Routes.customers}/:id',
+        name: 'customerDetail',
+        builder: (context, state) =>
+            CustomerDetailScreen(customerId: state.pathParameters['id'] ?? ''),
       ),
     ],
   );

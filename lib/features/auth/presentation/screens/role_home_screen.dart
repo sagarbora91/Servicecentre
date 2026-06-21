@@ -118,6 +118,13 @@ class _Dashboard extends StatelessWidget {
                 label: Text(l10n.openBoard),
                 onPressed: () => context.go(Routes.board),
               ),
+              const SizedBox(height: 12),
+              FilledButton.tonalIcon(
+                key: const Key('openCustomersBtn'),
+                icon: const Icon(Icons.people_outline),
+                label: Text(l10n.openCustomers),
+                onPressed: () => context.go(Routes.customers),
+              ),
               if (user.role.canFinance) ...[
                 const SizedBox(height: 12),
                 FilledButton.tonalIcon(

@@ -35,6 +35,12 @@ abstract final class Routes {
 
   /// Path to a job's QR box-label screen.
   static String jobLabel(String id) => '/jobs/$id/label';
+
+  /// Customers area prefix (list + `/customers/:id`) — any active staff.
+  static const String customers = '/customers';
+
+  /// Path to a single customer's detail screen.
+  static String customerDetail(String id) => '/customers/$id';
 }
 
 /// Every staff role. Used for routes that any *active* staff may open (jobs are
@@ -60,6 +66,7 @@ const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.adminUsers: {UserRole.owner},
   Routes.board: _anyStaff,
   Routes.jobs: _anyStaff,
+  Routes.customers: _anyStaff,
 };
 
 /// The roles allowed at [location], or `null` if the route has no role

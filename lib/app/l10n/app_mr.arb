@@ -109,5 +109,20 @@
   "searchPrompt": "फोन, जॉब क्रमांक, सिरियल किंवा नावाने शोधा.",
   "searchNoResults": "जुळणारे जॉब नाहीत.",
   "openLabel": "बॉक्स लेबल",
-  "labelTitle": "बॉक्स लेबल"
+  "labelTitle": "बॉक्स लेबल",
+  "openCustomers": "ग्राहक",
+  "customersTitle": "ग्राहक",
+  "customerSearchHint": "नाव किंवा फोनने शोधा",
+  "customersEmpty": "अद्याप ग्राहक नाहीत.",
+  "customersNoMatch": "जुळणारे ग्राहक नाहीत.",
+  "customerDetailTitle": "ग्राहक",
+  "customerNotFound": "ग्राहक सापडला नाही.",
+  "customerPhoneLabel": "फोन",
+  "customerEmailLabel": "ईमेल",
+  "customerAddressLabel": "पत्ता",
+  "customerVisitsLabel": "भेटी",
+  "watchesSection": "घड्याळे",
+  "noWatches": "नोंदवलेली घड्याळे नाहीत.",
+  "serviceHistorySection": "सेवा इतिहास",
+  "noServiceHistory": "मागील जॉब नाहीत."
 }
