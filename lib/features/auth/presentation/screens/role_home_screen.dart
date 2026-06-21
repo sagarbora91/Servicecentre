@@ -112,13 +112,21 @@ class _Dashboard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              if (user.role.canFinance)
+              FilledButton.tonalIcon(
+                key: const Key('openBoardBtn'),
+                icon: const Icon(Icons.dashboard_outlined),
+                label: Text(l10n.openBoard),
+                onPressed: () => context.go(Routes.board),
+              ),
+              if (user.role.canFinance) ...[
+                const SizedBox(height: 12),
                 FilledButton.tonalIcon(
                   key: const Key('openBillingBtn'),
                   icon: const Icon(Icons.receipt_long_outlined),
                   label: Text(l10n.openBilling),
                   onPressed: () => context.go(Routes.billing),
                 ),
+              ],
               if (user.role.canManageUsers) ...[
                 const SizedBox(height: 12),
                 FilledButton.tonalIcon(

@@ -17,7 +17,27 @@ abstract final class Routes {
 
   /// Staff management — owner only.
   static const String adminUsers = '/admin/users';
+
+  /// Kanban jobs board — any active staff.
+  static const String board = '/board';
+
+  /// Jobs area prefix (covers `/jobs/:id` detail etc.) — any active staff.
+  static const String jobs = '/jobs';
+
+  /// Path to a single job's detail screen.
+  static String jobDetail(String id) => '/jobs/$id';
 }
+
+/// Every staff role. Used for routes that any *active* staff may open (jobs are
+/// read/write for all staff per `firestore.rules`); listing them still bounces
+/// signed-in users with no profile or a deactivated account back to home.
+const Set<UserRole> _anyStaff = {
+  UserRole.owner,
+  UserRole.supervisor,
+  UserRole.counter,
+  UserRole.technician,
+  UserRole.store,
+};
 
 /// Routes reachable without signing in.
 const Set<String> _publicRoutes = {Routes.login};
@@ -29,6 +49,8 @@ const Set<String> _publicRoutes = {Routes.login};
 const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.billing: {UserRole.owner, UserRole.supervisor},
   Routes.adminUsers: {UserRole.owner},
+  Routes.board: _anyStaff,
+  Routes.jobs: _anyStaff,
 };
 
 /// The roles allowed at [location], or `null` if the route has no role

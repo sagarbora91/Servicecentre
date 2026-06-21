@@ -51,5 +51,22 @@
   "inactiveBadge": "निष्क्रिय",
   "confirmDeactivateTitle": "यह खाता निष्क्रिय करें?",
   "confirmDeactivateBody": "पुनः सक्रिय करने तक उनकी पहुँच नहीं रहेगी.",
-  "branchNotConfigured": "आपके खाते के लिए अभी कोई शाखा सेट नहीं है. मालिक से शाखा सेट करने को कहें."
+  "branchNotConfigured": "आपके खाते के लिए अभी कोई शाखा सेट नहीं है. मालिक से शाखा सेट करने को कहें.",
+  "openBoard": "जॉब बोर्ड",
+  "boardTitle": "जॉब बोर्ड",
+  "boardEmpty": "अभी तक कोई जॉब नहीं.",
+  "boardColumnEmpty": "कोई नहीं",
+  "jobUnknownCustomer": "अज्ञात ग्राहक",
+  "jobDueLabel": "नियत",
+  "jobOverdue": "समय बीत गया",
+  "jobDetailTitle": "जॉब",
+  "jobDetailComingSoon": "पूरा जॉब विवरण आगे आ रहा है.",
+  "jobStatusReceived": "प्राप्त",
+  "jobStatusDiagnosed": "निदान किया",
+  "jobStatusAwaitingPart": "पुर्ज़े की प्रतीक्षा",
+  "jobStatusInRepair": "मरम्मत में",
+  "jobStatusQc": "गुणवत्ता जाँच",
+  "jobStatusReady": "तैयार",
+  "jobStatusDelivered": "वितरित",
+  "jobStatusReturned": "वापस किया"
 }

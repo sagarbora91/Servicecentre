@@ -212,5 +212,73 @@
   "branchNotConfigured": "No branch is set for your account yet. Ask the owner to set one.",
   "@branchNotConfigured": {
     "description": "Shown on manage-staff when the user has no branch id."
+  },
+  "openBoard": "Jobs board",
+  "@openBoard": {
+    "description": "Home-screen button that opens the jobs board."
+  },
+  "boardTitle": "Jobs board",
+  "@boardTitle": {
+    "description": "Title of the Kanban jobs board screen."
+  },
+  "boardEmpty": "No jobs yet.",
+  "@boardEmpty": {
+    "description": "Empty state when the branch has no jobs at all."
+  },
+  "boardColumnEmpty": "None",
+  "@boardColumnEmpty": {
+    "description": "Placeholder inside a board column with no jobs."
+  },
+  "jobUnknownCustomer": "Unknown customer",
+  "@jobUnknownCustomer": {
+    "description": "Fallback on a job card when the customer is not loaded."
+  },
+  "jobDueLabel": "Due",
+  "@jobDueLabel": {
+    "description": "Prefix label for a job's due date on its card."
+  },
+  "jobOverdue": "Overdue",
+  "@jobOverdue": {
+    "description": "Badge on a job card past its due date."
+  },
+  "jobDetailTitle": "Job",
+  "@jobDetailTitle": {
+    "description": "Title of the job detail screen."
+  },
+  "jobDetailComingSoon": "Full job detail is coming next.",
+  "@jobDetailComingSoon": {
+    "description": "Placeholder body on the job detail screen."
+  },
+  "jobStatusReceived": "Received",
+  "@jobStatusReceived": {
+    "description": "Job status: taken in at the counter."
+  },
+  "jobStatusDiagnosed": "Diagnosed",
+  "@jobStatusDiagnosed": {
+    "description": "Job status: fault assessed."
+  },
+  "jobStatusAwaitingPart": "Awaiting part",
+  "@jobStatusAwaitingPart": {
+    "description": "Job status: blocked on a spare part."
+  },
+  "jobStatusInRepair": "In repair",
+  "@jobStatusInRepair": {
+    "description": "Job status: actively being repaired."
+  },
+  "jobStatusQc": "Quality check",
+  "@jobStatusQc": {
+    "description": "Job status: undergoing quality control."
+  },
+  "jobStatusReady": "Ready",
+  "@jobStatusReady": {
+    "description": "Job status: ready for collection."
+  },
+  "jobStatusDelivered": "Delivered",
+  "@jobStatusDelivered": {
+    "description": "Job status: handed back to the customer."
+  },
+  "jobStatusReturned": "Returned",
+  "@jobStatusReturned": {
+    "description": "Job status: returned without repair."
   }
 }

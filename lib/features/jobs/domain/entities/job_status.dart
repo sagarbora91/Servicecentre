@@ -45,3 +45,20 @@ enum JobStatus {
     return null;
   }
 }
+
+/// Left→right lifecycle order of the Kanban board columns (BUILD_BRIEF §7).
+///
+/// Defined explicitly rather than relying on [JobStatus.values] so reordering
+/// the enum can't silently reshuffle the board. The board MUST group jobs by
+/// this order client-side: `watchBoard` sorts by the snake_case wire string
+/// (alphabetical), which is NOT the lifecycle order.
+const List<JobStatus> kBoardColumnOrder = <JobStatus>[
+  JobStatus.received,
+  JobStatus.diagnosed,
+  JobStatus.awaitingPart,
+  JobStatus.inRepair,
+  JobStatus.qc,
+  JobStatus.ready,
+  JobStatus.delivered,
+  JobStatus.returned,
+];
