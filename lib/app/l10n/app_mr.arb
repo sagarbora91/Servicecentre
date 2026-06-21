@@ -107,5 +107,7 @@
   "searchTitle": "जॉब शोधा",
   "searchHint": "फोन, जॉब क्र., सिरियल किंवा नाव",
   "searchPrompt": "फोन, जॉब क्रमांक, सिरियल किंवा नावाने शोधा.",
-  "searchNoResults": "जुळणारे जॉब नाहीत."
+  "searchNoResults": "जुळणारे जॉब नाहीत.",
+  "openLabel": "बॉक्स लेबल",
+  "labelTitle": "बॉक्स लेबल"
 }

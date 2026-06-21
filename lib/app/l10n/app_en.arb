@@ -441,5 +441,13 @@
   "searchNoResults": "No matching jobs.",
   "@searchNoResults": {
     "description": "Shown when a search returns no jobs."
+  },
+  "openLabel": "Box label",
+  "@openLabel": {
+    "description": "Job detail action that opens the QR box-label."
+  },
+  "labelTitle": "Box label",
+  "@labelTitle": {
+    "description": "Title of the QR box-label screen."
   }
 }

@@ -32,6 +32,9 @@ abstract final class Routes {
 
   /// Path to a single job's detail screen.
   static String jobDetail(String id) => '/jobs/$id';
+
+  /// Path to a job's QR box-label screen.
+  static String jobLabel(String id) => '/jobs/$id/label';
 }
 
 /// Every staff role. Used for routes that any *active* staff may open (jobs are

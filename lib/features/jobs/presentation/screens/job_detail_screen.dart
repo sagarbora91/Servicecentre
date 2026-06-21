@@ -40,6 +40,14 @@ class JobDetailScreen extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go(Routes.board),
         ),
+        actions: [
+          IconButton(
+            key: const Key('openLabelBtn'),
+            tooltip: l10n.openLabel,
+            icon: const Icon(Icons.qr_code_2),
+            onPressed: () => context.go(Routes.jobLabel(jobId)),
+          ),
+        ],
       ),
       body: jobAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),

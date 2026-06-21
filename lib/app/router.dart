@@ -12,6 +12,7 @@ import '../features/jobs/presentation/screens/board_screen.dart';
 import '../features/jobs/presentation/screens/intake_screen.dart';
 import '../features/jobs/presentation/screens/job_detail_screen.dart';
 import '../features/jobs/presentation/screens/job_search_screen.dart';
+import '../features/jobs/presentation/screens/qr_label_screen.dart';
 
 /// Provides the app's [GoRouter] with auth-aware redirects (M1).
 ///
@@ -75,6 +76,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.jobSearch,
         name: 'jobSearch',
         builder: (context, state) => const JobSearchScreen(),
+      ),
+      // More specific (`/jobs/:id/label`) before `/jobs/:id`.
+      GoRoute(
+        path: '${Routes.jobs}/:id/label',
+        name: 'jobLabel',
+        builder: (context, state) =>
+            QrLabelScreen(jobId: state.pathParameters['id'] ?? ''),
       ),
       GoRoute(
         path: '${Routes.jobs}/:id',
