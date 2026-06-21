@@ -336,5 +336,90 @@
   "jobCreated": "Job created",
   "@jobCreated": {
     "description": "Snackbar shown after a job is created."
+  },
+  "jobNotFound": "Job not found",
+  "@jobNotFound": {
+    "description": "Shown on detail when the job does not exist."
+  },
+  "detailCustomer": "Customer",
+  "@detailCustomer": {
+    "description": "Job detail field label for the customer."
+  },
+  "detailFault": "Fault",
+  "@detailFault": {
+    "description": "Job detail field label for the fault."
+  },
+  "detailWork": "Work requested",
+  "@detailWork": {
+    "description": "Job detail field label for the work requested."
+  },
+  "detailDue": "Due",
+  "@detailDue": {
+    "description": "Job detail field label for the due date."
+  },
+  "detailHistory": "History",
+  "@detailHistory": {
+    "description": "Job detail section title for the status timeline."
+  },
+  "qcSectionTitle": "Quality check",
+  "@qcSectionTitle": {
+    "description": "Job detail section title for the QC checklist."
+  },
+  "qcTimekeeping": "Timekeeping",
+  "@qcTimekeeping": {
+    "description": "QC checklist item: timekeeping."
+  },
+  "qcGasket": "Gasket",
+  "@qcGasket": {
+    "description": "QC checklist item: gasket."
+  },
+  "qcGlassClean": "Glass clean",
+  "@qcGlassClean": {
+    "description": "QC checklist item: glass cleaned."
+  },
+  "qcStrap": "Strap",
+  "@qcStrap": {
+    "description": "QC checklist item: strap."
+  },
+  "qcCrown": "Crown",
+  "@qcCrown": {
+    "description": "QC checklist item: crown."
+  },
+  "statusActionsTitle": "Update status",
+  "@statusActionsTitle": {
+    "description": "Job detail section title for status actions."
+  },
+  "moveToStatus": "Move to {status}",
+  "@moveToStatus": {
+    "description": "Button label to move a job to another status.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "deliverButton": "Deliver",
+  "@deliverButton": {
+    "description": "Button that delivers a job (gated on QC + photo)."
+  },
+  "gateQcIncomplete": "Complete the QC checklist to deliver.",
+  "@gateQcIncomplete": {
+    "description": "Shown when delivery is blocked by an incomplete QC map."
+  },
+  "gateNoPhoto": "Add a delivery photo to deliver (added in a later update).",
+  "@gateNoPhoto": {
+    "description": "Shown when delivery is blocked by a missing delivery photo."
+  },
+  "statusUpdated": "Status updated",
+  "@statusUpdated": {
+    "description": "Snackbar after a status move."
+  },
+  "qcSaved": "QC saved",
+  "@qcSaved": {
+    "description": "Snackbar after saving the QC checklist."
+  },
+  "deliveredSnack": "Job delivered",
+  "@deliveredSnack": {
+    "description": "Snackbar after a job is delivered."
   }
 }

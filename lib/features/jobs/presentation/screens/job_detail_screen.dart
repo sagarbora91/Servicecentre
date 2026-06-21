@@ -1,23 +1,36 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/l10n/app_localizations.dart';
+import '../../../../core/errors/failure.dart';
 import '../../../auth/presentation/auth_guard.dart';
+import '../../../customers/domain/entities/customer.dart';
+import '../../../customers/presentation/providers/customers_providers.dart';
+import '../../domain/entities/delivery_gate.dart';
+import '../../domain/entities/job.dart';
+import '../../domain/entities/job_qc.dart';
+import '../../domain/entities/job_status.dart';
+import '../controllers/job_detail_controller.dart';
+import '../jobs_labels.dart';
+import '../providers/jobs_providers.dart';
 
-/// Placeholder job-detail screen reached from a board card (`/jobs/:id`). The
-/// full detail (fields, status timeline, QC/delivery gate) is built in a later
-/// M3 slice; this exists so the board's card navigation works end-to-end.
-class JobDetailScreen extends StatelessWidget {
-  /// Creates the placeholder, showing which [jobId] was opened.
+/// Job detail (`/jobs/:id`, any active staff): all fields, the status timeline,
+/// the QC checklist editor, status-move actions, and the gated Deliver button.
+class JobDetailScreen extends ConsumerWidget {
+  /// Creates the detail screen for [jobId].
   const JobDetailScreen({required this.jobId, super.key});
 
   /// The job document id from the route.
   final String jobId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
+    final jobAsync = ref.watch(jobByIdProvider(jobId));
+
     return Scaffold(
       key: const Key('jobDetailScreen'),
       appBar: AppBar(
@@ -28,19 +41,341 @@ class JobDetailScreen extends StatelessWidget {
           onPressed: () => context.go(Routes.board),
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(l10n.jobDetailComingSoon, textAlign: TextAlign.center),
-              const SizedBox(height: 8),
-              Text(jobId, style: theme.textTheme.bodySmall),
-            ],
-          ),
+      body: jobAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (_, __) => _Centered(
+          key: const Key('jobDetailError'),
+          message: l10n.genericError,
         ),
+        data: (job) => job == null
+            ? _Centered(
+                key: const Key('jobNotFound'),
+                message: l10n.jobNotFound,
+              )
+            : _Detail(job: job),
       ),
     );
   }
+}
+
+class _Detail extends ConsumerWidget {
+  const _Detail({required this.job});
+
+  final Job job;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final isLoading = ref.watch(jobDetailControllerProvider).isLoading;
+
+    final customers = ref.watch(customersProvider(job.branchId)).valueOrNull ??
+        const <Customer>[];
+    String? customerName;
+    for (final c in customers) {
+      if (c.id == job.customerId) {
+        customerName = c.name;
+        break;
+      }
+    }
+
+    final dueText =
+        MaterialLocalizations.of(context).formatShortDate(job.dueAt.toLocal());
+    final qc = job.qc ??
+        const JobQc(
+          timekeeping: false,
+          gasket: false,
+          glassClean: false,
+          strap: false,
+          crown: false,
+        );
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(job.jobNo, style: theme.textTheme.headlineSmall),
+            ),
+            Chip(
+              key: const Key('jobStatusChip'),
+              label: Text(jobStatusLabel(job.status, l10n)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        _InfoRow(label: l10n.detailCustomer, value: customerName ?? job.customerId),
+        _InfoRow(label: l10n.detailFault, value: job.fault),
+        _InfoRow(label: l10n.detailWork, value: job.workRequested),
+        _InfoRow(label: l10n.detailDue, value: dueText),
+        const Divider(height: 32),
+
+        // QC checklist editor.
+        Text(l10n.qcSectionTitle, style: theme.textTheme.titleMedium),
+        _QcTile(
+          field: 'timekeeping',
+          label: l10n.qcTimekeeping,
+          value: qc.timekeeping,
+          enabled: !isLoading,
+          onChanged: (v) => unawaited(
+            _saveQc(context, ref, job.id, qc.copyWith(timekeeping: v), l10n),
+          ),
+        ),
+        _QcTile(
+          field: 'gasket',
+          label: l10n.qcGasket,
+          value: qc.gasket,
+          enabled: !isLoading,
+          onChanged: (v) => unawaited(
+            _saveQc(context, ref, job.id, qc.copyWith(gasket: v), l10n),
+          ),
+        ),
+        _QcTile(
+          field: 'glassClean',
+          label: l10n.qcGlassClean,
+          value: qc.glassClean,
+          enabled: !isLoading,
+          onChanged: (v) => unawaited(
+            _saveQc(context, ref, job.id, qc.copyWith(glassClean: v), l10n),
+          ),
+        ),
+        _QcTile(
+          field: 'strap',
+          label: l10n.qcStrap,
+          value: qc.strap,
+          enabled: !isLoading,
+          onChanged: (v) => unawaited(
+            _saveQc(context, ref, job.id, qc.copyWith(strap: v), l10n),
+          ),
+        ),
+        _QcTile(
+          field: 'crown',
+          label: l10n.qcCrown,
+          value: qc.crown,
+          enabled: !isLoading,
+          onChanged: (v) => unawaited(
+            _saveQc(context, ref, job.id, qc.copyWith(crown: v), l10n),
+          ),
+        ),
+        const Divider(height: 32),
+
+        // Status actions.
+        Text(l10n.statusActionsTitle, style: theme.textTheme.titleMedium),
+        const SizedBox(height: 8),
+        for (final to in allowedTransitions(job.status))
+          if (to == JobStatus.delivered)
+            _DeliverAction(job: job, isLoading: isLoading)
+          else
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: OutlinedButton(
+                key: Key('moveTo_${to.wireName}'),
+                onPressed: isLoading
+                    ? null
+                    : () => unawaited(_move(context, ref, job.id, to, l10n)),
+                child: Text(l10n.moveToStatus(jobStatusLabel(to, l10n))),
+              ),
+            ),
+        const Divider(height: 32),
+
+        // Status timeline.
+        Text(l10n.detailHistory, style: theme.textTheme.titleMedium),
+        for (final change in job.statusHistory)
+          ListTile(
+            dense: true,
+            leading: const Icon(Icons.history),
+            title: Text(jobStatusLabel(change.status, l10n)),
+            subtitle: Text(
+              MaterialLocalizations.of(context)
+                  .formatShortDate(change.at.toLocal()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The Deliver button + (when blocked) the localized gate reason. Disabled until
+/// the job satisfies the delivery gate (complete QC + a delivery photo).
+class _DeliverAction extends ConsumerWidget {
+  const _DeliverAction({required this.job, required this.isLoading});
+
+  final Job job;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final reason = _gateReason(job, l10n);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        FilledButton.icon(
+          key: const Key('deliverBtn'),
+          onPressed: (job.canDeliver && !isLoading)
+              ? () => unawaited(_deliver(context, ref, job.id, l10n))
+              : null,
+          icon: const Icon(Icons.local_shipping_outlined),
+          label: Text(l10n.deliverButton),
+        ),
+        if (reason != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 8),
+            child: Text(
+              reason,
+              key: const Key('deliverGateReason'),
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.error),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _QcTile extends StatelessWidget {
+  const _QcTile({
+    required this.field,
+    required this.label,
+    required this.value,
+    required this.enabled,
+    required this.onChanged,
+  });
+
+  final String field;
+  final String label;
+  final bool value;
+  final bool enabled;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      key: Key('qc_$field'),
+      title: Text(label),
+      value: value,
+      onChanged: enabled ? onChanged : null,
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(label, style: theme.textTheme.labelLarge),
+          ),
+          Expanded(child: Text(value)),
+        ],
+      ),
+    );
+  }
+}
+
+class _Centered extends StatelessWidget {
+  const _Centered({required this.message, super.key});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Text(message, textAlign: TextAlign.center),
+      ),
+    );
+  }
+}
+
+String? _gateReason(Job job, AppLocalizations l10n) =>
+    switch (deliveryGateResult(job)) {
+      DeliveryGate.ready => null,
+      DeliveryGate.qcMissing ||
+      DeliveryGate.qcIncomplete =>
+        l10n.gateQcIncomplete,
+      DeliveryGate.noDeliveryPhoto => l10n.gateNoPhoto,
+    };
+
+String _failureMessage(Failure failure, AppLocalizations l10n) {
+  if (failure is ValidationFailure) {
+    return switch (failure.reason) {
+      ValidationReason.deliveryQcIncomplete => l10n.gateQcIncomplete,
+      ValidationReason.deliveryNoPhoto => l10n.gateNoPhoto,
+    };
+  }
+  return l10n.saveFailed;
+}
+
+Future<void> _move(
+  BuildContext context,
+  WidgetRef ref,
+  String id,
+  JobStatus to,
+  AppLocalizations l10n,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final failure =
+      await ref.read(jobDetailControllerProvider.notifier).move(id, to);
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        failure == null ? l10n.statusUpdated : _failureMessage(failure, l10n),
+      ),
+    ),
+  );
+}
+
+Future<void> _deliver(
+  BuildContext context,
+  WidgetRef ref,
+  String id,
+  AppLocalizations l10n,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final failure =
+      await ref.read(jobDetailControllerProvider.notifier).deliver(id);
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        failure == null ? l10n.deliveredSnack : _failureMessage(failure, l10n),
+      ),
+    ),
+  );
+}
+
+Future<void> _saveQc(
+  BuildContext context,
+  WidgetRef ref,
+  String id,
+  JobQc qc,
+  AppLocalizations l10n,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final failure =
+      await ref.read(jobDetailControllerProvider.notifier).updateQc(id, qc);
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        failure == null ? l10n.qcSaved : _failureMessage(failure, l10n),
+      ),
+    ),
+  );
 }

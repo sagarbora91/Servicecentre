@@ -62,3 +62,22 @@ const List<JobStatus> kBoardColumnOrder = <JobStatus>[
   JobStatus.delivered,
   JobStatus.returned,
 ];
+
+/// The statuses a job may move to from [from]. A documented default graph to
+/// confirm with the owner; `delivered` and `returned` are terminal, and `qc`
+/// can bounce back to `inRepair` for rework. The delivery gate is enforced
+/// separately (see `delivery_gate.dart`) — being listed here does not bypass it.
+Set<JobStatus> allowedTransitions(JobStatus from) => switch (from) {
+      JobStatus.received => {JobStatus.diagnosed, JobStatus.returned},
+      JobStatus.diagnosed => {
+          JobStatus.awaitingPart,
+          JobStatus.inRepair,
+          JobStatus.returned,
+        },
+      JobStatus.awaitingPart => {JobStatus.inRepair, JobStatus.returned},
+      JobStatus.inRepair => {JobStatus.qc, JobStatus.returned},
+      JobStatus.qc => {JobStatus.ready, JobStatus.inRepair},
+      JobStatus.ready => {JobStatus.delivered, JobStatus.returned},
+      JobStatus.delivered => <JobStatus>{},
+      JobStatus.returned => <JobStatus>{},
+    };

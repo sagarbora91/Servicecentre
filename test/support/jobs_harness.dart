@@ -38,6 +38,8 @@ Map<String, dynamic> jobDoc({
   int tatTargetHrs = 24,
   String paymentStatus = 'unbilled',
   bool isRework = false,
+  Map<String, dynamic>? qc,
+  List<String> deliveryPhotos = const [],
 }) =>
     <String, dynamic>{
       'id': id,
@@ -51,7 +53,18 @@ Map<String, dynamic> jobDoc({
       'tatTargetHrs': tatTargetHrs,
       'paymentStatus': paymentStatus,
       'isRework': isRework,
+      'deliveryPhotos': deliveryPhotos,
+      if (qc != null) 'qc': qc,
     };
+
+/// A complete QC map (all checks passed) for delivery-gate tests.
+const completeQc = <String, dynamic>{
+  'timekeeping': true,
+  'gasket': true,
+  'glassClean': true,
+  'strap': true,
+  'crown': true,
+};
 
 /// Pumps the full app signed in as [role], seeding [customers] and [jobs] into a
 /// fake Firestore. Pass `branchId: null` to simulate a profile with no branch.
