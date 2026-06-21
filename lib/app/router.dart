@@ -8,12 +8,12 @@ import '../features/auth/presentation/screens/guarded_placeholder_screens.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/manage_staff_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
+import '../features/customers/presentation/screens/customer_detail_screen.dart';
+import '../features/customers/presentation/screens/customer_list_screen.dart';
 import '../features/jobs/presentation/screens/board_screen.dart';
 import '../features/jobs/presentation/screens/intake_screen.dart';
 import '../features/jobs/presentation/screens/job_detail_screen.dart';
 import '../features/jobs/presentation/screens/job_search_screen.dart';
-import '../features/customers/presentation/screens/customer_detail_screen.dart';
-import '../features/customers/presentation/screens/customer_list_screen.dart';
 import '../features/jobs/presentation/screens/qr_label_screen.dart';
 
 /// Provides the app's [GoRouter] with auth-aware redirects (M1).

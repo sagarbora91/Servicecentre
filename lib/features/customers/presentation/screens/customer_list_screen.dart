@@ -77,11 +77,7 @@ class _CustomerListScreenState extends ConsumerState<CustomerListScreen> {
               final q = _query.trim().toLowerCase();
               final filtered = q.isEmpty
                   ? customers
-                  : customers
-                      .where((c) =>
-                          c.name.toLowerCase().contains(q) ||
-                          c.phone.toLowerCase().contains(q))
-                      .toList();
+                  : customers.where((c) => c.name.toLowerCase().contains(q) || c.phone.toLowerCase().contains(q)).toList();
               if (filtered.isEmpty) {
                 return _Centered(
                   key: const Key('customersNoMatch'),
