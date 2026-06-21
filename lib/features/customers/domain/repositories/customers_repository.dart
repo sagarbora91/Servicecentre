@@ -48,6 +48,14 @@ abstract interface class CustomersRepository {
   /// (case-sensitive prefix). An empty [query] yields no results.
   Future<Result<List<Customer>>> searchCustomers(String branchId, String query);
 
+  /// Searches watches in [branchId] whose serial starts with [query]
+  /// (case-sensitive prefix). An empty [query] yields no results. Backs
+  /// job search by watch serial.
+  Future<Result<List<Watch>>> searchWatchesBySerial(
+    String branchId,
+    String query,
+  );
+
   /// Streams the watches belonging to [customerId], ordered by [Watch.brand].
   Stream<List<Watch>> watchesForCustomer(String customerId);
 

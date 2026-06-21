@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/firebase/firebase_providers.dart';
+import '../../../customers/presentation/providers/customers_providers.dart';
 import '../../data/repositories/firestore_job_no_allocator.dart';
 import '../../data/repositories/firestore_jobs_repository.dart';
 import '../../domain/entities/job.dart';
 import '../../domain/repositories/job_no_allocator.dart';
 import '../../domain/repositories/jobs_repository.dart';
+import '../../domain/services/search_jobs_service.dart';
 
 /// The app's [JobsRepository]. Override this (or the Firebase providers in
 /// `core/firebase/firebase_providers.dart`) in tests.
@@ -37,4 +39,12 @@ final jobByIdProvider = StreamProvider.autoDispose.family<Job?, String>(
 /// The app's [JobNoAllocator] (transactional `YYMM-NNNN` per-branch counter).
 final jobNoAllocatorProvider = Provider<JobNoAllocator>(
   (ref) => FirestoreJobNoAllocator(firestore: ref.watch(firestoreProvider)),
+);
+
+/// Job search across jobNo / customer / watch-serial.
+final searchJobsServiceProvider = Provider<SearchJobsService>(
+  (ref) => SearchJobsService(
+    jobs: ref.watch(jobsRepositoryProvider),
+    customers: ref.watch(customersRepositoryProvider),
+  ),
 );

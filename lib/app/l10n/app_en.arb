@@ -421,5 +421,25 @@
   "deliveredSnack": "Job delivered",
   "@deliveredSnack": {
     "description": "Snackbar after a job is delivered."
+  },
+  "openSearch": "Search",
+  "@openSearch": {
+    "description": "Board app-bar action that opens job search."
+  },
+  "searchTitle": "Search jobs",
+  "@searchTitle": {
+    "description": "Title of the job search screen."
+  },
+  "searchHint": "Phone, job no., serial, or name",
+  "@searchHint": {
+    "description": "Hint text in the job search field."
+  },
+  "searchPrompt": "Search by phone, job number, serial, or name.",
+  "@searchPrompt": {
+    "description": "Empty-state prompt before a search is entered."
+  },
+  "searchNoResults": "No matching jobs.",
+  "@searchNoResults": {
+    "description": "Shown when a search returns no jobs."
   }
 }

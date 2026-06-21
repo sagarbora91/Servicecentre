@@ -37,6 +37,14 @@ class BoardScreen extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go(Routes.home),
         ),
+        actions: [
+          IconButton(
+            key: const Key('boardSearchBtn'),
+            tooltip: l10n.openSearch,
+            icon: const Icon(Icons.search),
+            onPressed: () => context.go(Routes.jobSearch),
+          ),
+        ],
       ),
       floatingActionButton: branchId == null
           ? null

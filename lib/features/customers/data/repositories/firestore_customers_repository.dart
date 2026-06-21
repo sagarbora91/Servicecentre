@@ -183,6 +183,28 @@ class FirestoreCustomersRepository implements CustomersRepository {
   }
 
   @override
+  Future<Result<List<Watch>>> searchWatchesBySerial(
+    String branchId,
+    String query,
+  ) async {
+    final term = query.trim();
+    if (term.isEmpty) return const Ok(<Watch>[]);
+
+    try {
+      final snap = await _watches
+          .where('branchId', isEqualTo: branchId)
+          .where('serial', isGreaterThanOrEqualTo: term)
+          .where('serial', isLessThanOrEqualTo: '$term$_highSentinel')
+          .get();
+      return Ok(
+        snap.docs.map((d) => _watchFromDoc(d.id, d.data())).toList(),
+      );
+    } on Object catch (e) {
+      return Err(UnexpectedFailure(e.toString()));
+    }
+  }
+
+  @override
   Stream<List<Watch>> watchesForCustomer(String customerId) => _watches
       .where('customerId', isEqualTo: customerId)
       .orderBy('brand')

@@ -102,5 +102,10 @@
   "gateNoPhoto": "डिलिवरी के लिए डिलिवरी फोटो जोड़ें (किसी आगामी अपडेट में आएगा).",
   "statusUpdated": "स्थिति अपडेट हुई",
   "qcSaved": "QC सहेजा गया",
-  "deliveredSnack": "जॉब डिलिवर हुई"
+  "deliveredSnack": "जॉब डिलिवर हुई",
+  "openSearch": "खोज",
+  "searchTitle": "जॉब खोजें",
+  "searchHint": "फ़ोन, जॉब नं., सीरियल या नाम",
+  "searchPrompt": "फ़ोन, जॉब नंबर, सीरियल या नाम से खोजें.",
+  "searchNoResults": "कोई मिलती जॉब नहीं."
 }

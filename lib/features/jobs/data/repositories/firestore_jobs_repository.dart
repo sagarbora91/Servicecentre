@@ -138,6 +138,63 @@ class FirestoreJobsRepository implements JobsRepository {
   }
 
   @override
+  Future<Result<List<Job>>> searchJobsByJobNo(
+    String branchId,
+    String query,
+  ) async {
+    final term = query.trim();
+    if (term.isEmpty) return const Ok(<Job>[]);
+    try {
+      final snap = await _jobs
+          .where('branchId', isEqualTo: branchId)
+          .where('jobNo', isGreaterThanOrEqualTo: term)
+          .where('jobNo', isLessThanOrEqualTo: '$term\u{F8FF}')
+          .get();
+      return Ok(_toJobList(snap));
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
+  Future<Result<List<Job>>> jobsForCustomers(
+    String branchId,
+    List<String> customerIds,
+  ) =>
+      _jobsWhereIn(branchId, 'customerId', customerIds);
+
+  @override
+  Future<Result<List<Job>>> jobsForWatches(
+    String branchId,
+    List<String> watchIds,
+  ) =>
+      _jobsWhereIn(branchId, 'watchId', watchIds);
+
+  /// Branch-scoped `whereIn` over [field], chunked to Firestore's 30-value
+  /// limit. An empty [ids] short-circuits (an empty `whereIn` is invalid).
+  Future<Result<List<Job>>> _jobsWhereIn(
+    String branchId,
+    String field,
+    List<String> ids,
+  ) async {
+    if (ids.isEmpty) return const Ok(<Job>[]);
+    try {
+      final all = <Job>[];
+      for (var i = 0; i < ids.length; i += 30) {
+        final end = (i + 30 < ids.length) ? i + 30 : ids.length;
+        final snap = await _jobs
+            .where('branchId', isEqualTo: branchId)
+            .where(field, whereIn: ids.sublist(i, end))
+            .get();
+        all.addAll(_toJobList(snap));
+      }
+      return Ok(all);
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
   Future<Result<void>> moveStatus(String id, JobStatus to, String by) async {
     try {
       final doc = _jobs.doc(id);

@@ -29,6 +29,24 @@ abstract interface class JobsRepository {
   /// such job exists.
   Future<Result<Job>> getJob(String id);
 
+  /// Returns jobs in [branchId] whose `jobNo` starts with [query] (case-
+  /// sensitive prefix). An empty [query] yields no results.
+  Future<Result<List<Job>>> searchJobsByJobNo(String branchId, String query);
+
+  /// Returns the jobs in [branchId] belonging to any of [customerIds]. An empty
+  /// list yields no results (avoids an invalid empty `whereIn`).
+  Future<Result<List<Job>>> jobsForCustomers(
+    String branchId,
+    List<String> customerIds,
+  );
+
+  /// Returns the jobs in [branchId] for any of [watchIds]. An empty list yields
+  /// no results.
+  Future<Result<List<Job>>> jobsForWatches(
+    String branchId,
+    List<String> watchIds,
+  );
+
   /// Creates a job in status [JobStatus.received], seeding `statusHistory` with
   /// the opening entry. [createdBy] is the acting user's uid. Returns the
   /// created [Job] (with its new id) on success.

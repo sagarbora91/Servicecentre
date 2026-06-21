@@ -27,6 +27,9 @@ abstract final class Routes {
   /// New-job intake screen — any active staff.
   static const String jobIntake = '/jobs/new';
 
+  /// Job search screen — any active staff.
+  static const String jobSearch = '/jobs/search';
+
   /// Path to a single job's detail screen.
   static String jobDetail(String id) => '/jobs/$id';
 }
