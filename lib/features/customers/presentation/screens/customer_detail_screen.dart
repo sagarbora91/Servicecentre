@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +10,10 @@ import '../../../auth/presentation/providers/staff_providers.dart';
 import '../../../jobs/presentation/jobs_labels.dart';
 import '../../../jobs/presentation/providers/jobs_providers.dart';
 import '../../domain/entities/customer.dart';
+import '../../domain/entities/watch.dart';
 import '../providers/customers_providers.dart';
+import 'customer_form_screen.dart';
+import 'watch_form_screen.dart';
 
 /// Customer detail (`/customers/:id`): profile, the customer's watches, and
 /// their service history (past jobs, newest first). Tapping a job opens it.
@@ -93,8 +98,30 @@ class _Detail extends ConsumerWidget {
           label: l10n.customerVisitsLabel,
           value: '${customer.serviceCount}',
         ),
+        const SizedBox(height: 12),
+        OutlinedButton.icon(
+          key: const Key('editCustomerBtn'),
+          onPressed: () => unawaited(_editCustomer(context, l10n, customer)),
+          icon: const Icon(Icons.edit_outlined),
+          label: Text(l10n.editAction),
+        ),
         const Divider(height: 32),
-        Text(l10n.watchesSection, style: theme.textTheme.titleMedium),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.watchesSection,
+                style: theme.textTheme.titleMedium,
+              ),
+            ),
+            TextButton.icon(
+              key: const Key('addWatchBtn'),
+              onPressed: () => unawaited(_addWatch(context, l10n, customer.id)),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.addWatchButton),
+            ),
+          ],
+        ),
         watchesAsync.when(
           loading: () => const _SectionLoader(),
           error: (_, __) => Text(l10n.genericError),
@@ -111,6 +138,8 @@ class _Detail extends ConsumerWidget {
                         leading: const Icon(Icons.watch_outlined),
                         title: Text('${w.brand} ${w.model}'.trim()),
                         subtitle: w.serial == null ? null : Text(w.serial!),
+                        onTap: () =>
+                            unawaited(_editWatch(context, l10n, customer.id, w)),
                       ),
                   ],
                 ),
@@ -196,5 +225,54 @@ class _Centered extends StatelessWidget {
         child: Text(message, textAlign: TextAlign.center),
       ),
     );
+  }
+}
+
+Future<void> _editCustomer(
+  BuildContext context,
+  AppLocalizations l10n,
+  Customer customer,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final saved = await Navigator.of(context).push<bool>(
+    MaterialPageRoute<bool>(
+      builder: (_) => CustomerFormScreen(existing: customer),
+    ),
+  );
+  if (saved ?? false) {
+    messenger.showSnackBar(SnackBar(content: Text(l10n.customerSaved)));
+  }
+}
+
+Future<void> _addWatch(
+  BuildContext context,
+  AppLocalizations l10n,
+  String customerId,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final saved = await Navigator.of(context).push<bool>(
+    MaterialPageRoute<bool>(
+      builder: (_) => WatchFormScreen(customerId: customerId),
+    ),
+  );
+  if (saved ?? false) {
+    messenger.showSnackBar(SnackBar(content: Text(l10n.watchSaved)));
+  }
+}
+
+Future<void> _editWatch(
+  BuildContext context,
+  AppLocalizations l10n,
+  String customerId,
+  Watch watch,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final saved = await Navigator.of(context).push<bool>(
+    MaterialPageRoute<bool>(
+      builder: (_) => WatchFormScreen(customerId: customerId, existing: watch),
+    ),
+  );
+  if (saved ?? false) {
+    messenger.showSnackBar(SnackBar(content: Text(l10n.watchSaved)));
   }
 }

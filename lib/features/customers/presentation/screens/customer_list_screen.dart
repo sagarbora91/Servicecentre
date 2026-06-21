@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +8,7 @@ import '../../../../app/l10n/app_localizations.dart';
 import '../../../auth/presentation/auth_guard.dart';
 import '../../../auth/presentation/providers/staff_providers.dart';
 import '../providers/customers_providers.dart';
+import 'customer_form_screen.dart';
 
 /// Customer list + search (`/customers`, any active staff). Streams the branch's
 /// customers and filters them live by name or phone; tapping one opens detail.
@@ -36,6 +39,14 @@ class _CustomerListScreenState extends ConsumerState<CustomerListScreen> {
           onPressed: () => context.go(Routes.home),
         ),
       ),
+      floatingActionButton: branchId == null
+          ? null
+          : FloatingActionButton.extended(
+              key: const Key('addCustomerFab'),
+              onPressed: () => unawaited(_openCreate(context, l10n)),
+              icon: const Icon(Icons.person_add_alt_1),
+              label: Text(l10n.addCustomer),
+            ),
       body: branchId == null
           ? _Centered(
               key: const Key('customersNoBranch'),
@@ -43,6 +54,16 @@ class _CustomerListScreenState extends ConsumerState<CustomerListScreen> {
             )
           : _body(l10n, branchId),
     );
+  }
+
+  Future<void> _openCreate(BuildContext context, AppLocalizations l10n) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final saved = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(builder: (_) => const CustomerFormScreen()),
+    );
+    if (saved ?? false) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.customerSaved)));
+    }
   }
 
   Widget _body(AppLocalizations l10n, String branchId) {

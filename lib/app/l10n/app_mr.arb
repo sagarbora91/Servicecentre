@@ -124,5 +124,22 @@
   "watchesSection": "घड्याळे",
   "noWatches": "नोंदवलेली घड्याळे नाहीत.",
   "serviceHistorySection": "सेवा इतिहास",
-  "noServiceHistory": "मागील जॉब नाहीत."
+  "noServiceHistory": "मागील जॉब नाहीत.",
+  "addCustomer": "ग्राहक जोडा",
+  "editCustomer": "ग्राहक संपादित करा",
+  "customerNameLabel": "नाव",
+  "customerNameRequired": "नाव टाका",
+  "customerPhoneRequired": "फोन नंबर टाका",
+  "customerConsentLabel": "व्हॉट्सअ‍ॅप अपडेट्स",
+  "customerPhoneExists": "या फोनसह ग्राहक आधीच आहे.",
+  "customerSaved": "ग्राहक जतन केला",
+  "addWatchButton": "घड्याळ जोडा",
+  "watchFormAddTitle": "घड्याळ जोडा",
+  "watchFormEditTitle": "घड्याळ संपादित करा",
+  "watchBrandLabel": "ब्रँड",
+  "watchModelLabel": "मॉडेल",
+  "watchSerialLabel": "सिरियल (पर्यायी)",
+  "watchBrandRequired": "ब्रँड टाका",
+  "watchModelRequired": "मॉडेल टाका",
+  "watchSaved": "घड्याळ जतन केले"
 }

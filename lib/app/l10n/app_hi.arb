@@ -124,5 +124,22 @@
   "watchesSection": "घड़ियाँ",
   "noWatches": "कोई घड़ी दर्ज नहीं.",
   "serviceHistorySection": "सेवा इतिहास",
-  "noServiceHistory": "कोई पिछली जॉब नहीं."
+  "noServiceHistory": "कोई पिछली जॉब नहीं.",
+  "addCustomer": "ग्राहक जोड़ें",
+  "editCustomer": "ग्राहक संपादित करें",
+  "customerNameLabel": "नाम",
+  "customerNameRequired": "नाम दर्ज करें",
+  "customerPhoneRequired": "फ़ोन नंबर दर्ज करें",
+  "customerConsentLabel": "व्हाट्सएप अपडेट",
+  "customerPhoneExists": "इस फ़ोन वाला ग्राहक पहले से मौजूद है.",
+  "customerSaved": "ग्राहक सहेजा गया",
+  "addWatchButton": "घड़ी जोड़ें",
+  "watchFormAddTitle": "घड़ी जोड़ें",
+  "watchFormEditTitle": "घड़ी संपादित करें",
+  "watchBrandLabel": "ब्रांड",
+  "watchModelLabel": "मॉडल",
+  "watchSerialLabel": "सीरियल (वैकल्पिक)",
+  "watchBrandRequired": "ब्रांड दर्ज करें",
+  "watchModelRequired": "मॉडल दर्ज करें",
+  "watchSaved": "घड़ी सहेजी गई"
 }

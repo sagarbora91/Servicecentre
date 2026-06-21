@@ -509,5 +509,73 @@
   "noServiceHistory": "No past jobs.",
   "@noServiceHistory": {
     "description": "Empty state for a customer's service history."
+  },
+  "addCustomer": "Add customer",
+  "@addCustomer": {
+    "description": "FAB / title for creating a customer."
+  },
+  "editCustomer": "Edit customer",
+  "@editCustomer": {
+    "description": "Title of the edit-customer form."
+  },
+  "customerNameLabel": "Name",
+  "@customerNameLabel": {
+    "description": "Label for the customer name field."
+  },
+  "customerNameRequired": "Enter a name",
+  "@customerNameRequired": {
+    "description": "Validation when the customer name is empty."
+  },
+  "customerPhoneRequired": "Enter a phone number",
+  "@customerPhoneRequired": {
+    "description": "Validation when the customer phone is empty."
+  },
+  "customerConsentLabel": "WhatsApp updates",
+  "@customerConsentLabel": {
+    "description": "Switch label for WhatsApp consent."
+  },
+  "customerPhoneExists": "A customer with this phone already exists.",
+  "@customerPhoneExists": {
+    "description": "Shown when create is blocked by phone de-dupe."
+  },
+  "customerSaved": "Customer saved",
+  "@customerSaved": {
+    "description": "Snackbar after a customer is created or edited."
+  },
+  "addWatchButton": "Add watch",
+  "@addWatchButton": {
+    "description": "Button on customer detail to add a watch."
+  },
+  "watchFormAddTitle": "Add watch",
+  "@watchFormAddTitle": {
+    "description": "Title of the add-watch form."
+  },
+  "watchFormEditTitle": "Edit watch",
+  "@watchFormEditTitle": {
+    "description": "Title of the edit-watch form."
+  },
+  "watchBrandLabel": "Brand",
+  "@watchBrandLabel": {
+    "description": "Label for the watch brand field."
+  },
+  "watchModelLabel": "Model",
+  "@watchModelLabel": {
+    "description": "Label for the watch model field."
+  },
+  "watchSerialLabel": "Serial (optional)",
+  "@watchSerialLabel": {
+    "description": "Label for the optional watch serial field."
+  },
+  "watchBrandRequired": "Enter the brand",
+  "@watchBrandRequired": {
+    "description": "Validation when the watch brand is empty."
+  },
+  "watchModelRequired": "Enter the model",
+  "@watchModelRequired": {
+    "description": "Validation when the watch model is empty."
+  },
+  "watchSaved": "Watch saved",
+  "@watchSaved": {
+    "description": "Snackbar after a watch is added or edited."
   }
 }
