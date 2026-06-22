@@ -59,6 +59,40 @@ Map<String, dynamic> jobDoc({
       if (qc != null) 'qc': qc,
     };
 
+/// A Firestore `parts/{id}` document map for seeding the inventory screens.
+/// Defaults make a plain, in-stock battery; override [onHand]/[reorderPoint] to
+/// exercise the low-stock marker and override [branchId] for cross-branch tests.
+Map<String, dynamic> partDoc({
+  required String id,
+  required String reference,
+  String category = 'Battery',
+  String binCode = 'A1',
+  int onHand = 5,
+  int reserved = 0,
+  int minLevel = 1,
+  int reorderPoint = 2,
+  bool serviceOnly = false,
+  int costPaise = 1000,
+  int mrpPaise = 2500,
+  String branchId = 'b1',
+  String? size,
+}) =>
+    <String, dynamic>{
+      'id': id,
+      'category': category,
+      'reference': reference,
+      'binCode': binCode,
+      'onHand': onHand,
+      'reserved': reserved,
+      'minLevel': minLevel,
+      'reorderPoint': reorderPoint,
+      'serviceOnly': serviceOnly,
+      'costPaise': costPaise,
+      'mrpPaise': mrpPaise,
+      'branchId': branchId,
+      if (size != null) 'size': size,
+    };
+
 /// A complete QC map (all checks passed) for delivery-gate tests.
 const completeQc = <String, dynamic>{
   'timekeeping': true,
@@ -77,6 +111,7 @@ Future<ProviderContainer> pumpBoardApp(
   String? branchId = 'b1',
   List<Map<String, dynamic>> jobs = const [],
   List<Map<String, dynamic>> customers = const [],
+  List<Map<String, dynamic>> parts = const [],
   String uid = 'u1',
 }) async {
   final firestore = FakeFirebaseFirestore();
@@ -92,6 +127,9 @@ Future<ProviderContainer> pumpBoardApp(
   }
   for (final j in jobs) {
     await firestore.collection('jobs').doc(j['id'] as String).set(j);
+  }
+  for (final p in parts) {
+    await firestore.collection('parts').doc(p['id'] as String).set(p);
   }
 
   final auth = MockFirebaseAuth(

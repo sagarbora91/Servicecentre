@@ -10,6 +10,8 @@ import '../features/auth/presentation/screens/manage_staff_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
 import '../features/customers/presentation/screens/customer_detail_screen.dart';
 import '../features/customers/presentation/screens/customer_list_screen.dart';
+import '../features/inventory/presentation/screens/part_detail_screen.dart';
+import '../features/inventory/presentation/screens/parts_list_screen.dart';
 import '../features/jobs/presentation/screens/board_screen.dart';
 import '../features/jobs/presentation/screens/intake_screen.dart';
 import '../features/jobs/presentation/screens/job_detail_screen.dart';
@@ -102,6 +104,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'customerDetail',
         builder: (context, state) =>
             CustomerDetailScreen(customerId: state.pathParameters['id'] ?? ''),
+      ),
+      GoRoute(
+        path: Routes.parts,
+        name: 'parts',
+        builder: (context, state) => const PartsListScreen(),
+      ),
+      GoRoute(
+        path: '${Routes.parts}/:id',
+        name: 'partDetail',
+        builder: (context, state) =>
+            PartDetailScreen(partId: state.pathParameters['id'] ?? ''),
       ),
     ],
   );

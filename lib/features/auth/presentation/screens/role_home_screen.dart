@@ -125,6 +125,13 @@ class _Dashboard extends StatelessWidget {
                 label: Text(l10n.openCustomers),
                 onPressed: () => context.go(Routes.customers),
               ),
+              const SizedBox(height: 12),
+              FilledButton.tonalIcon(
+                key: const Key('openInventoryBtn'),
+                icon: const Icon(Icons.inventory_2_outlined),
+                label: Text(l10n.openInventory),
+                onPressed: () => context.go(Routes.parts),
+              ),
               if (user.role.canFinance) ...[
                 const SizedBox(height: 12),
                 FilledButton.tonalIcon(

@@ -577,5 +577,81 @@
   "watchSaved": "Watch saved",
   "@watchSaved": {
     "description": "Snackbar after a watch is added or edited."
+  },
+  "openInventory": "Inventory",
+  "@openInventory": {
+    "description": "Home button that opens the inventory parts list."
+  },
+  "partsTitle": "Inventory",
+  "@partsTitle": {
+    "description": "Title of the inventory parts list screen."
+  },
+  "partsSearchHint": "Search by reference, category, or bin",
+  "@partsSearchHint": {
+    "description": "Hint text in the parts search field."
+  },
+  "partsEmpty": "No parts yet.",
+  "@partsEmpty": {
+    "description": "Empty state when the branch has no parts."
+  },
+  "partsNoMatch": "No matching parts.",
+  "@partsNoMatch": {
+    "description": "Shown when the parts filter matches none."
+  },
+  "partDetailTitle": "Part",
+  "@partDetailTitle": {
+    "description": "Title of the part detail screen."
+  },
+  "partNotFound": "Part not found.",
+  "@partNotFound": {
+    "description": "Shown on detail when the part does not exist."
+  },
+  "partCategoryLabel": "Category",
+  "@partCategoryLabel": {
+    "description": "Part detail field label for category."
+  },
+  "partBinLabel": "Bin",
+  "@partBinLabel": {
+    "description": "Part detail field label for the bin code."
+  },
+  "partSizeLabel": "Size",
+  "@partSizeLabel": {
+    "description": "Part detail field label for size."
+  },
+  "partOnHandLabel": "On hand",
+  "@partOnHandLabel": {
+    "description": "Part detail field label for the on-hand quantity."
+  },
+  "partReservedLabel": "Reserved",
+  "@partReservedLabel": {
+    "description": "Part detail field label for the reserved quantity."
+  },
+  "partAvailableLabel": "Available",
+  "@partAvailableLabel": {
+    "description": "Part detail field label for available (on-hand minus reserved)."
+  },
+  "partReorderLabel": "Reorder point",
+  "@partReorderLabel": {
+    "description": "Part detail field label for the reorder point."
+  },
+  "partMinLevelLabel": "Min level",
+  "@partMinLevelLabel": {
+    "description": "Part detail field label for the minimum stock level."
+  },
+  "partCostLabel": "Cost",
+  "@partCostLabel": {
+    "description": "Part detail field label for cost price."
+  },
+  "partMrpLabel": "MRP",
+  "@partMrpLabel": {
+    "description": "Part detail field label for maximum retail price."
+  },
+  "partLowStock": "Low stock",
+  "@partLowStock": {
+    "description": "Marker/chip shown for a part at or below its reorder point."
+  },
+  "partServiceOnly": "Service only",
+  "@partServiceOnly": {
+    "description": "Note shown for a part that is for service use only."
   }
 }

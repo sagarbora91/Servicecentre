@@ -41,6 +41,14 @@ abstract final class Routes {
 
   /// Path to a single customer's detail screen.
   static String customerDetail(String id) => '/customers/$id';
+
+  /// Inventory parts area prefix (list + `/parts/:id`) — any active staff may
+  /// view; stock/parts writes are gated to inventory roles in the UI and
+  /// `firestore.rules`.
+  static const String parts = '/parts';
+
+  /// Path to a single part's detail screen.
+  static String partDetail(String id) => '/parts/$id';
 }
 
 /// Every staff role. Used for routes that any *active* staff may open (jobs are
@@ -67,6 +75,7 @@ const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.board: _anyStaff,
   Routes.jobs: _anyStaff,
   Routes.customers: _anyStaff,
+  Routes.parts: _anyStaff,
 };
 
 /// The roles allowed at [location], or `null` if the route has no role
