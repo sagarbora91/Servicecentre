@@ -174,5 +174,12 @@
   "stockApply": "लागू करा",
   "stockReceived": "साठा घेतला",
   "stockAdjusted": "साठा समायोजित केला",
-  "stockInsufficient": "त्या बदलासाठी पुरेसा साठा नाही."
+  "stockInsufficient": "त्या बदलासाठी पुरेसा साठा नाही.",
+  "partsUsedSection": "वापरलेले भाग",
+  "noPartsUsed": "कोणतेही भाग नोंदवलेले नाहीत.",
+  "addPartButton": "भाग जोडा",
+  "addPartTitle": "भाग जोडा",
+  "addPartLabel": "भाग",
+  "addPartSelect": "भाग निवडा",
+  "partAddedSnack": "भाग जोडला"
 }

@@ -9,6 +9,8 @@ import '../../../../core/errors/failure.dart';
 import '../../../auth/presentation/auth_guard.dart';
 import '../../../customers/domain/entities/customer.dart';
 import '../../../customers/presentation/providers/customers_providers.dart';
+import '../../../inventory/domain/entities/part.dart';
+import '../../../inventory/presentation/providers/inventory_providers.dart';
 import '../../domain/entities/delivery_gate.dart';
 import '../../domain/entities/job.dart';
 import '../../domain/entities/job_qc.dart';
@@ -76,6 +78,7 @@ class _Detail extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final isLoading = ref.watch(jobDetailControllerProvider).isLoading;
+    final canManageInventory = ref.watch(canManageInventoryProvider);
 
     final customers = ref.watch(customersProvider(job.branchId)).valueOrNull ??
         const <Customer>[];
@@ -168,6 +171,41 @@ class _Detail extends ConsumerWidget {
             _saveQc(context, ref, job.id, qc.copyWith(crown: v), l10n),
           ),
         ),
+        const Divider(height: 32),
+
+        // Parts used.
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                l10n.partsUsedSection,
+                style: theme.textTheme.titleMedium,
+              ),
+            ),
+            if (canManageInventory)
+              TextButton.icon(
+                key: const Key('addPartBtn'),
+                onPressed: isLoading
+                    ? null
+                    : () => unawaited(_openAddPart(context, ref, job, l10n)),
+                icon: const Icon(Icons.add),
+                label: Text(l10n.addPartButton),
+              ),
+          ],
+        ),
+        if (job.partsUsed.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(l10n.noPartsUsed, key: const Key('noPartsUsed')),
+          )
+        else
+          for (final jp in job.partsUsed)
+            ListTile(
+              dense: true,
+              leading: const Icon(Icons.settings_outlined),
+              title: Text(jp.ref),
+              trailing: Text('×${jp.qty}'),
+            ),
         const Divider(height: 32),
 
         // Status actions.
@@ -323,6 +361,7 @@ String? _gateReason(Job job, AppLocalizations l10n) =>
     };
 
 String _failureMessage(Failure failure, AppLocalizations l10n) {
+  if (failure is InsufficientStockFailure) return l10n.stockInsufficient;
   if (failure is ValidationFailure) {
     return switch (failure.reason) {
       ValidationReason.deliveryQcIncomplete => l10n.gateQcIncomplete,
@@ -386,4 +425,147 @@ Future<void> _saveQc(
       ),
     ),
   );
+}
+
+/// Opens the add-part picker for [job] and, on confirm, logs the chosen part:
+/// the controller decrements stock transactionally then records it on the job.
+Future<void> _openAddPart(
+  BuildContext context,
+  WidgetRef ref,
+  Job job,
+  AppLocalizations l10n,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final selection = await showDialog<_PartSelection>(
+    context: context,
+    builder: (_) => _AddPartDialog(branchId: job.branchId),
+  );
+  if (selection == null) return;
+  final failure =
+      await ref.read(jobDetailControllerProvider.notifier).addPart(
+            job.id,
+            partId: selection.partId,
+            qty: selection.qty,
+            reference: selection.reference,
+          );
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        failure == null ? l10n.partAddedSnack : _failureMessage(failure, l10n),
+      ),
+    ),
+  );
+}
+
+/// A chosen part line returned by [_AddPartDialog].
+class _PartSelection {
+  const _PartSelection({
+    required this.partId,
+    required this.qty,
+    required this.reference,
+  });
+
+  final String partId;
+  final int qty;
+  final String reference;
+}
+
+/// Dialog to pick a part and quantity to log on a job. Watches the branch's
+/// parts so the list is live, and returns a [_PartSelection] via
+/// `Navigator.pop` (or `null` when cancelled / no parts exist).
+class _AddPartDialog extends ConsumerStatefulWidget {
+  const _AddPartDialog({required this.branchId});
+
+  final String branchId;
+
+  @override
+  ConsumerState<_AddPartDialog> createState() => _AddPartDialogState();
+}
+
+class _AddPartDialogState extends ConsumerState<_AddPartDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _qty = TextEditingController(text: '1');
+  String? _partId;
+
+  @override
+  void dispose() {
+    _qty.dispose();
+    super.dispose();
+  }
+
+  void _submit(List<Part> parts) {
+    if (!_formKey.currentState!.validate()) return;
+    final part = parts.firstWhere((p) => p.id == _partId);
+    Navigator.of(context).pop(
+      _PartSelection(
+        partId: part.id,
+        qty: int.parse(_qty.text.trim()),
+        reference: part.reference,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final parts =
+        ref.watch(partsProvider(widget.branchId)).valueOrNull ?? const <Part>[];
+    return AlertDialog(
+      key: const Key('addPartDialog'),
+      title: Text(l10n.addPartTitle),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (parts.isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(l10n.partsEmpty, key: const Key('addPartEmpty')),
+              )
+            else ...[
+              DropdownButtonFormField<String>(
+                key: const Key('partDropdown'),
+                initialValue: _partId,
+                decoration: InputDecoration(labelText: l10n.addPartLabel),
+                items: [
+                  for (final p in parts)
+                    DropdownMenuItem<String>(
+                      value: p.id,
+                      child: Text('${p.reference} (${p.onHand})'),
+                    ),
+                ],
+                onChanged: (value) => setState(() => _partId = value),
+                validator: (value) =>
+                    value == null ? l10n.addPartSelect : null,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                key: const Key('partQtyField'),
+                controller: _qty,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: l10n.stockQtyLabel),
+                validator: (value) {
+                  final n = int.tryParse((value ?? '').trim());
+                  return (n == null || n <= 0) ? l10n.stockQtyPositive : null;
+                },
+              ),
+            ],
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          key: const Key('addPartCancel'),
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancelButton),
+        ),
+        FilledButton(
+          key: const Key('addPartConfirm'),
+          onPressed: parts.isEmpty ? null : () => _submit(parts),
+          child: Text(l10n.stockApply),
+        ),
+      ],
+    );
+  }
 }

@@ -709,5 +709,33 @@
   "stockInsufficient": "Not enough stock for that change.",
   "@stockInsufficient": {
     "description": "Shown when a stock change would drive on-hand below zero."
+  },
+  "partsUsedSection": "Parts used",
+  "@partsUsedSection": {
+    "description": "Job detail section title for parts logged on the job."
+  },
+  "noPartsUsed": "No parts logged.",
+  "@noPartsUsed": {
+    "description": "Empty state for a job's parts-used list."
+  },
+  "addPartButton": "Add part",
+  "@addPartButton": {
+    "description": "Job detail button that opens the add-part dialog."
+  },
+  "addPartTitle": "Add part",
+  "@addPartTitle": {
+    "description": "Title of the add-part-to-job dialog."
+  },
+  "addPartLabel": "Part",
+  "@addPartLabel": {
+    "description": "Label for the part picker in the add-part dialog."
+  },
+  "addPartSelect": "Select a part",
+  "@addPartSelect": {
+    "description": "Validation when no part is chosen in the add-part dialog."
+  },
+  "partAddedSnack": "Part added",
+  "@partAddedSnack": {
+    "description": "Snackbar after a part is logged on a job."
   }
 }

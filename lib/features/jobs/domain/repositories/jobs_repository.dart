@@ -1,6 +1,7 @@
 import '../../../../core/errors/result.dart';
 import '../entities/job.dart';
 import '../entities/job_outcome.dart';
+import '../entities/job_part.dart';
 import '../entities/job_qc.dart';
 import '../entities/job_status.dart';
 import '../entities/warranty_type.dart';
@@ -77,6 +78,15 @@ abstract interface class JobsRepository {
 
   /// Records/updates the QC checklist on job [id]. [by] is the acting uid.
   Future<Result<void>> updateQc(String id, JobQc qc, String by);
+
+  /// Appends [part] to job [id]'s `partsUsed` list and bumps `updatedAt`. [by]
+  /// is the acting uid. Returns `Err(NotFoundFailure)` if the job is missing.
+  ///
+  /// This only records the part on the job; the matching transactional stock
+  /// decrement (never below zero) is performed separately by the inventory
+  /// repository's `consume`. Identical lines accumulate (no dedup), so the same
+  /// part can be logged more than once.
+  Future<Result<void>> addPartUsed(String id, JobPart part, String by);
 
   /// Delivers job [id] (moves it to [JobStatus.delivered]), optionally recording
   /// the [outcome] and [warrantyType]. [by] is the acting uid.

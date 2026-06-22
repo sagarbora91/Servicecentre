@@ -260,6 +260,38 @@ class FirestoreJobsRepository implements JobsRepository {
   }
 
   @override
+  Future<Result<void>> addPartUsed(String id, JobPart part, String by) async {
+    try {
+      final doc = _jobs.doc(id);
+      final snap = await doc.get();
+      final data = snap.data();
+      if (!snap.exists || data == null) {
+        return Err(NotFoundFailure('Job $id not found'));
+      }
+      // Read-modify-write the whole list (not arrayUnion): identical
+      // {partId, qty, ref} lines must accumulate, and arrayUnion would dedup
+      // them — a part legitimately used twice would be lost.
+      final partsUsed = [..._partsFrom(data['partsUsed']), part];
+      final partMap = _partToMap(part);
+      await doc.update(<String, dynamic>{
+        'partsUsed': [for (final p in partsUsed) _partToMap(p)],
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      await writeActivityLog(
+        _firestore,
+        actor: by,
+        action: 'job.partUsed',
+        entity: Collections.jobs,
+        entityId: id,
+        after: partMap,
+      );
+      return const Ok(null);
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
   Future<Result<void>> deliver(
     String id, {
     required String by,

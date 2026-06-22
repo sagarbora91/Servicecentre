@@ -174,5 +174,12 @@
   "stockApply": "लागू करें",
   "stockReceived": "स्टॉक प्राप्त हुआ",
   "stockAdjusted": "स्टॉक समायोजित हुआ",
-  "stockInsufficient": "उस बदलाव के लिए पर्याप्त स्टॉक नहीं."
+  "stockInsufficient": "उस बदलाव के लिए पर्याप्त स्टॉक नहीं.",
+  "partsUsedSection": "उपयोग किए गए पुर्ज़े",
+  "noPartsUsed": "कोई पुर्ज़े दर्ज नहीं.",
+  "addPartButton": "पुर्ज़ा जोड़ें",
+  "addPartTitle": "पुर्ज़ा जोड़ें",
+  "addPartLabel": "पुर्ज़ा",
+  "addPartSelect": "पुर्ज़ा चुनें",
+  "partAddedSnack": "पुर्ज़ा जोड़ा गया"
 }
