@@ -35,7 +35,13 @@ enum UserRole {
   /// Whether this role may manage staff accounts and assign roles.
   bool get canManageUsers => this == owner;
 
-  /// Whether this role may manage inventory (parts/stock writes).
+  /// Whether this role may manage inventory: stock receive/adjust and parts
+  /// records (the dedicated inventory keepers).
   bool get canManageInventory =>
       this == owner || this == supervisor || this == store;
+
+  /// Whether this role may log parts consumed on a job. Broader than
+  /// [canManageInventory]: a technician repairs jobs and records the parts they
+  /// use, even though they do not manage stock levels (receive/adjust).
+  bool get canLogJobParts => canManageInventory || this == technician;
 }

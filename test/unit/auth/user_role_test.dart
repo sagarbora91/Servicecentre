@@ -40,5 +40,14 @@ void main() {
       expect(UserRole.counter.canManageInventory, isFalse);
       expect(UserRole.technician.canManageInventory, isFalse);
     });
+
+    test('canLogJobParts adds technician to the inventory roles', () {
+      expect(UserRole.owner.canLogJobParts, isTrue);
+      expect(UserRole.supervisor.canLogJobParts, isTrue);
+      expect(UserRole.store.canLogJobParts, isTrue);
+      expect(UserRole.technician.canLogJobParts, isTrue);
+      // Counter is front-desk only — no parts writes.
+      expect(UserRole.counter.canLogJobParts, isFalse);
+    });
   });
 }

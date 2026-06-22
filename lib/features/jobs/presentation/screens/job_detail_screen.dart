@@ -78,7 +78,7 @@ class _Detail extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final isLoading = ref.watch(jobDetailControllerProvider).isLoading;
-    final canManageInventory = ref.watch(canManageInventoryProvider);
+    final canLogParts = ref.watch(canLogJobPartsProvider);
 
     final customers = ref.watch(customersProvider(job.branchId)).valueOrNull ??
         const <Customer>[];
@@ -182,7 +182,7 @@ class _Detail extends ConsumerWidget {
                 style: theme.textTheme.titleMedium,
               ),
             ),
-            if (canManageInventory)
+            if (canLogParts)
               TextButton.icon(
                 key: const Key('addPartBtn'),
                 onPressed: isLoading

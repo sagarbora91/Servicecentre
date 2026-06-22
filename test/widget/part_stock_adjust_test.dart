@@ -82,11 +82,26 @@ void main() {
       expect(find.text('Stock adjusted'), findsOneWidget);
     });
 
-    testWidgets('a non-inventory role does not see the stock actions',
-        (tester) async {
+    testWidgets('a counter does not see the stock actions', (tester) async {
       final container = await pumpBoardApp(
         tester,
         role: UserRole.counter,
+        parts: [partDoc(id: 'p1', reference: 'SR626', onHand: 5)],
+      );
+
+      container.read(routerProvider).go(Routes.partDetail('p1'));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('partDetailScreen')), findsOneWidget);
+      expect(find.byKey(const Key('receiveStockBtn')), findsNothing);
+      expect(find.byKey(const Key('adjustStockBtn')), findsNothing);
+    });
+
+    testWidgets('a technician does not get stock receive/adjust (inventory '
+        'management stays with store/supervisor/owner)', (tester) async {
+      final container = await pumpBoardApp(
+        tester,
+        role: UserRole.technician,
         parts: [partDoc(id: 'p1', reference: 'SR626', onHand: 5)],
       );
 

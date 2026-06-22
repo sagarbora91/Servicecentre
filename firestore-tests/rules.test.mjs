@@ -83,15 +83,21 @@ test('active staff can read and write jobs', async () => {
   await assertSucceeds(setDoc(doc(db, 'jobs/j2'), { fault: 'tick' }));
 });
 
-test('technician can read but not write parts; store can write', async () => {
-  await seedUser('tech2', { role: 'technician', active: true });
-  await seedUser('store1', { role: 'store', active: true });
-  const tech = env.authenticatedContext('tech2').firestore();
-  const store = env.authenticatedContext('store1').firestore();
-  await assertSucceeds(getDoc(doc(tech, 'parts/p1')));
-  await assertFails(setDoc(doc(tech, 'parts/p1'), { onHand: 1 }));
-  await assertSucceeds(setDoc(doc(store, 'parts/p2'), { onHand: 1 }));
-});
+test('parts: counter can read but not write; store and technician can write',
+  async () => {
+    await seedUser('counter1', { role: 'counter', active: true });
+    await seedUser('store1', { role: 'store', active: true });
+    await seedUser('tech2', { role: 'technician', active: true });
+    const counter = env.authenticatedContext('counter1').firestore();
+    const store = env.authenticatedContext('store1').firestore();
+    const tech = env.authenticatedContext('tech2').firestore();
+    // Counter (front desk) can read but not write parts.
+    await assertSucceeds(getDoc(doc(counter, 'parts/p1')));
+    await assertFails(setDoc(doc(counter, 'parts/p1'), { onHand: 1 }));
+    // Store keeper manages stock; technician decrements when logging job parts.
+    await assertSucceeds(setDoc(doc(store, 'parts/p2'), { onHand: 1 }));
+    await assertSucceeds(setDoc(doc(tech, 'parts/p3'), { onHand: 1 }));
+  });
 
 test('invoices and payments are finance-only', async () => {
   await seedUser('tech3', { role: 'technician', active: true });

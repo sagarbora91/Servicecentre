@@ -101,7 +101,37 @@ void main() {
       expect(moves.docs, isEmpty);
     });
 
-    testWidgets('a non-inventory role does not see the add-part action',
+    testWidgets('a technician can log a part on a job (stock decrements)',
+        (tester) async {
+      final container = await pumpBoardApp(
+        tester,
+        role: UserRole.technician,
+        customers: [customerDoc(id: 'c1', name: 'Asha')],
+        jobs: _jobs(),
+        parts: [partDoc(id: 'p1', reference: 'SR626', onHand: 5)],
+      );
+
+      container.read(routerProvider).go(Routes.jobDetail('j1'));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.byKey(const Key('addPartBtn')));
+      await tester.tap(find.byKey(const Key('addPartBtn')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('partDropdown')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('SR626 (5)').last);
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byKey(const Key('partQtyField')), '1');
+      await tester.tap(find.byKey(const Key('addPartConfirm')));
+      await tester.pumpAndSettle();
+
+      final firestore = container.read(firestoreProvider);
+      final part =
+          (await firestore.collection('parts').doc('p1').get()).data()!;
+      expect(part['onHand'], 4);
+    });
+
+    testWidgets('a counter (front desk) does not see the add-part action',
         (tester) async {
       final container = await pumpBoardApp(
         tester,

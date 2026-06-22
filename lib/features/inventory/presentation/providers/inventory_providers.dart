@@ -12,14 +12,22 @@ final inventoryRepositoryProvider = Provider<InventoryRepository>(
   (ref) => FirestoreInventoryRepository(ref.watch(firestoreProvider)),
 );
 
-/// Whether the signed-in user may write inventory (parts/stock). Mirrors the
-/// `parts` write rule in `firestore.rules` (owner/supervisor/store); the UI uses
-/// it to show or hide stock-write actions. Defaults to `false` until the profile
-/// resolves.
+/// Whether the signed-in user may manage inventory: stock receive/adjust on the
+/// part-detail screen (owner/supervisor/store). The UI uses it to show or hide
+/// those actions. Defaults to `false` until the profile resolves.
 final canManageInventoryProvider = Provider<bool>(
   (ref) =>
       ref.watch(currentUserProvider).valueOrNull?.role.canManageInventory ??
       false,
+);
+
+/// Whether the signed-in user may log parts consumed on a job
+/// (owner/supervisor/store/technician — a technician records parts they use).
+/// Mirrors the `parts` write rule in `firestore.rules`. Defaults to `false`
+/// until the profile resolves.
+final canLogJobPartsProvider = Provider<bool>(
+  (ref) =>
+      ref.watch(currentUserProvider).valueOrNull?.role.canLogJobParts ?? false,
 );
 
 /// Streams the parts in the given branch, ordered by category then reference.

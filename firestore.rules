@@ -58,9 +58,15 @@ service cloud.firestore {
       allow read, write: if canFinance();
     }
     match /parts/{id} {
+      // Read: any active staff. Write: inventory keepers (owner/supervisor/
+      // store) plus technician, who decrements stock when logging parts used on
+      // a job. Rules can't tell a job-consume from a manual adjust (separate
+      // doc writes), so the client limits technicians to the job-consume action
+      // while store/supervisor/owner get the receive/adjust screens. Counter
+      // (front desk) still cannot write parts.
       allow read: if isStaff();
       allow write: if isStaff() &&
-        profile().role in ['owner', 'supervisor', 'store'];
+        profile().role in ['owner', 'supervisor', 'store', 'technician'];
     }
     match /customers/{id} {
       allow read, write: if isStaff();
