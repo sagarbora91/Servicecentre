@@ -160,5 +160,19 @@
   "partCostLabel": "किंमत",
   "partMrpLabel": "एमआरपी",
   "partLowStock": "कमी साठा",
-  "partServiceOnly": "फक्त सेवेसाठी"
+  "partServiceOnly": "फक्त सेवेसाठी",
+  "receiveStockButton": "साठा घ्या",
+  "adjustStockButton": "समायोजित करा",
+  "receiveStockTitle": "साठा घ्या",
+  "adjustStockTitle": "साठा समायोजित करा",
+  "stockQtyLabel": "संख्या",
+  "stockDeltaLabel": "बदल (+/−)",
+  "stockQtyRequired": "संख्या टाका",
+  "stockQtyPositive": "शून्यापेक्षा जास्त संख्या टाका",
+  "stockDeltaRequired": "बदलाची रक्कम टाका",
+  "stockDeltaNonZero": "शून्येतर रक्कम टाका",
+  "stockApply": "लागू करा",
+  "stockReceived": "साठा घेतला",
+  "stockAdjusted": "साठा समायोजित केला",
+  "stockInsufficient": "त्या बदलासाठी पुरेसा साठा नाही."
 }

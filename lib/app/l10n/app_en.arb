@@ -653,5 +653,61 @@
   "partServiceOnly": "Service only",
   "@partServiceOnly": {
     "description": "Note shown for a part that is for service use only."
+  },
+  "receiveStockButton": "Receive",
+  "@receiveStockButton": {
+    "description": "Part detail button that opens the receive-stock dialog."
+  },
+  "adjustStockButton": "Adjust",
+  "@adjustStockButton": {
+    "description": "Part detail button that opens the adjust-stock dialog."
+  },
+  "receiveStockTitle": "Receive stock",
+  "@receiveStockTitle": {
+    "description": "Title of the receive-stock dialog."
+  },
+  "adjustStockTitle": "Adjust stock",
+  "@adjustStockTitle": {
+    "description": "Title of the adjust-stock dialog."
+  },
+  "stockQtyLabel": "Quantity",
+  "@stockQtyLabel": {
+    "description": "Field label for a receive quantity."
+  },
+  "stockDeltaLabel": "Change (+/−)",
+  "@stockDeltaLabel": {
+    "description": "Field label for a signed stock adjustment amount."
+  },
+  "stockQtyRequired": "Enter a quantity",
+  "@stockQtyRequired": {
+    "description": "Validation when the receive quantity is missing."
+  },
+  "stockQtyPositive": "Enter a quantity above zero",
+  "@stockQtyPositive": {
+    "description": "Validation when the receive quantity is not positive."
+  },
+  "stockDeltaRequired": "Enter a change amount",
+  "@stockDeltaRequired": {
+    "description": "Validation when the adjustment amount is missing."
+  },
+  "stockDeltaNonZero": "Enter a non-zero amount",
+  "@stockDeltaNonZero": {
+    "description": "Validation when the adjustment amount is zero."
+  },
+  "stockApply": "Apply",
+  "@stockApply": {
+    "description": "Confirm button in the stock receive/adjust dialog."
+  },
+  "stockReceived": "Stock received",
+  "@stockReceived": {
+    "description": "Snackbar after receiving stock."
+  },
+  "stockAdjusted": "Stock adjusted",
+  "@stockAdjusted": {
+    "description": "Snackbar after adjusting stock."
+  },
+  "stockInsufficient": "Not enough stock for that change.",
+  "@stockInsufficient": {
+    "description": "Shown when a stock change would drive on-hand below zero."
   }
 }

@@ -160,5 +160,19 @@
   "partCostLabel": "लागत",
   "partMrpLabel": "एमआरपी",
   "partLowStock": "कम स्टॉक",
-  "partServiceOnly": "केवल सेवा हेतु"
+  "partServiceOnly": "केवल सेवा हेतु",
+  "receiveStockButton": "स्टॉक लें",
+  "adjustStockButton": "समायोजित करें",
+  "receiveStockTitle": "स्टॉक प्राप्त करें",
+  "adjustStockTitle": "स्टॉक समायोजित करें",
+  "stockQtyLabel": "मात्रा",
+  "stockDeltaLabel": "बदलाव (+/−)",
+  "stockQtyRequired": "मात्रा दर्ज करें",
+  "stockQtyPositive": "शून्य से अधिक मात्रा दर्ज करें",
+  "stockDeltaRequired": "बदलाव राशि दर्ज करें",
+  "stockDeltaNonZero": "गैर-शून्य राशि दर्ज करें",
+  "stockApply": "लागू करें",
+  "stockReceived": "स्टॉक प्राप्त हुआ",
+  "stockAdjusted": "स्टॉक समायोजित हुआ",
+  "stockInsufficient": "उस बदलाव के लिए पर्याप्त स्टॉक नहीं."
 }
