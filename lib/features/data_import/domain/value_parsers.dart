@@ -1,6 +1,6 @@
-/// Shared cell parsers for the CSV import. Each treats an absent cell (`null`)
-/// as the sensible default and signals a *present-but-invalid* cell with `null`
-/// so the caller can raise a per-row error.
+// Shared cell parsers for the CSV import. Each treats an absent cell (null) as
+// the sensible default and signals a *present-but-invalid* cell with null so the
+// caller can raise a per-row error.
 
 /// Parses a boolean-ish cell: `true`/`yes`/`y`/`1` (case-insensitive) → `true`;
 /// anything else, including `null`, → `false`.

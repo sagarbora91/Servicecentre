@@ -16,7 +16,7 @@ class CsvTable {
 
   /// Parses [input] into a [CsvTable]. Tolerates `\r\n`/`\r` line endings and a
   /// trailing newline. An empty input yields an empty table.
-  static CsvTable parse(String input) {
+  factory CsvTable.parse(String input) {
     final normalized = input.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
     final raw = const CsvToListConverter(shouldParseNumbers: false, eol: '\n')
         .convert(normalized);
