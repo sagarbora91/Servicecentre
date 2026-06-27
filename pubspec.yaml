@@ -16,6 +16,7 @@ dependencies:
   # Kept alphabetical for the sort_pub_dependencies lint.
   # Real Firebase config arrives via `flutterfire configure` (human step).
   cloud_firestore: ^5.4.0
+  csv: ^6.0.0
   firebase_app_check: ^0.3.1
   firebase_auth: ^5.3.0
   firebase_core: ^3.6.0
