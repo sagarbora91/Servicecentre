@@ -1,38 +1,30 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:service_centre_app/core/errors/failure.dart';
 import 'package:service_centre_app/core/firebase/firebase_providers.dart';
+import 'package:service_centre_app/features/auth/domain/entities/app_user.dart';
 import 'package:service_centre_app/features/auth/presentation/providers/auth_providers.dart';
+import 'package:service_centre_app/features/auth/presentation/providers/staff_providers.dart';
 import 'package:service_centre_app/features/data_import/presentation/controllers/import_controller.dart';
 
 void main() {
   late FakeFirebaseFirestore fs;
   late ProviderContainer container;
 
-  setUp(() async {
+  setUp(() {
     fs = FakeFirebaseFirestore();
-    await fs.collection('users').doc('u1').set(<String, dynamic>{
-      'name': 'Owner',
-      'role': 'owner',
-      'phone': '0',
-      'active': true,
-      'branchId': 'b1',
-    });
-    final auth = MockFirebaseAuth(
-      signedIn: true,
-      mockUser: MockUser(uid: 'u1', email: 'owner@test.com'),
-    );
+    // Override the profile-derived providers directly: the auth StreamProvider
+    // chain doesn't settle in a bare container (no widget pumping the event
+    // loop). branchId drives the write; uid is unused by the assertions.
     container = ProviderContainer(
       overrides: [
-        firebaseAuthProvider.overrideWithValue(auth),
         firestoreProvider.overrideWithValue(fs),
+        currentBranchIdProvider.overrideWithValue('b1'),
+        currentUserProvider.overrideWith((_) => Stream<AppUser?>.value(null)),
       ],
     );
     addTearDown(container.dispose);
-    // Warm the profile so the controller's uid/branch resolve.
-    await container.read(currentUserProvider.future);
   });
 
   test('previewCustomers reflects the parse counts', () {
