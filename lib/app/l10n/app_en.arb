@@ -866,5 +866,29 @@
   "jobSlipTitle": "Job slip",
   "@jobSlipTitle": {
     "description": "Heading on the printed job slip."
+  },
+  "photosSection": "Photos",
+  "@photosSection": {
+    "description": "Job detail section title for intake/delivery photos."
+  },
+  "intakePhotosLabel": "Intake photos",
+  "@intakePhotosLabel": {
+    "description": "Label for the intake photo count."
+  },
+  "deliveryPhotosLabel": "Delivery photos",
+  "@deliveryPhotosLabel": {
+    "description": "Label for the delivery photo count."
+  },
+  "addIntakePhoto": "Add intake photo",
+  "@addIntakePhoto": {
+    "description": "Button to capture an intake photo."
+  },
+  "addDeliveryPhoto": "Add delivery photo",
+  "@addDeliveryPhoto": {
+    "description": "Button to capture a delivery photo (unblocks delivery)."
+  },
+  "photoAdded": "Photo added",
+  "@photoAdded": {
+    "description": "Snackbar after a photo is captured and uploaded."
   }
 }

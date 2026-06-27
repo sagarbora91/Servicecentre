@@ -205,5 +205,11 @@
   "importDuplicateExisting": "पहले से मौजूद है",
   "importWriteFailed": "सहेजा नहीं जा सका",
   "printSlipAction": "स्लिप प्रिंट करें",
-  "jobSlipTitle": "जॉब स्लिप"
+  "jobSlipTitle": "जॉब स्लिप",
+  "photosSection": "फ़ोटो",
+  "intakePhotosLabel": "इनटेक फ़ोटो",
+  "deliveryPhotosLabel": "डिलिवरी फ़ोटो",
+  "addIntakePhoto": "इनटेक फ़ोटो जोड़ें",
+  "addDeliveryPhoto": "डिलिवरी फ़ोटो जोड़ें",
+  "photoAdded": "फ़ोटो जोड़ी गई"
 }

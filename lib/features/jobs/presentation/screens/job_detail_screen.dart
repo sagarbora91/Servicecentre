@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:printing/printing.dart';
 
 import '../../../../app/l10n/app_localizations.dart';
@@ -14,6 +16,7 @@ import '../../../inventory/domain/entities/part.dart';
 import '../../../inventory/presentation/providers/inventory_providers.dart';
 import '../../domain/entities/delivery_gate.dart';
 import '../../domain/entities/job.dart';
+import '../../domain/entities/job_photo_kind.dart';
 import '../../domain/entities/job_qc.dart';
 import '../../domain/entities/job_status.dart';
 import '../controllers/job_detail_controller.dart';
@@ -133,6 +136,60 @@ class _Detail extends ConsumerWidget {
         _InfoRow(label: l10n.detailFault, value: job.fault),
         _InfoRow(label: l10n.detailWork, value: job.workRequested),
         _InfoRow(label: l10n.detailDue, value: dueText),
+        const Divider(height: 32),
+
+        // Photos (intake + delivery). A delivery photo unblocks the gate.
+        Text(l10n.photosSection, style: theme.textTheme.titleMedium),
+        _InfoRow(
+          label: l10n.intakePhotosLabel,
+          value: '${job.intakePhotos.length}',
+        ),
+        _InfoRow(
+          label: l10n.deliveryPhotosLabel,
+          value: '${job.deliveryPhotos.length}',
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                key: const Key('addIntakePhotoBtn'),
+                onPressed: isLoading
+                    ? null
+                    : () => unawaited(
+                        _addPhoto(
+                          context,
+                          ref,
+                          job.id,
+                          JobPhotoKind.intake,
+                          l10n,
+                        ),
+                      ),
+                icon: const Icon(Icons.add_a_photo_outlined),
+                label: Text(l10n.addIntakePhoto),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: OutlinedButton.icon(
+                key: const Key('addDeliveryPhotoBtn'),
+                onPressed: isLoading
+                    ? null
+                    : () => unawaited(
+                        _addPhoto(
+                          context,
+                          ref,
+                          job.id,
+                          JobPhotoKind.delivery,
+                          l10n,
+                        ),
+                      ),
+                icon: const Icon(Icons.add_a_photo_outlined),
+                label: Text(l10n.addDeliveryPhoto),
+              ),
+            ),
+          ],
+        ),
         const Divider(height: 32),
 
         // QC checklist editor.
@@ -380,6 +437,40 @@ String _failureMessage(Failure failure, AppLocalizations l10n) {
     };
   }
   return l10n.saveFailed;
+}
+
+/// Captures a photo (camera), compresses it to JPEG, and uploads it as a [kind]
+/// photo for [jobId]. The capture + compress are native (device-QA); the
+/// upload→record path is unit-tested via the controller.
+Future<void> _addPhoto(
+  BuildContext context,
+  WidgetRef ref,
+  String jobId,
+  JobPhotoKind kind,
+  AppLocalizations l10n,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final picked = await ImagePicker().pickImage(
+    source: ImageSource.camera,
+    maxWidth: 1600,
+    imageQuality: 85,
+  );
+  if (picked == null) return;
+  final raw = await picked.readAsBytes();
+  final compressed = await FlutterImageCompress.compressWithList(
+    raw,
+    quality: 70,
+  );
+  final failure = await ref
+      .read(jobDetailControllerProvider.notifier)
+      .addPhoto(jobId, kind, compressed);
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        failure == null ? l10n.photoAdded : _failureMessage(failure, l10n),
+      ),
+    ),
+  );
 }
 
 /// Builds a localized job slip and opens the native print/share dialog

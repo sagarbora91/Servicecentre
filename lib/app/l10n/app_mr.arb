@@ -205,5 +205,11 @@
   "importDuplicateExisting": "आधीच अस्तित्वात आहे",
   "importWriteFailed": "जतन करता आले नाही",
   "printSlipAction": "स्लिप छापा",
-  "jobSlipTitle": "जॉब स्लिप"
+  "jobSlipTitle": "जॉब स्लिप",
+  "photosSection": "फोटो",
+  "intakePhotosLabel": "स्वीकृती फोटो",
+  "deliveryPhotosLabel": "वितरण फोटो",
+  "addIntakePhoto": "स्वीकृती फोटो जोडा",
+  "addDeliveryPhoto": "वितरण फोटो जोडा",
+  "photoAdded": "फोटो जोडला"
 }
