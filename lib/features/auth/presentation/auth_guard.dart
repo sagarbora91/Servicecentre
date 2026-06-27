@@ -33,6 +33,9 @@ abstract final class Routes {
   /// Job search screen — any active staff.
   static const String jobSearch = '/jobs/search';
 
+  /// QR scan-to-open screen — any active staff.
+  static const String jobScan = '/jobs/scan';
+
   /// Path to a single job's detail screen.
   static String jobDetail(String id) => '/jobs/$id';
 

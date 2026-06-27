@@ -890,5 +890,17 @@
   "photoAdded": "Photo added",
   "@photoAdded": {
     "description": "Snackbar after a photo is captured and uploaded."
+  },
+  "openScan": "Scan",
+  "@openScan": {
+    "description": "Board action that opens the QR scan-to-open screen."
+  },
+  "scanTitle": "Scan label",
+  "@scanTitle": {
+    "description": "Title of the QR scan screen."
+  },
+  "scanPrompt": "Point the camera at a job's QR label.",
+  "@scanPrompt": {
+    "description": "Instruction on the scan screen."
   }
 }

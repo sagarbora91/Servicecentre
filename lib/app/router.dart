@@ -16,6 +16,7 @@ import '../features/inventory/presentation/screens/parts_list_screen.dart';
 import '../features/jobs/presentation/screens/board_screen.dart';
 import '../features/jobs/presentation/screens/intake_screen.dart';
 import '../features/jobs/presentation/screens/job_detail_screen.dart';
+import '../features/jobs/presentation/screens/job_scan_screen.dart';
 import '../features/jobs/presentation/screens/job_search_screen.dart';
 import '../features/jobs/presentation/screens/qr_label_screen.dart';
 
@@ -86,6 +87,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.jobSearch,
         name: 'jobSearch',
         builder: (context, state) => const JobSearchScreen(),
+      ),
+      GoRoute(
+        path: Routes.jobScan,
+        name: 'jobScan',
+        builder: (context, state) => const JobScanScreen(),
       ),
       // More specific (`/jobs/:id/label`) before `/jobs/:id`.
       GoRoute(

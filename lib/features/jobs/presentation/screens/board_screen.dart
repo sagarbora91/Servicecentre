@@ -39,6 +39,12 @@ class BoardScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
+            key: const Key('boardScanBtn'),
+            tooltip: l10n.openScan,
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: () => context.go(Routes.jobScan),
+          ),
+          IconButton(
             key: const Key('boardSearchBtn'),
             tooltip: l10n.openSearch,
             icon: const Icon(Icons.search),

@@ -211,5 +211,8 @@
   "deliveryPhotosLabel": "डिलिवरी फ़ोटो",
   "addIntakePhoto": "इनटेक फ़ोटो जोड़ें",
   "addDeliveryPhoto": "डिलिवरी फ़ोटो जोड़ें",
-  "photoAdded": "फ़ोटो जोड़ी गई"
+  "photoAdded": "फ़ोटो जोड़ी गई",
+  "openScan": "स्कैन",
+  "scanTitle": "लेबल स्कैन करें",
+  "scanPrompt": "कैमरा जॉब के QR लेबल की ओर रखें."
 }

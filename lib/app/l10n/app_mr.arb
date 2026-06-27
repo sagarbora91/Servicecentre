@@ -211,5 +211,8 @@
   "deliveryPhotosLabel": "वितरण फोटो",
   "addIntakePhoto": "स्वीकृती फोटो जोडा",
   "addDeliveryPhoto": "वितरण फोटो जोडा",
-  "photoAdded": "फोटो जोडला"
+  "photoAdded": "फोटो जोडला",
+  "openScan": "स्कॅन",
+  "scanTitle": "लेबल स्कॅन करा",
+  "scanPrompt": "कॅमेरा जॉबच्या QR लेबलकडे धरा."
 }

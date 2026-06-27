@@ -20,3 +20,15 @@ String? parseJobId(String raw) {
   if (segments.isEmpty || segments.first.isEmpty) return null;
   return segments.first;
 }
+
+/// The first valid job id found among scanned barcode [values] (skipping nulls
+/// and non-job links), or `null` if none match. Lets the scanner ignore stray
+/// barcodes in frame.
+String? jobIdFromScan(Iterable<String?> values) {
+  for (final value in values) {
+    if (value == null) continue;
+    final id = parseJobId(value);
+    if (id != null) return id;
+  }
+  return null;
+}

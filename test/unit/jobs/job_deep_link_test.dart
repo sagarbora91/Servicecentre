@@ -17,5 +17,17 @@ void main() {
       expect(parseJobId('servicecentre://job/'), isNull);
       expect(parseJobId('random-code'), isNull);
     });
+
+    test('jobIdFromScan returns the first valid id, skipping noise', () {
+      expect(
+        jobIdFromScan([null, 'random-code', buildJobLink('j9'), 'x']),
+        'j9',
+      );
+    });
+
+    test('jobIdFromScan returns null when nothing matches', () {
+      expect(jobIdFromScan([null, 'random-code']), isNull);
+      expect(jobIdFromScan(const <String?>[]), isNull);
+    });
   });
 }
