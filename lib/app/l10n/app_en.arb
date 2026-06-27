@@ -737,5 +737,126 @@
   "partAddedSnack": "Part added",
   "@partAddedSnack": {
     "description": "Snackbar after a part is logged on a job."
+  },
+  "openImport": "Import data",
+  "@openImport": {
+    "description": "Owner home button that opens CSV import."
+  },
+  "importTitle": "Import data",
+  "@importTitle": {
+    "description": "Title of the CSV import screen."
+  },
+  "importModeCustomers": "Customers",
+  "@importModeCustomers": {
+    "description": "Import mode toggle: customers dataset."
+  },
+  "importModeParts": "Parts",
+  "@importModeParts": {
+    "description": "Import mode toggle: parts dataset."
+  },
+  "importCustomersHint": "Columns: name*, phone*, email, address, consent. (* required)",
+  "@importCustomersHint": {
+    "description": "Expected columns for a customers CSV."
+  },
+  "importPartsHint": "Columns: reference*, category, bin, size, onHand, reorderPoint, minLevel, cost, mrp, serviceOnly. (* required)",
+  "@importPartsHint": {
+    "description": "Expected columns for a parts CSV."
+  },
+  "importChooseFile": "Choose CSV file",
+  "@importChooseFile": {
+    "description": "Button that opens the file picker for a CSV."
+  },
+  "importReadyCount": "{count} rows ready to import",
+  "@importReadyCount": {
+    "description": "Count of valid rows in the import preview.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "importProblemsCount": "{count} problems found",
+  "@importProblemsCount": {
+    "description": "Count of rejected rows in the import preview.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "importRowLabel": "Row {line}",
+  "@importRowLabel": {
+    "description": "Source row label for an import error.",
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "importFileLevel": "File",
+  "@importFileLevel": {
+    "description": "Label for a file-level (header) import error."
+  },
+  "importMissingColumn": "Missing column: {name}",
+  "@importMissingColumn": {
+    "description": "A required column is absent from the CSV header.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "importMissingName": "Missing name",
+  "@importMissingName": {
+    "description": "Import error: a customer row has no name."
+  },
+  "importMissingPhone": "Missing phone",
+  "@importMissingPhone": {
+    "description": "Import error: a customer row has no phone."
+  },
+  "importDuplicatePhone": "Duplicate phone in file",
+  "@importDuplicatePhone": {
+    "description": "Import error: a phone repeats earlier in the file."
+  },
+  "importMissingReference": "Missing reference",
+  "@importMissingReference": {
+    "description": "Import error: a part row has no reference."
+  },
+  "importInvalidNumber": "Invalid number",
+  "@importInvalidNumber": {
+    "description": "Import error: a numeric cell is not a whole number."
+  },
+  "importInvalidMoney": "Invalid amount",
+  "@importInvalidMoney": {
+    "description": "Import error: a money cell is not a valid amount."
+  },
+  "importButton": "Import {count}",
+  "@importButton": {
+    "description": "Button that writes the valid rows.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "importDone": "Imported {imported}; {failed} failed",
+  "@importDone": {
+    "description": "Summary after committing an import.",
+    "placeholders": {
+      "imported": {
+        "type": "String"
+      },
+      "failed": {
+        "type": "String"
+      }
+    }
+  },
+  "importDuplicateExisting": "Already exists",
+  "@importDuplicateExisting": {
+    "description": "Write failure: the row conflicts with existing data."
+  },
+  "importWriteFailed": "Couldn't save",
+  "@importWriteFailed": {
+    "description": "Write failure: a generic save error."
   }
 }

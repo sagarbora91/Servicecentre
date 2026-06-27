@@ -18,6 +18,9 @@ abstract final class Routes {
   /// Staff management — owner only.
   static const String adminUsers = '/admin/users';
 
+  /// CSV migration import (customers/parts) — owner only.
+  static const String dataImport = '/admin/import';
+
   /// Kanban jobs board — any active staff.
   static const String board = '/board';
 
@@ -72,6 +75,7 @@ const Set<String> _publicRoutes = {Routes.login};
 const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.billing: {UserRole.owner, UserRole.supervisor},
   Routes.adminUsers: {UserRole.owner},
+  Routes.dataImport: {UserRole.owner},
   Routes.board: _anyStaff,
   Routes.jobs: _anyStaff,
   Routes.customers: _anyStaff,

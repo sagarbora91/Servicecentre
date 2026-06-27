@@ -10,6 +10,7 @@ import '../features/auth/presentation/screens/manage_staff_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
 import '../features/customers/presentation/screens/customer_detail_screen.dart';
 import '../features/customers/presentation/screens/customer_list_screen.dart';
+import '../features/data_import/presentation/screens/import_screen.dart';
 import '../features/inventory/presentation/screens/part_detail_screen.dart';
 import '../features/inventory/presentation/screens/parts_list_screen.dart';
 import '../features/jobs/presentation/screens/board_screen.dart';
@@ -62,6 +63,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.adminUsers,
         name: 'adminUsers',
         builder: (context, state) => const ManageStaffScreen(),
+      ),
+      GoRoute(
+        path: Routes.dataImport,
+        name: 'dataImport',
+        builder: (context, state) => const ImportScreen(),
       ),
       GoRoute(
         path: Routes.board,
