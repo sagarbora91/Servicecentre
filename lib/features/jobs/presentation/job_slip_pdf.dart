@@ -35,7 +35,7 @@ class JobSlipData {
   /// The prominent job number.
   final String jobNo;
 
-  /// The detail lines (customer, fault, work, due, status).
+  /// The detail lines (customer, fault, work, due).
   final List<JobSlipRow> rows;
 
   /// Heading for the parts list (e.g. "Parts used").
@@ -52,55 +52,67 @@ class JobSlipData {
 /// Dart (the `pdf` package builds in memory); printing/sharing is done by the
 /// caller via the `printing` package.
 Future<Uint8List> buildJobSlipPdf(JobSlipData data) {
-  final doc = pw.Document();
-  doc.addPage(
-    pw.Page(
-      pageFormat: PdfPageFormat.a6,
-      margin: const pw.EdgeInsets.all(16),
-      build: (context) => pw.Column(
-        crossAxisAlignment: pw.CrossAxisAlignment.start,
-        children: [
-          pw.Text(
-            data.title,
-            style: pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
-          ),
-          pw.Text(
-            data.jobNo,
-            style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold),
-          ),
-          pw.Divider(),
-          for (final row in data.rows)
-            pw.Row(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.SizedBox(
-                  width: 72,
-                  child: pw.Text(
-                    row.label,
-                    style: pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
-                  ),
-                ),
-                pw.Expanded(
-                  child: pw.Text(row.value, style: pw.TextStyle(fontSize: 9)),
-                ),
-              ],
-            ),
-          if (data.parts.isNotEmpty) pw.Divider(),
-          if (data.parts.isNotEmpty)
+  final doc = pw.Document()
+    ..addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a6,
+        margin: const pw.EdgeInsets.all(16),
+        build: (context) => pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
             pw.Text(
-              data.partsLabel,
-              style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold),
+              data.title,
+              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
             ),
-          for (final part in data.parts)
-            pw.Text(part, style: pw.TextStyle(fontSize: 9)),
-          pw.Divider(),
-          pw.Text(
-            data.footer,
-            style: pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
-          ),
-        ],
+            pw.Text(
+              data.jobNo,
+              style: const pw.TextStyle(
+                fontSize: 22,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.Divider(),
+            for (final row in data.rows)
+              pw.Row(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.SizedBox(
+                    width: 72,
+                    child: pw.Text(
+                      row.label,
+                      style: const pw.TextStyle(
+                        fontSize: 9,
+                        color: PdfColors.grey700,
+                      ),
+                    ),
+                  ),
+                  pw.Expanded(
+                    child: pw.Text(
+                      row.value,
+                      style: const pw.TextStyle(fontSize: 9),
+                    ),
+                  ),
+                ],
+              ),
+            if (data.parts.isNotEmpty) pw.Divider(),
+            if (data.parts.isNotEmpty)
+              pw.Text(
+                data.partsLabel,
+                style: const pw.TextStyle(
+                  fontSize: 9,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+            for (final part in data.parts)
+              pw.Text(part, style: const pw.TextStyle(fontSize: 9)),
+            pw.Divider(),
+            pw.Text(
+              data.footer,
+              style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
   return doc.save();
 }
