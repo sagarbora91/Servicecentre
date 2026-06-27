@@ -9,11 +9,6 @@ import 'package:csv/csv.dart';
 class CsvTable {
   const CsvTable._(this._headerIndex, this.rows);
 
-  final Map<String, int> _headerIndex;
-
-  /// The data rows (header excluded), each a list of raw string cells.
-  final List<List<String>> rows;
-
   /// Parses [input] into a [CsvTable]. Tolerates `\r\n`/`\r` line endings and a
   /// trailing newline. An empty input yields an empty table.
   factory CsvTable.parse(String input) {
@@ -35,6 +30,11 @@ class CsvTable {
     ];
     return CsvTable._(index, rows);
   }
+
+  final Map<String, int> _headerIndex;
+
+  /// The data rows (header excluded), each a list of raw string cells.
+  final List<List<String>> rows;
 
   static String _normalize(String header) =>
       header.toLowerCase().replaceAll(RegExp(r'[\s_]+'), '');
