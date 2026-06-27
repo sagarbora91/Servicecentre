@@ -36,9 +36,9 @@ void main() {
   });
 
   test('previewCustomers reflects the parse counts', () {
-    final controller = container.read(importControllerProvider.notifier);
-
-    controller.previewCustomers('name,phone\nAsha,111\n,222\n');
+    container
+        .read(importControllerProvider.notifier)
+        .previewCustomers('name,phone\nAsha,111\n,222\n');
 
     final state = container.read(importControllerProvider);
     expect(state.preview!.kind, ImportKind.customers);
@@ -55,10 +55,11 @@ void main() {
       'serviceCount': 0,
       'consentWhatsApp': false,
     });
-    final controller = container.read(importControllerProvider.notifier);
-    controller.previewCustomers('name,phone\nAsha,111\nBhau,222\n');
+    container
+        .read(importControllerProvider.notifier)
+        .previewCustomers('name,phone\nAsha,111\nBhau,222\n');
 
-    await controller.commit();
+    await container.read(importControllerProvider.notifier).commit();
 
     final state = container.read(importControllerProvider);
     expect(state.outcome!.kind, ImportKind.customers);
@@ -72,10 +73,11 @@ void main() {
   });
 
   test('commit writes valid parts, converting rupees to paise', () async {
-    final controller = container.read(importControllerProvider.notifier);
-    controller.previewParts('reference,onHand,cost\nSR626,5,15\n');
+    container
+        .read(importControllerProvider.notifier)
+        .previewParts('reference,onHand,cost\nSR626,5,15\n');
 
-    await controller.commit();
+    await container.read(importControllerProvider.notifier).commit();
 
     final state = container.read(importControllerProvider);
     expect(state.outcome!.kind, ImportKind.parts);
@@ -89,9 +91,7 @@ void main() {
   });
 
   test('commit is a no-op without a preview', () async {
-    final controller = container.read(importControllerProvider.notifier);
-
-    await controller.commit();
+    await container.read(importControllerProvider.notifier).commit();
 
     expect(container.read(importControllerProvider).outcome, isNull);
   });
