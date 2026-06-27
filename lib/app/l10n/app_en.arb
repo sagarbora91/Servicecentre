@@ -858,5 +858,13 @@
   "importWriteFailed": "Couldn't save",
   "@importWriteFailed": {
     "description": "Write failure: a generic save error."
+  },
+  "printSlipAction": "Print slip",
+  "@printSlipAction": {
+    "description": "Job detail button that prints/shares the job slip PDF."
+  },
+  "jobSlipTitle": "Job slip",
+  "@jobSlipTitle": {
+    "description": "Heading on the printed job slip."
   }
 }

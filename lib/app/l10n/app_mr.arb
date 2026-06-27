@@ -203,5 +203,7 @@
   "importButton": "{count} आयात करा",
   "importDone": "{imported} आयात केले; {failed} अयशस्वी",
   "importDuplicateExisting": "आधीच अस्तित्वात आहे",
-  "importWriteFailed": "जतन करता आले नाही"
+  "importWriteFailed": "जतन करता आले नाही",
+  "printSlipAction": "स्लिप छापा",
+  "jobSlipTitle": "जॉब स्लिप"
 }

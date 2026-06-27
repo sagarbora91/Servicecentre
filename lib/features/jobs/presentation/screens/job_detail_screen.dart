@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:printing/printing.dart';
 
 import '../../../../app/l10n/app_localizations.dart';
 import '../../../../core/errors/failure.dart';
@@ -16,6 +17,7 @@ import '../../domain/entities/job.dart';
 import '../../domain/entities/job_qc.dart';
 import '../../domain/entities/job_status.dart';
 import '../controllers/job_detail_controller.dart';
+import '../job_slip_pdf.dart';
 import '../jobs_labels.dart';
 import '../providers/jobs_providers.dart';
 
@@ -116,6 +118,15 @@ class _Detail extends ConsumerWidget {
               label: Text(jobStatusLabel(job.status, l10n)),
             ),
           ],
+        ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          key: const Key('printSlipBtn'),
+          onPressed: () => unawaited(
+            _printSlip(context, l10n, job, customerName ?? job.customerId),
+          ),
+          icon: const Icon(Icons.print_outlined),
+          label: Text(l10n.printSlipAction),
         ),
         const SizedBox(height: 12),
         _InfoRow(label: l10n.detailCustomer, value: customerName ?? job.customerId),
@@ -369,6 +380,32 @@ String _failureMessage(Failure failure, AppLocalizations l10n) {
     };
   }
   return l10n.saveFailed;
+}
+
+/// Builds a localized job slip and opens the native print/share dialog
+/// (device-QA; the PDF builder itself is unit-tested).
+Future<void> _printSlip(
+  BuildContext context,
+  AppLocalizations l10n,
+  Job job,
+  String customerName,
+) {
+  final dueText =
+      MaterialLocalizations.of(context).formatShortDate(job.dueAt.toLocal());
+  final data = JobSlipData(
+    title: l10n.jobSlipTitle,
+    jobNo: job.jobNo,
+    rows: [
+      JobSlipRow(l10n.detailCustomer, customerName),
+      JobSlipRow(l10n.detailFault, job.fault),
+      JobSlipRow(l10n.detailWork, job.workRequested),
+      JobSlipRow(l10n.detailDue, dueText),
+    ],
+    partsLabel: l10n.partsUsedSection,
+    parts: [for (final p in job.partsUsed) '${p.ref} x${p.qty}'],
+    footer: l10n.appTitle,
+  );
+  return Printing.layoutPdf(onLayout: (_) => buildJobSlipPdf(data));
 }
 
 Future<void> _move(
