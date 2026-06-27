@@ -2,6 +2,7 @@ import '../../../../core/errors/result.dart';
 import '../entities/job.dart';
 import '../entities/job_outcome.dart';
 import '../entities/job_part.dart';
+import '../entities/job_photo_kind.dart';
 import '../entities/job_qc.dart';
 import '../entities/job_status.dart';
 import '../entities/warranty_type.dart';
@@ -87,6 +88,19 @@ abstract interface class JobsRepository {
   /// repository's `consume`. Identical lines accumulate (no dedup), so the same
   /// part can be logged more than once.
   Future<Result<void>> addPartUsed(String id, JobPart part, String by);
+
+  /// Appends [url] to job [id]'s photo set for [kind] (`intakePhotos` or
+  /// `deliveryPhotos`) and bumps `updatedAt`. [by] is the acting uid. Returns
+  /// `Err(NotFoundFailure)` if the job is missing.
+  ///
+  /// Adding a delivery photo here is what lets a job satisfy the delivery gate
+  /// (complete QC + ≥ 1 delivery photo) and become deliverable in-app.
+  Future<Result<void>> addPhoto(
+    String id,
+    JobPhotoKind kind,
+    String url,
+    String by,
+  );
 
   /// Delivers job [id] (moves it to [JobStatus.delivered]), optionally recording
   /// the [outcome] and [warrantyType]. [by] is the acting uid.

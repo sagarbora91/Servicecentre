@@ -9,6 +9,7 @@ import '../../domain/entities/delivery_gate.dart';
 import '../../domain/entities/job.dart';
 import '../../domain/entities/job_outcome.dart';
 import '../../domain/entities/job_part.dart';
+import '../../domain/entities/job_photo_kind.dart';
 import '../../domain/entities/job_qc.dart';
 import '../../domain/entities/job_status.dart';
 import '../../domain/entities/job_status_change.dart';
@@ -284,6 +285,36 @@ class FirestoreJobsRepository implements JobsRepository {
         entity: Collections.jobs,
         entityId: id,
         after: partMap,
+      );
+      return const Ok(null);
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
+  Future<Result<void>> addPhoto(
+    String id,
+    JobPhotoKind kind,
+    String url,
+    String by,
+  ) async {
+    try {
+      final doc = _jobs.doc(id);
+      if (!(await doc.get()).exists) {
+        return Err(NotFoundFailure('Job $id not found'));
+      }
+      await doc.update(<String, dynamic>{
+        kind.field: FieldValue.arrayUnion([url]),
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      await writeActivityLog(
+        _firestore,
+        actor: by,
+        action: 'job.photo.${kind.name}',
+        entity: Collections.jobs,
+        entityId: id,
+        after: <String, dynamic>{'kind': kind.name, 'url': url},
       );
       return const Ok(null);
     } on Object catch (e) {
