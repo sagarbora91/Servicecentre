@@ -2,11 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/firebase/firebase_providers.dart';
 import '../../../customers/presentation/providers/customers_providers.dart';
+import '../../data/repositories/firebase_storage_photo_repository.dart';
 import '../../data/repositories/firestore_job_no_allocator.dart';
 import '../../data/repositories/firestore_jobs_repository.dart';
 import '../../domain/entities/job.dart';
 import '../../domain/repositories/job_no_allocator.dart';
 import '../../domain/repositories/jobs_repository.dart';
+import '../../domain/repositories/photo_repository.dart';
 import '../../domain/services/search_jobs_service.dart';
 
 /// The app's [JobsRepository]. Override this (or the Firebase providers in
@@ -15,6 +17,12 @@ final jobsRepositoryProvider = Provider<JobsRepository>(
   (ref) => FirestoreJobsRepository(
     firestore: ref.watch(firestoreProvider),
   ),
+);
+
+/// The app's [PhotoRepository] (Firebase Storage). Override this (or
+/// `firebaseStorageProvider`) in tests.
+final photoRepositoryProvider = Provider<PhotoRepository>(
+  (ref) => FirebaseStoragePhotoRepository(ref.watch(firebaseStorageProvider)),
 );
 
 /// Streams the Kanban board (jobs ordered by status then due date) for the

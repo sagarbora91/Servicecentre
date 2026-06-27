@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,6 +7,7 @@ import '../../../../core/errors/failure.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../inventory/presentation/providers/inventory_providers.dart';
 import '../../domain/entities/job_part.dart';
+import '../../domain/entities/job_photo_kind.dart';
 import '../../domain/entities/job_qc.dart';
 import '../../domain/entities/job_status.dart';
 import '../providers/jobs_providers.dart';
@@ -63,6 +65,25 @@ class JobDetailController extends AutoDisposeAsyncNotifier<void> {
           JobPart(partId: partId, qty: qty, ref: reference),
           _uid,
         );
+    state = const AsyncValue<void>.data(null);
+    return recorded.failureOrNull;
+  }
+
+  /// Uploads [bytes] (a compressed JPEG) as a [kind] photo for job [id], then
+  /// records the resulting URL on the job. A delivery photo here is what lets
+  /// the job pass the delivery gate. Returns `null` on success.
+  Future<Failure?> addPhoto(String id, JobPhotoKind kind, Uint8List bytes) async {
+    state = const AsyncValue<void>.loading();
+    final uploaded = await ref
+        .read(photoRepositoryProvider)
+        .uploadJobPhoto(jobId: id, kind: kind, bytes: bytes);
+    if (uploaded.isErr) {
+      state = const AsyncValue<void>.data(null);
+      return uploaded.failureOrNull;
+    }
+    final recorded = await ref
+        .read(jobsRepositoryProvider)
+        .addPhoto(id, kind, uploaded.valueOrNull!, _uid);
     state = const AsyncValue<void>.data(null);
     return recorded.failureOrNull;
   }
