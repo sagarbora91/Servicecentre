@@ -45,6 +45,14 @@ jobs:
       # which must match the Android app package the owner registers in Firebase.
       - name: Generate android/ project
         run: flutter create . --platforms=android --org com.saagar
+      # Several plugins (file_picker -> flutter_plugin_android_lifecycle, etc.)
+      # require compileSdk 36, but the `flutter create` template compiles
+      # against 34. android/ is ephemeral, so patch it here before the build.
+      - name: Bump compileSdk to 36
+        run: |
+          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/' \
+            android/app/build.gradle.kts
+          grep -n 'compileSdk' android/app/build.gradle.kts
       - run: flutter pub get
       - run: flutter gen-l10n
       - name: Codegen (build_runner)
