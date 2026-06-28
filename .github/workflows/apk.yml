@@ -47,11 +47,15 @@ jobs:
         run: flutter create . --platforms=android --org com.saagar
       # Several plugins (file_picker -> flutter_plugin_android_lifecycle, etc.)
       # require compileSdk 36, but the `flutter create` template compiles
-      # against 34. android/ is ephemeral, so patch it here before the build.
-      - name: Bump compileSdk to 36
+      # against 34. android/ is ephemeral, so patch it here before the build:
+      #  - the app module via sed, and
+      #  - every plugin subproject via a reflection snippet appended to the root
+      #    build script (the app-level setting does not propagate to plugins).
+      - name: Force compileSdk 36 (app + all plugin modules)
         run: |
           sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/' \
             android/app/build.gradle.kts
+          cat tool/force_compile_sdk.gradle.kts >> android/build.gradle.kts
           grep -n 'compileSdk' android/app/build.gradle.kts
       - run: flutter pub get
       - run: flutter gen-l10n
