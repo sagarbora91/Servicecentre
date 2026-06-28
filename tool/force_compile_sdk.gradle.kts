@@ -7,7 +7,7 @@
 // Force compileSdk 36 on every Android subproject. Reflection is used so this
 // root build script does not need the Android Gradle Plugin on its classpath.
 subprojects {
-    afterEvaluate {
+    fun applyCompileSdk() {
         val androidExt = extensions.findByName("android")
         if (androidExt != null) {
             val setter = androidExt.javaClass.methods.firstOrNull {
@@ -17,5 +17,15 @@ subprojects {
             }
             setter?.invoke(androidExt, 36)
         }
+    }
+    // The Flutter-generated root script does `evaluationDependsOn(":app")`,
+    // which eagerly evaluates :app before this block runs — calling
+    // afterEvaluate on an already-evaluated project throws. :app's compileSdk is
+    // already set via sed, so configure it directly and only defer the plugin
+    // modules (not yet evaluated) to afterEvaluate.
+    if (state.executed) {
+        applyCompileSdk()
+    } else {
+        afterEvaluate { applyCompileSdk() }
     }
 }
