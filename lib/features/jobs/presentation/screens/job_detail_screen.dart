@@ -150,6 +150,11 @@ class _Detail extends ConsumerWidget {
         _InfoRow(label: l10n.detailFault, value: job.fault),
         _InfoRow(label: l10n.detailWork, value: job.workRequested),
         _InfoRow(label: l10n.detailDue, value: dueText),
+        if (job.sourceStore != null)
+          _InfoRow(
+            label: l10n.detailSourceStore,
+            value: job.sourceStore!,
+          ),
         const Divider(height: 32),
 
         // Photos (intake + delivery). A delivery photo unblocks the gate.

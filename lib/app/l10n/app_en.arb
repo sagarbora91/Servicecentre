@@ -357,6 +357,10 @@
   "@detailDue": {
     "description": "Job detail field label for the due date."
   },
+  "detailSourceStore": "Source store",
+  "@detailSourceStore": {
+    "description": "Job detail field label for the originating store (inter-store job)."
+  },
   "detailHistory": "History",
   "@detailHistory": {
     "description": "Job detail section title for the status timeline."
@@ -1121,5 +1125,11 @@
   "dashboardExportKpi": "Export KPIs (CSV)",
   "@dashboardExportKpi": { "description": "Button exporting the KPI summary as CSV." },
   "dashboardExportGst": "Export GST report (CSV)",
-  "@dashboardExportGst": { "description": "Button exporting the GST report as CSV." }
+  "@dashboardExportGst": { "description": "Button exporting the GST report as CSV." },
+  "openAudit": "Audit log",
+  "@openAudit": { "description": "Home button opening the audit-log screen." },
+  "auditTitle": "Audit log",
+  "@auditTitle": { "description": "Title of the audit-log screen." },
+  "auditEmpty": "No activity yet.",
+  "@auditEmpty": { "description": "Empty state on the audit-log screen." }
 }

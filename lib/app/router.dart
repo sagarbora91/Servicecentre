@@ -7,6 +7,7 @@ import '../features/auth/presentation/providers/auth_providers.dart';
 import '../features/auth/presentation/screens/guarded_placeholder_screens.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/manage_staff_screen.dart';
+import '../features/audit/presentation/screens/audit_log_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
 import '../features/billing/presentation/screens/estimate_screen.dart';
 import '../features/billing/presentation/screens/invoice_screen.dart';
@@ -83,6 +84,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.dataImport,
         name: 'dataImport',
         builder: (context, state) => const ImportScreen(),
+      ),
+      GoRoute(
+        path: Routes.auditLog,
+        name: 'auditLog',
+        builder: (context, state) => const AuditLogScreen(),
       ),
       GoRoute(
         path: Routes.board,

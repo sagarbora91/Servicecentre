@@ -27,6 +27,9 @@ abstract final class Routes {
   /// CSV migration import (customers/parts) — owner only.
   static const String dataImport = '/admin/import';
 
+  /// Audit trail (activityLog) — owner only.
+  static const String auditLog = '/admin/audit';
+
   /// Kanban jobs board — any active staff.
   static const String board = '/board';
 
@@ -93,6 +96,7 @@ const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.dashboard: {UserRole.owner, UserRole.supervisor},
   Routes.adminUsers: {UserRole.owner},
   Routes.dataImport: {UserRole.owner},
+  Routes.auditLog: {UserRole.owner},
   Routes.board: _anyStaff,
   Routes.jobs: _anyStaff,
   Routes.customers: _anyStaff,

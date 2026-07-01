@@ -88,6 +88,7 @@
   "detailFault": "दोष",
   "detailWork": "विनंती केलेले काम",
   "detailDue": "देय",
+  "detailSourceStore": "स्रोत स्टोअर",
   "detailHistory": "इतिहास",
   "qcSectionTitle": "गुणवत्ता तपासणी",
   "qcTimekeeping": "वेळ",
@@ -301,5 +302,8 @@
   "kpiUncollected": "न घेतलेले",
   "kpiRevenue": "महसूल",
   "dashboardExportKpi": "KPI निर्यात करा (CSV)",
-  "dashboardExportGst": "GST अहवाल निर्यात करा (CSV)"
+  "dashboardExportGst": "GST अहवाल निर्यात करा (CSV)",
+  "openAudit": "ऑडिट लॉग",
+  "auditTitle": "ऑडिट लॉग",
+  "auditEmpty": "अजून कोणतीही क्रिया नाही."
 }
