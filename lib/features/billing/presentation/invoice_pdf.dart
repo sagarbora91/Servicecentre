@@ -132,7 +132,10 @@ Future<Uint8List> buildInvoicePdf(InvoicePdfData data) {
           children: [
             pw.Text(
               data.title,
-              style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+              style: const pw.TextStyle(
+                fontSize: 16,
+                fontWeight: pw.FontWeight.bold,
+              ),
             ),
             pw.Text(
               data.number,
@@ -195,7 +198,10 @@ pw.Widget _table(InvoicePdfData data) {
   return pw.TableHelper.fromTextArray(
     headers: headers,
     data: rows,
-    headerStyle: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+    headerStyle: const pw.TextStyle(
+      fontSize: 8,
+      fontWeight: pw.FontWeight.bold,
+    ),
     cellStyle: const pw.TextStyle(fontSize: 8),
     cellAlignment: pw.Alignment.centerLeft,
   );
