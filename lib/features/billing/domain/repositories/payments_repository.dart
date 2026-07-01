@@ -11,6 +11,14 @@ abstract interface class PaymentsRepository {
   /// Streams the payments for [invoiceId], newest first.
   Stream<List<Payment>> watchPaymentsForInvoice(String invoiceId);
 
+  /// Returns the payments for [branchId] recorded in the half-open range
+  /// [from, to) (UTC), ordered oldest first — backs the day-book.
+  Future<Result<List<Payment>>> paymentsInRange(
+    String branchId,
+    DateTime from,
+    DateTime to,
+  );
+
   /// Records a payment of [amountPaise] (> 0) against [invoiceId] in a
   /// transaction: it re-reads the invoice, rejects the payment (writing
   /// nothing) with a `ValidationFailure(paymentExceedsBalance)` if it would

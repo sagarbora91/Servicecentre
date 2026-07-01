@@ -160,5 +160,38 @@ void main() {
 
       expect(result.failureOrNull, isA<UnexpectedFailure>());
     });
+
+    test('paymentsInRange returns only in-range, in-branch payments', () async {
+      await repo.recordPayment(
+        invoiceId: 'inv1',
+        branchId: 'MAIN',
+        amountPaise: 10000,
+        mode: PaymentMode.cash,
+        by: 'u1',
+      );
+
+      // The seeded payment's `at` is a server timestamp resolved to ~now, so a
+      // wide window around the current time captures it; a past window doesn't.
+      final wide = await repo.paymentsInRange(
+        'MAIN',
+        DateTime.utc(2000),
+        DateTime.utc(2100),
+      );
+      expect(wide.valueOrNull, hasLength(1));
+
+      final past = await repo.paymentsInRange(
+        'MAIN',
+        DateTime.utc(2000),
+        DateTime.utc(2001),
+      );
+      expect(past.valueOrNull, isEmpty);
+
+      final otherBranch = await repo.paymentsInRange(
+        'CITY',
+        DateTime.utc(2000),
+        DateTime.utc(2100),
+      );
+      expect(otherBranch.valueOrNull, isEmpty);
+    });
   });
 }

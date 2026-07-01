@@ -40,6 +40,25 @@ class FirestorePaymentsRepository implements PaymentsRepository {
       .map((snap) => [for (final d in snap.docs) _fromDoc(d.id, d.data())]);
 
   @override
+  Future<Result<List<Payment>>> paymentsInRange(
+    String branchId,
+    DateTime from,
+    DateTime to,
+  ) async {
+    try {
+      final snap = await _payments
+          .where('branchId', isEqualTo: branchId)
+          .where('at', isGreaterThanOrEqualTo: Timestamp.fromDate(from.toUtc()))
+          .where('at', isLessThan: Timestamp.fromDate(to.toUtc()))
+          .orderBy('at')
+          .get();
+      return Ok([for (final d in snap.docs) _fromDoc(d.id, d.data())]);
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
   Future<Result<void>> recordPayment({
     required String invoiceId,
     required String branchId,
