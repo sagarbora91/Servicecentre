@@ -109,6 +109,48 @@ void main() {
       expect(data['totalPaise'], 118000);
     });
 
+    testWidgets('finance records a payment that clears the balance',
+        (tester) async {
+      final container = await pumpBoardApp(
+        tester,
+        role: UserRole.supervisor,
+        customers: [customerDoc(id: 'c1', name: 'Asha')],
+        jobs: _jobs(),
+      );
+
+      // Seed an unpaid invoice for the job.
+      final firestore = container.read(firestoreProvider);
+      await firestore.collection('invoices').doc('inv1').set(<String, dynamic>{
+        'jobId': 'j1',
+        'number': 'INV-2607-0009',
+        'branchId': 'b1',
+        'lines': <dynamic>[],
+        'taxablePaise': 100000,
+        'taxPaise': 0,
+        'totalPaise': 100000,
+        'amountPaidPaise': 0,
+        'paymentStatus': 'unpaid',
+        'place': 'intra_state',
+        'createdAt': Timestamp.fromDate(DateTime.utc(2026, 7)),
+      });
+
+      container.read(routerProvider).go(Routes.jobInvoice('j1'));
+      await tester.pumpAndSettle();
+
+      // Record a full payment (amount pre-filled to the balance).
+      await tester.tap(find.byKey(const Key('invoicePayBtn_inv1')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('paymentConfirm')));
+      await tester.pumpAndSettle();
+
+      final inv =
+          (await firestore.collection('invoices').doc('inv1').get()).data()!;
+      expect(inv['amountPaidPaise'], 100000);
+      expect(inv['paymentStatus'], 'paid');
+      final payments = await firestore.collection('payments').get();
+      expect(payments.docs, hasLength(1));
+    });
+
     testWidgets('a technician sees no invoice builder', (tester) async {
       final container = await pumpBoardApp(
         tester,

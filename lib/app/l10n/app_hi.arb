@@ -267,5 +267,17 @@
   "invoiceColRate": "दर",
   "invoiceColGst": "GST%",
   "invoiceColAmount": "राशि",
-  "invoicePdfFooter": "यह कंप्यूटर-जनित चालान है."
+  "invoicePdfFooter": "यह कंप्यूटर-जनित चालान है.",
+  "invoiceBalanceLabel": "शेष",
+  "invoicePaidLabel": "भुगतान",
+  "invoiceRecordPayment": "भुगतान दर्ज करें",
+  "invoicePaymentTitle": "भुगतान दर्ज करें",
+  "invoicePaymentAmountLabel": "राशि (₹)",
+  "invoicePaymentModeLabel": "तरीका",
+  "invoicePaymentRefLabel": "संदर्भ (वैकल्पिक)",
+  "paymentModeCash": "नकद",
+  "paymentModeUpi": "UPI",
+  "paymentModeCard": "कार्ड",
+  "invoicePaymentSaved": "भुगतान दर्ज किया गया.",
+  "invoicePaymentExceeds": "भुगतान शेष राशि से अधिक है."
 }

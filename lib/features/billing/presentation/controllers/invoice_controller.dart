@@ -6,6 +6,7 @@ import '../../../../core/errors/failure.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../auth/presentation/providers/staff_providers.dart';
 import '../../domain/entities/invoice_line.dart';
+import '../../domain/entities/payment_mode.dart';
 import '../providers/billing_providers.dart';
 
 /// Orchestrates invoice creation for the invoice screen. Returns `null` on
@@ -37,6 +38,32 @@ class InvoiceController extends AutoDisposeAsyncNotifier<void> {
           lines: lines,
           createdBy: _uid,
         );
+    state = const AsyncValue<void>.data(null);
+    return result.failureOrNull;
+  }
+
+  /// Records a payment of [amountPaise] against [invoiceId] (transactional in
+  /// the repository; over-collection is rejected there).
+  Future<Failure?> recordPayment({
+    required String invoiceId,
+    required int amountPaise,
+    required PaymentMode mode,
+    String? ref,
+  }) async {
+    final branchId = this.ref.read(currentBranchIdProvider);
+    if (branchId == null) {
+      return const UnexpectedFailure('No branch selected');
+    }
+    state = const AsyncValue<void>.loading();
+    final result =
+        await this.ref.read(paymentsRepositoryProvider).recordPayment(
+              invoiceId: invoiceId,
+              branchId: branchId,
+              amountPaise: amountPaise,
+              mode: mode,
+              by: _uid,
+              ref: ref,
+            );
     state = const AsyncValue<void>.data(null);
     return result.failureOrNull;
   }

@@ -267,5 +267,17 @@
   "invoiceColRate": "दर",
   "invoiceColGst": "GST%",
   "invoiceColAmount": "रक्कम",
-  "invoicePdfFooter": "ही संगणक-निर्मित पावती आहे."
+  "invoicePdfFooter": "ही संगणक-निर्मित पावती आहे.",
+  "invoiceBalanceLabel": "शिल्लक",
+  "invoicePaidLabel": "भरले",
+  "invoiceRecordPayment": "पेमेंट नोंदवा",
+  "invoicePaymentTitle": "पेमेंट नोंदवा",
+  "invoicePaymentAmountLabel": "रक्कम (₹)",
+  "invoicePaymentModeLabel": "पद्धत",
+  "invoicePaymentRefLabel": "संदर्भ (पर्यायी)",
+  "paymentModeCash": "रोख",
+  "paymentModeUpi": "UPI",
+  "paymentModeCard": "कार्ड",
+  "invoicePaymentSaved": "पेमेंट नोंदवले.",
+  "invoicePaymentExceeds": "पेमेंट शिल्लक रकमेपेक्षा जास्त आहे."
 }
