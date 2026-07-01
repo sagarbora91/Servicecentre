@@ -31,7 +31,7 @@ void main() {
 
   group('buildGstReportCsv', () {
     test('writes a header and one row per invoice with the CGST/SGST split', () {
-      final invoice = Invoice(
+      const invoice = Invoice(
         id: 'i1',
         jobId: 'j1',
         number: 'INV-2607-0001',
