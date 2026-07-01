@@ -19,6 +19,7 @@ import '../../domain/entities/invoice.dart';
 import '../../domain/entities/invoice_line.dart';
 import '../../domain/entities/payment_mode.dart';
 import '../../domain/services/gst_calculator.dart';
+import '../../domain/services/warranty_billing.dart';
 import '../controllers/invoice_controller.dart';
 import '../invoice_pdf.dart';
 import '../providers/billing_providers.dart';
@@ -78,6 +79,7 @@ class _InvoiceScreenState extends ConsumerState<InvoiceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              ..._warrantyBanner(l10n),
               if (invoices.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
@@ -151,6 +153,27 @@ class _InvoiceScreenState extends ConsumerState<InvoiceScreen> {
         ),
       ),
     );
+  }
+
+  /// A "no charge under warranty/goodwill" banner when the job is not billable
+  /// ([isBillableUnderWarranty]); empty otherwise. Drives billing off the job's
+  /// warranty type (M10).
+  List<Widget> _warrantyBanner(AppLocalizations l10n) {
+    final job = ref.watch(jobByIdProvider(widget.jobId)).valueOrNull;
+    if (job == null || isBillableUnderWarranty(job.warrantyType)) {
+      return const [];
+    }
+    return [
+      Card(
+        key: const Key('warrantyBanner'),
+        color: Theme.of(context).colorScheme.tertiaryContainer,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Text(l10n.invoiceWarrantyNoCharge),
+        ),
+      ),
+      const SizedBox(height: 8),
+    ];
   }
 
   String _customerName(String? branchId) {

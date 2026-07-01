@@ -280,6 +280,7 @@
   "paymentModeCard": "कार्ड",
   "invoicePaymentSaved": "भुगतान दर्ज किया गया.",
   "invoicePaymentExceeds": "भुगतान शेष राशि से अधिक है.",
+  "invoiceWarrantyNoCharge": "कोई शुल्क नहीं — यह जॉब वारंटी/सद्भावना में शामिल है.",
   "openDayBook": "रोज़नामचा",
   "dayBookTitle": "रोज़नामचा",
   "dayBookPickDate": "तारीख़ बदलें",

@@ -280,6 +280,7 @@
   "paymentModeCard": "कार्ड",
   "invoicePaymentSaved": "पेमेंट नोंदवले.",
   "invoicePaymentExceeds": "पेमेंट शिल्लक रकमेपेक्षा जास्त आहे.",
+  "invoiceWarrantyNoCharge": "शुल्क नाही — हे काम वॉरंटी/सद्भावनेत समाविष्ट आहे.",
   "openDayBook": "रोजमेळ",
   "dayBookTitle": "रोजमेळ",
   "dayBookPickDate": "तारीख बदला",

@@ -152,6 +152,32 @@ void main() {
       expect(payments.docs, hasLength(1));
     });
 
+    testWidgets('shows a no-charge banner for an in-warranty job',
+        (tester) async {
+      final container = await pumpBoardApp(
+        tester,
+        role: UserRole.supervisor,
+        customers: [customerDoc(id: 'c1', name: 'Asha')],
+        jobs: [
+          {
+            ...jobDoc(
+              id: 'j1',
+              jobNo: '2607-0003',
+              customerId: 'c1',
+              status: 'ready',
+              dueAt: _future,
+            ),
+            'warrantyType': 'in_warranty',
+          },
+        ],
+      );
+
+      container.read(routerProvider).go(Routes.jobInvoice('j1'));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('warrantyBanner')), findsOneWidget);
+    });
+
     testWidgets('a technician sees no invoice builder', (tester) async {
       final container = await pumpBoardApp(
         tester,

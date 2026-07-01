@@ -1078,6 +1078,8 @@
   "@invoicePaymentSaved": { "description": "Snackbar after a payment is recorded." },
   "invoicePaymentExceeds": "Payment exceeds the outstanding balance.",
   "@invoicePaymentExceeds": { "description": "Error when a payment would over-collect an invoice." },
+  "invoiceWarrantyNoCharge": "No charge — this job is covered (warranty/goodwill).",
+  "@invoiceWarrantyNoCharge": { "description": "Banner on the invoice screen when the job is not billable due to warranty/goodwill." },
   "openDayBook": "Day-book",
   "@openDayBook": { "description": "Home button opening the day-book screen." },
   "dayBookTitle": "Day-book",
