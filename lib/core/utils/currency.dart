@@ -26,3 +26,12 @@ int? parseRupeesToPaise(String input) {
   if (frac != null) paise += int.parse(frac.padRight(2, '0'));
   return paise;
 }
+
+/// Formats [paise] as a plain, symbol-less two-decimal rupee string for
+/// spreadsheets/CSV (`250050` → `"2500.50"`, `-500` → `"-5.00"`). String math,
+/// so no floating-point error.
+String rupeesPlain(int paise) {
+  final sign = paise < 0 ? '-' : '';
+  final abs = paise.abs();
+  return '$sign${abs ~/ 100}.${(abs % 100).toString().padLeft(2, '0')}';
+}

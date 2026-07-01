@@ -298,5 +298,7 @@
   "kpiFirstFix": "प्रथमच दुरुस्ती",
   "kpiComebacks": "पुनरागमन",
   "kpiUncollected": "न घेतलेले",
-  "kpiRevenue": "महसूल"
+  "kpiRevenue": "महसूल",
+  "dashboardExportKpi": "KPI निर्यात करा (CSV)",
+  "dashboardExportGst": "GST अहवाल निर्यात करा (CSV)"
 }

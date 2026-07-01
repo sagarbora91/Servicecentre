@@ -24,6 +24,21 @@ final paymentsInRangeProvider =
   },
 );
 
+/// Fetches the invoices for a branch within a date range (backs the GST report
+/// export). Throws (surfacing as `AsyncValue.error`) if the query fails.
+final invoicesInRangeProvider =
+    FutureProvider.autoDispose.family<List<Invoice>, PaymentRange>(
+  (ref, range) async {
+    final result = await ref
+        .read(invoicesRepositoryProvider)
+        .invoicesInRange(range.branchId, range.from, range.to);
+    if (result.failureOrNull != null) {
+      throw Exception(result.failureOrNull!.message);
+    }
+    return result.valueOrNull ?? const <Invoice>[];
+  },
+);
+
 /// Computes the [KpiSummary] for a branch/date range from its jobs and invoice
 /// revenue. Throws (surfacing as `AsyncValue.error`) if either query fails.
 final kpiSummaryProvider =

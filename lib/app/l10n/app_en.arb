@@ -1115,5 +1115,9 @@
   "kpiUncollected": "Uncollected",
   "@kpiUncollected": { "description": "KPI: ready jobs past due, not collected." },
   "kpiRevenue": "Revenue",
-  "@kpiRevenue": { "description": "KPI: invoiced revenue in the period." }
+  "@kpiRevenue": { "description": "KPI: invoiced revenue in the period." },
+  "dashboardExportKpi": "Export KPIs (CSV)",
+  "@dashboardExportKpi": { "description": "Button exporting the KPI summary as CSV." },
+  "dashboardExportGst": "Export GST report (CSV)",
+  "@dashboardExportGst": { "description": "Button exporting the GST report as CSV." }
 }

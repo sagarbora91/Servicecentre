@@ -298,5 +298,7 @@
   "kpiFirstFix": "पहली बार में ठीक",
   "kpiComebacks": "वापसी",
   "kpiUncollected": "अनसंग्रहित",
-  "kpiRevenue": "राजस्व"
+  "kpiRevenue": "राजस्व",
+  "dashboardExportKpi": "KPI निर्यात करें (CSV)",
+  "dashboardExportGst": "GST रिपोर्ट निर्यात करें (CSV)"
 }

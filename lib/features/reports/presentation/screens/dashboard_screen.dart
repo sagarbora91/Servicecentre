@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +12,7 @@ import '../../../../core/utils/currency.dart';
 import '../../../auth/presentation/auth_guard.dart';
 import '../../../auth/presentation/providers/staff_providers.dart';
 import '../../domain/kpi_summary.dart';
+import '../../domain/report_csv.dart';
 import '../providers/reports_providers.dart';
 
 /// KPI dashboard (`/reports/dashboard`, finance roles): operational KPIs for the
@@ -92,14 +98,20 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 ),
               ),
             ),
-            data: (kpi) => _cards(l10n, kpi),
+            data: (kpi) => _cards(context, l10n, kpi, range),
           ),
         ),
       ],
     );
   }
 
-  Widget _cards(AppLocalizations l10n, KpiSummary kpi) => ListView(
+  Widget _cards(
+    BuildContext context,
+    AppLocalizations l10n,
+    KpiSummary kpi,
+    PaymentRange range,
+  ) =>
+      ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         children: [
           _KpiTile(
@@ -137,8 +149,74 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             value: formatPaise(kpi.revenuePaise),
             valueKey: const Key('kpiRevenue'),
           ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            key: const Key('dashboardExportKpiBtn'),
+            onPressed: () => unawaited(_exportKpi(context, l10n, kpi, range)),
+            icon: const Icon(Icons.download_outlined),
+            label: Text(l10n.dashboardExportKpi),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            key: const Key('dashboardExportGstBtn'),
+            onPressed: () => unawaited(_exportGst(context, l10n, range)),
+            icon: const Icon(Icons.receipt_long_outlined),
+            label: Text(l10n.dashboardExportGst),
+          ),
+          const SizedBox(height: 16),
         ],
       );
+
+  Future<void> _exportKpi(
+    BuildContext context,
+    AppLocalizations l10n,
+    KpiSummary kpi,
+    PaymentRange range,
+  ) async {
+    final messenger = ScaffoldMessenger.of(context);
+    await _saveCsv(
+      messenger,
+      l10n,
+      'kpis_${range.from.toIso8601String().substring(0, 10)}.csv',
+      buildKpiCsv(kpi),
+    );
+  }
+
+  Future<void> _exportGst(
+    BuildContext context,
+    AppLocalizations l10n,
+    PaymentRange range,
+  ) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final invoices = await ref.read(invoicesInRangeProvider(range).future);
+    await _saveCsv(
+      messenger,
+      l10n,
+      'gst_${range.from.toIso8601String().substring(0, 10)}.csv',
+      buildGstReportCsv(invoices),
+    );
+  }
+
+  /// Writes [csv] via the platform save dialog (device-QA; CSV content is
+  /// unit-tested in the domain layer).
+  Future<void> _saveCsv(
+    ScaffoldMessengerState messenger,
+    AppLocalizations l10n,
+    String fileName,
+    String csv,
+  ) async {
+    final path = await FilePicker.platform.saveFile(
+      fileName: fileName,
+      bytes: Uint8List.fromList(utf8.encode(csv)),
+    );
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          path == null ? l10n.dayBookExportCancelled : l10n.dayBookExported,
+        ),
+      ),
+    );
+  }
 }
 
 class _KpiTile extends StatelessWidget {
