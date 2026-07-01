@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../billing/domain/entities/invoice.dart';
 import '../../../billing/domain/entities/payment.dart';
 import '../../../billing/presentation/providers/billing_providers.dart';
 import '../../../jobs/presentation/providers/jobs_providers.dart';
@@ -41,7 +42,7 @@ final kpiSummaryProvider =
       throw Exception(invoicesResult.failureOrNull!.message);
     }
     var revenue = 0;
-    for (final inv in invoicesResult.valueOrNull ?? const []) {
+    for (final inv in invoicesResult.valueOrNull ?? const <Invoice>[]) {
       revenue += inv.totalPaise;
     }
     return KpiSummary.compute(
