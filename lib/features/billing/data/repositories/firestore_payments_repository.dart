@@ -49,8 +49,8 @@ class FirestorePaymentsRepository implements PaymentsRepository {
     String? ref,
   }) async {
     if (amountPaise <= 0) {
-      return Err(
-        const ValidationFailure(
+      return const Err(
+        ValidationFailure(
           ValidationReason.paymentExceedsBalance,
           'Payment amount must be positive',
         ),

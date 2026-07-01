@@ -448,6 +448,9 @@ String _failureMessage(Failure failure, AppLocalizations l10n) {
     return switch (failure.reason) {
       ValidationReason.deliveryQcIncomplete => l10n.gateQcIncomplete,
       ValidationReason.deliveryNoPhoto => l10n.gateNoPhoto,
+      // Not reachable from job detail (payments live on the invoice screen),
+      // but the switch must stay exhaustive.
+      ValidationReason.paymentExceedsBalance => l10n.saveFailed,
     };
   }
   return l10n.saveFailed;
