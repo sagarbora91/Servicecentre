@@ -97,8 +97,10 @@ void main() {
           await repo.updatePaymentStatus(id, PaymentStatus.paid, 'u1');
 
       expect(result.isOk, isTrue);
-      expect((await repo.getInvoice(id)).valueOrNull!.paymentStatus,
-          PaymentStatus.paid);
+      expect(
+        (await repo.getInvoice(id)).valueOrNull!.paymentStatus,
+        PaymentStatus.paid,
+      );
     });
 
     test('updatePaymentStatus on a missing invoice returns NotFound', () async {

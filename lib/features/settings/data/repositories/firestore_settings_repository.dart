@@ -32,11 +32,14 @@ class FirestoreSettingsRepository implements SettingsRepository {
   @override
   Future<Result<void>> saveSettings(BranchSettings settings, String by) async {
     try {
-      await _doc(settings.branchId).set(<String, dynamic>{
-        ..._toDoc(settings),
-        'updatedAt': FieldValue.serverTimestamp(),
-        'updatedBy': by,
-      }, SetOptions(merge: true));
+      await _doc(settings.branchId).set(
+        <String, dynamic>{
+          ..._toDoc(settings),
+          'updatedAt': FieldValue.serverTimestamp(),
+          'updatedBy': by,
+        },
+        SetOptions(merge: true),
+      );
       await writeActivityLog(
         _firestore,
         actor: by,
