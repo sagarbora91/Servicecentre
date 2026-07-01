@@ -138,6 +138,13 @@ class _Detail extends ConsumerWidget {
           icon: const Icon(Icons.request_quote_outlined),
           label: Text(l10n.jobDetailEstimatesButton),
         ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          key: const Key('openInvoicesBtn'),
+          onPressed: () => context.go(Routes.jobInvoice(job.id)),
+          icon: const Icon(Icons.receipt_long_outlined),
+          label: Text(l10n.jobDetailInvoicesButton),
+        ),
         const SizedBox(height: 12),
         _InfoRow(label: l10n.detailCustomer, value: customerName ?? job.customerId),
         _InfoRow(label: l10n.detailFault, value: job.fault),

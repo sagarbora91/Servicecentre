@@ -45,6 +45,9 @@ abstract final class Routes {
   /// Path to a job's estimates (customer quote) screen.
   static String jobEstimate(String id) => '/jobs/$id/estimate';
 
+  /// Path to a job's invoices screen.
+  static String jobInvoice(String id) => '/jobs/$id/invoice';
+
   /// Customers area prefix (list + `/customers/:id`) — any active staff.
   static const String customers = '/customers';
 
