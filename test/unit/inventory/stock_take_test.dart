@@ -4,10 +4,14 @@ import 'package:service_centre_app/features/inventory/domain/entities/stock_take
 void main() {
   group('StockTakeLine.variance', () {
     test('is counted minus system (surplus positive, shortfall negative)', () {
-      expect(const StockTakeLine(partId: 'p', counted: 12, system: 10).variance,
-          2);
-      expect(const StockTakeLine(partId: 'p', counted: 7, system: 10).variance,
-          -3);
+      expect(
+        const StockTakeLine(partId: 'p', counted: 12, system: 10).variance,
+        2,
+      );
+      expect(
+        const StockTakeLine(partId: 'p', counted: 7, system: 10).variance,
+        -3,
+      );
     });
   });
 
