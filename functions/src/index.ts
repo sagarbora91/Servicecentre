@@ -1,21 +1,38 @@
 import { initializeApp } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 import { setGlobalOptions } from "firebase-functions/v2";
 import {
   onDocumentCreated,
   onDocumentUpdated,
 } from "firebase-functions/v2/firestore";
+import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { activeBranchIds } from "./logic/branches";
 import { rollupDailyStats } from "./logic/daily_stats";
 import { deliverQueuedMessage, type MessageView } from "./logic/deliver_message";
 import { createDueReminders } from "./logic/followups";
 import { queueJobStatusMessage, type JobView } from "./logic/job_messages";
+import {
+  InvalidRoleError,
+  PermissionError,
+  setUserRoleLogic,
+  type ClaimSetter,
+  type Role,
+} from "./logic/set_user_role";
+import { recomputeStockLevels } from "./logic/stock";
 import { StubBsp } from "./messaging/bsp";
 
 initializeApp();
 const db = getFirestore();
 const bsp = new StubBsp();
+
+/** Real claim setter backed by the Auth admin SDK. */
+const adminClaims: ClaimSetter = {
+  async setRole(uid: string, role: Role): Promise<void> {
+    await getAuth().setCustomUserClaims(uid, { role });
+  },
+};
 
 // Mumbai region; cap fan-out so a burst can't scale without bound.
 setGlobalOptions({ region: "asia-south1", maxInstances: 10 });
@@ -70,4 +87,45 @@ export const scheduledDailyStats = onSchedule("every day 23:55", async () => {
   for (const branchId of await activeBranchIds(db)) {
     await rollupDailyStats(db, branchId, dayStart);
   }
+});
+
+/**
+ * On a new stock movement, authoritatively recompute the part's on-hand/reserved
+ * from the ledger in a transaction. BUILD_BRIEF §6 `onStockMovement`.
+ */
+export const onStockMovement = onDocumentCreated(
+  "stockMovements/{movementId}",
+  async (event) => {
+    const partId = event.data?.data().partId as string | undefined;
+    if (!partId) return;
+    await recomputeStockLevels(db, partId);
+  },
+);
+
+/**
+ * Callable (owner-only): set a staff member's role — updates the Auth custom
+ * claim and mirrors it into `users/{uid}`. BUILD_BRIEF §6 `setUserRole`.
+ */
+export const setUserRole = onCall(async (request) => {
+  const callerUid = request.auth?.uid;
+  if (!callerUid) {
+    throw new HttpsError("unauthenticated", "Sign in required.");
+  }
+  const uid = request.data?.uid as string | undefined;
+  const role = request.data?.role as string | undefined;
+  if (!uid || !role) {
+    throw new HttpsError("invalid-argument", "uid and role are required.");
+  }
+  try {
+    await setUserRoleLogic(db, adminClaims, callerUid, uid, role);
+  } catch (error) {
+    if (error instanceof PermissionError) {
+      throw new HttpsError("permission-denied", error.message);
+    }
+    if (error instanceof InvalidRoleError) {
+      throw new HttpsError("invalid-argument", error.message);
+    }
+    throw new HttpsError("internal", "Failed to set role.");
+  }
+  return { ok: true };
 });
