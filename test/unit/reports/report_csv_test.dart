@@ -36,7 +36,7 @@ void main() {
         jobId: 'j1',
         number: 'INV-2607-0001',
         branchId: 'MAIN',
-        lines: const [
+        lines: [
           InvoiceLine(desc: 'Service', qty: 1, ratePaise: 100000, gstPct: 18),
         ],
         taxablePaise: 100000,
