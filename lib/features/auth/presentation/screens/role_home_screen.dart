@@ -140,6 +140,13 @@ class _Dashboard extends StatelessWidget {
                   label: Text(l10n.openBilling),
                   onPressed: () => context.go(Routes.billing),
                 ),
+                const SizedBox(height: 12),
+                FilledButton.tonalIcon(
+                  key: const Key('openDayBookBtn'),
+                  icon: const Icon(Icons.account_balance_wallet_outlined),
+                  label: Text(l10n.openDayBook),
+                  onPressed: () => context.go(Routes.dayBook),
+                ),
               ],
               if (user.role.canManageUsers) ...[
                 const SizedBox(height: 12),

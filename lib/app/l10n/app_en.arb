@@ -1077,5 +1077,21 @@
   "invoicePaymentSaved": "Payment recorded.",
   "@invoicePaymentSaved": { "description": "Snackbar after a payment is recorded." },
   "invoicePaymentExceeds": "Payment exceeds the outstanding balance.",
-  "@invoicePaymentExceeds": { "description": "Error when a payment would over-collect an invoice." }
+  "@invoicePaymentExceeds": { "description": "Error when a payment would over-collect an invoice." },
+  "openDayBook": "Day-book",
+  "@openDayBook": { "description": "Home button opening the day-book screen." },
+  "dayBookTitle": "Day-book",
+  "@dayBookTitle": { "description": "Title of the day-book screen." },
+  "dayBookPickDate": "Change date",
+  "@dayBookPickDate": { "description": "Button that changes the day-book date." },
+  "dayBookTotal": "Total collected",
+  "@dayBookTotal": { "description": "Label for the day-book grand total." },
+  "dayBookCount": "Payments",
+  "@dayBookCount": { "description": "Label for the day-book payment count." },
+  "dayBookExport": "Export CSV",
+  "@dayBookExport": { "description": "Button that exports the accountant CSV." },
+  "dayBookExported": "CSV saved.",
+  "@dayBookExported": { "description": "Snackbar after the CSV is saved." },
+  "dayBookExportCancelled": "Export cancelled.",
+  "@dayBookExportCancelled": { "description": "Snackbar when the CSV save is cancelled." }
 }

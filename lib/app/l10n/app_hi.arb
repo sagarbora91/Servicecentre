@@ -279,5 +279,13 @@
   "paymentModeUpi": "UPI",
   "paymentModeCard": "कार्ड",
   "invoicePaymentSaved": "भुगतान दर्ज किया गया.",
-  "invoicePaymentExceeds": "भुगतान शेष राशि से अधिक है."
+  "invoicePaymentExceeds": "भुगतान शेष राशि से अधिक है.",
+  "openDayBook": "रोज़नामचा",
+  "dayBookTitle": "रोज़नामचा",
+  "dayBookPickDate": "तारीख़ बदलें",
+  "dayBookTotal": "कुल संग्रह",
+  "dayBookCount": "भुगतान",
+  "dayBookExport": "CSV निर्यात करें",
+  "dayBookExported": "CSV सहेजा गया.",
+  "dayBookExportCancelled": "निर्यात रद्द किया गया."
 }

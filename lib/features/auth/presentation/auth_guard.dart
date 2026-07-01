@@ -15,6 +15,9 @@ abstract final class Routes {
   /// Finance area (estimates/invoices/payments) — finance roles only.
   static const String billing = '/billing';
 
+  /// Day-book reconciliation + accountant CSV export — finance roles only.
+  static const String dayBook = '/reports/daybook';
+
   /// Staff management — owner only.
   static const String adminUsers = '/admin/users';
 
@@ -83,6 +86,7 @@ const Set<String> _publicRoutes = {Routes.login};
 /// `firestore.rules`.
 const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.billing: {UserRole.owner, UserRole.supervisor},
+  Routes.dayBook: {UserRole.owner, UserRole.supervisor},
   Routes.adminUsers: {UserRole.owner},
   Routes.dataImport: {UserRole.owner},
   Routes.board: _anyStaff,

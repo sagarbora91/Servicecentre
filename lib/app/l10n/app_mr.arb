@@ -279,5 +279,13 @@
   "paymentModeUpi": "UPI",
   "paymentModeCard": "कार्ड",
   "invoicePaymentSaved": "पेमेंट नोंदवले.",
-  "invoicePaymentExceeds": "पेमेंट शिल्लक रकमेपेक्षा जास्त आहे."
+  "invoicePaymentExceeds": "पेमेंट शिल्लक रकमेपेक्षा जास्त आहे.",
+  "openDayBook": "रोजमेळ",
+  "dayBookTitle": "रोजमेळ",
+  "dayBookPickDate": "तारीख बदला",
+  "dayBookTotal": "एकूण जमा",
+  "dayBookCount": "पेमेंट्स",
+  "dayBookExport": "CSV निर्यात करा",
+  "dayBookExported": "CSV जतन केले.",
+  "dayBookExportCancelled": "निर्यात रद्द केले."
 }
