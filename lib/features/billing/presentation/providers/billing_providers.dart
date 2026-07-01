@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/firebase/firebase_providers.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/repositories/firestore_estimates_repository.dart';
 import '../../domain/entities/estimate.dart';
 import '../../domain/repositories/estimates_repository.dart';
@@ -19,4 +20,10 @@ final estimatesForJobProvider =
     StreamProvider.autoDispose.family<List<Estimate>, String>(
   (ref, jobId) =>
       ref.watch(estimatesRepositoryProvider).watchEstimatesForJob(jobId),
+);
+
+/// Whether the current user may prepare/progress customer quotes (estimates).
+/// Mirrors `canQuote()` in `firestore.rules`.
+final canQuoteProvider = Provider<bool>(
+  (ref) => ref.watch(currentUserProvider).valueOrNull?.role.canQuote ?? false,
 );

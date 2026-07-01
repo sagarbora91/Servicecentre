@@ -13,3 +13,16 @@ String formatPaise(int paise) {
   final paisePart = (abs % 100).toString().padLeft(2, '0');
   return '$sign₹$rupees.$paisePart';
 }
+
+/// Parses a user-entered non-negative rupee amount into integer paise using
+/// string math (no floating point), so paise are exact. Accepts `"2500"`,
+/// `"2500.5"`, `"2500.50"` (up to two decimals); returns `null` for anything
+/// else. `"2500.5"` → `250050`, `"0.05"` → `5`.
+int? parseRupeesToPaise(String input) {
+  final match = RegExp(r'^(\d+)(?:\.(\d{1,2}))?$').firstMatch(input.trim());
+  if (match == null) return null;
+  var paise = int.parse(match.group(1)!) * 100;
+  final frac = match.group(2);
+  if (frac != null) paise += int.parse(frac.padRight(2, '0'));
+  return paise;
+}

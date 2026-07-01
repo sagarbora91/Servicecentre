@@ -42,6 +42,9 @@ abstract final class Routes {
   /// Path to a job's QR box-label screen.
   static String jobLabel(String id) => '/jobs/$id/label';
 
+  /// Path to a job's estimates (customer quote) screen.
+  static String jobEstimate(String id) => '/jobs/$id/estimate';
+
   /// Customers area prefix (list + `/customers/:id`) — any active staff.
   static const String customers = '/customers';
 

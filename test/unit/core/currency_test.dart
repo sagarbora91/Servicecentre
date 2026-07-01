@@ -19,4 +19,29 @@ void main() {
       expect(formatPaise(-1), '-₹0.01');
     });
   });
+
+  group('parseRupeesToPaise', () {
+    test('parses whole rupees', () {
+      expect(parseRupeesToPaise('2500'), 250000);
+      expect(parseRupeesToPaise('0'), 0);
+    });
+
+    test('parses one or two decimal places exactly', () {
+      expect(parseRupeesToPaise('2500.5'), 250050);
+      expect(parseRupeesToPaise('2500.50'), 250050);
+      expect(parseRupeesToPaise('0.05'), 5);
+    });
+
+    test('trims surrounding whitespace', () {
+      expect(parseRupeesToPaise('  99.99  '), 9999);
+    });
+
+    test('rejects invalid, negative, or over-precise input', () {
+      expect(parseRupeesToPaise(''), isNull);
+      expect(parseRupeesToPaise('abc'), isNull);
+      expect(parseRupeesToPaise('-5'), isNull);
+      expect(parseRupeesToPaise('1.234'), isNull);
+      expect(parseRupeesToPaise('1,000'), isNull);
+    });
+  });
 }

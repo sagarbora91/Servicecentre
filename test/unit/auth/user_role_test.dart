@@ -25,6 +25,15 @@ void main() {
       expect(UserRole.store.canFinance, isFalse);
     });
 
+    test('canQuote adds counter to the finance roles', () {
+      expect(UserRole.owner.canQuote, isTrue);
+      expect(UserRole.supervisor.canQuote, isTrue);
+      expect(UserRole.counter.canQuote, isTrue);
+      // Workshop/store do not prepare customer quotes.
+      expect(UserRole.technician.canQuote, isFalse);
+      expect(UserRole.store.canQuote, isFalse);
+    });
+
     test('canManageUsers is true only for owner', () {
       expect(UserRole.owner.canManageUsers, isTrue);
       expect(UserRole.supervisor.canManageUsers, isFalse);

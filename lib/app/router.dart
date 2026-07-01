@@ -8,6 +8,7 @@ import '../features/auth/presentation/screens/guarded_placeholder_screens.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/manage_staff_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
+import '../features/billing/presentation/screens/estimate_screen.dart';
 import '../features/customers/presentation/screens/customer_detail_screen.dart';
 import '../features/customers/presentation/screens/customer_list_screen.dart';
 import '../features/data_import/presentation/screens/import_screen.dart';
@@ -93,12 +94,19 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'jobScan',
         builder: (context, state) => const JobScanScreen(),
       ),
-      // More specific (`/jobs/:id/label`) before `/jobs/:id`.
+      // More specific (`/jobs/:id/label`, `/jobs/:id/estimate`) before
+      // `/jobs/:id`.
       GoRoute(
         path: '${Routes.jobs}/:id/label',
         name: 'jobLabel',
         builder: (context, state) =>
             QrLabelScreen(jobId: state.pathParameters['id'] ?? ''),
+      ),
+      GoRoute(
+        path: '${Routes.jobs}/:id/estimate',
+        name: 'jobEstimate',
+        builder: (context, state) =>
+            EstimateScreen(jobId: state.pathParameters['id'] ?? ''),
       ),
       GoRoute(
         path: '${Routes.jobs}/:id',

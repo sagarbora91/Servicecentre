@@ -32,6 +32,12 @@ enum UserRole {
   /// Whether this role may view and edit finance (invoices/payments).
   bool get canFinance => this == owner || this == supervisor;
 
+  /// Whether this role may prepare and progress customer quotes (estimates).
+  /// Broader than [canFinance]: the front-desk counter talks to the customer
+  /// and takes their approval, alongside finance roles. Mirrors `canQuote()` in
+  /// `firestore.rules`.
+  bool get canQuote => canFinance || this == counter;
+
   /// Whether this role may manage staff accounts and assign roles.
   bool get canManageUsers => this == owner;
 

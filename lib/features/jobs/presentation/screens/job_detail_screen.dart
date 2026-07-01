@@ -131,6 +131,13 @@ class _Detail extends ConsumerWidget {
           icon: const Icon(Icons.print_outlined),
           label: Text(l10n.printSlipAction),
         ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          key: const Key('openEstimatesBtn'),
+          onPressed: () => context.go(Routes.jobEstimate(job.id)),
+          icon: const Icon(Icons.request_quote_outlined),
+          label: Text(l10n.jobDetailEstimatesButton),
+        ),
         const SizedBox(height: 12),
         _InfoRow(label: l10n.detailCustomer, value: customerName ?? job.customerId),
         _InfoRow(label: l10n.detailFault, value: job.fault),

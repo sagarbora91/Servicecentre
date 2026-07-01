@@ -902,5 +902,92 @@
   "scanPrompt": "Point the camera at a job's QR label.",
   "@scanPrompt": {
     "description": "Instruction on the scan screen."
+  },
+  "estimatesTitle": "Estimates",
+  "@estimatesTitle": {
+    "description": "Title of the estimate (customer quote) screen."
+  },
+  "jobDetailEstimatesButton": "Estimates",
+  "@jobDetailEstimatesButton": {
+    "description": "Job-detail action that opens the estimates screen."
+  },
+  "estimateNewButton": "New estimate",
+  "@estimateNewButton": {
+    "description": "Button that starts a new draft estimate."
+  },
+  "estimateEmpty": "No estimates yet.",
+  "@estimateEmpty": {
+    "description": "Empty state on the estimate screen."
+  },
+  "estimateTotalLabel": "Total",
+  "@estimateTotalLabel": {
+    "description": "Label for the estimate total amount."
+  },
+  "estimateAddLine": "Add line",
+  "@estimateAddLine": {
+    "description": "Button that adds a line to an estimate."
+  },
+  "estimateMarkSent": "Mark sent",
+  "@estimateMarkSent": {
+    "description": "Button that marks a draft estimate as sent to the customer."
+  },
+  "estimateApprove": "Approve",
+  "@estimateApprove": {
+    "description": "Button that records customer approval of an estimate."
+  },
+  "estimateDecline": "Decline",
+  "@estimateDecline": {
+    "description": "Button that records that the customer declined an estimate."
+  },
+  "estimateStatusDraft": "Draft",
+  "@estimateStatusDraft": {
+    "description": "Estimate status label: draft."
+  },
+  "estimateStatusSent": "Sent",
+  "@estimateStatusSent": {
+    "description": "Estimate status label: sent to the customer."
+  },
+  "estimateStatusApproved": "Approved",
+  "@estimateStatusApproved": {
+    "description": "Estimate status label: approved by the customer."
+  },
+  "estimateStatusDeclined": "Declined",
+  "@estimateStatusDeclined": {
+    "description": "Estimate status label: declined by the customer."
+  },
+  "estimateApprovedVia": "Approved via {via}",
+  "@estimateApprovedVia": {
+    "description": "Note showing how the customer approved the estimate.",
+    "placeholders": {
+      "via": { "type": "String" }
+    }
+  },
+  "estimateNewTitle": "New estimate",
+  "@estimateNewTitle": {
+    "description": "Title of the dialog that creates a draft estimate."
+  },
+  "estimateAddLineTitle": "Add line",
+  "@estimateAddLineTitle": {
+    "description": "Title of the dialog that adds a line to an estimate."
+  },
+  "estimateLineDescLabel": "Description",
+  "@estimateLineDescLabel": {
+    "description": "Label for the estimate line description field."
+  },
+  "estimateLineAmountLabel": "Amount (₹)",
+  "@estimateLineAmountLabel": {
+    "description": "Label for the estimate line amount field, in rupees."
+  },
+  "estimateLineDescRequired": "Enter a description.",
+  "@estimateLineDescRequired": {
+    "description": "Validation message when the estimate line description is empty."
+  },
+  "estimateAmountInvalid": "Enter a valid amount.",
+  "@estimateAmountInvalid": {
+    "description": "Validation message when the estimate line amount is not a valid rupee value."
+  },
+  "estimateSaved": "Estimate saved.",
+  "@estimateSaved": {
+    "description": "Snackbar after an estimate is created or updated."
   }
 }
