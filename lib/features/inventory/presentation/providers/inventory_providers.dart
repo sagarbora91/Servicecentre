@@ -4,11 +4,14 @@ import '../../../../core/firebase/firebase_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/repositories/firestore_inventory_repository.dart';
 import '../../data/repositories/firestore_purchasing_repository.dart';
+import '../../data/repositories/firestore_stock_takes_repository.dart';
 import '../../domain/entities/part.dart';
 import '../../domain/entities/purchase_order.dart';
+import '../../domain/entities/stock_take.dart';
 import '../../domain/entities/supplier.dart';
 import '../../domain/repositories/inventory_repository.dart';
 import '../../domain/repositories/purchasing_repository.dart';
+import '../../domain/repositories/stock_takes_repository.dart';
 
 /// The app's [InventoryRepository]. Override this (or `firestoreProvider` in
 /// `core/firebase/firebase_providers.dart`) in tests.
@@ -31,6 +34,18 @@ final suppliersProvider = StreamProvider.family<List<Supplier>, String>(
 final ordersProvider = StreamProvider.family<List<PurchaseOrder>, String>(
   (ref, branchId) =>
       ref.watch(purchasingRepositoryProvider).watchOrders(branchId),
+);
+
+/// The app's [StockTakesRepository].
+final stockTakesRepositoryProvider = Provider<StockTakesRepository>(
+  (ref) =>
+      FirestoreStockTakesRepository(firestore: ref.watch(firestoreProvider)),
+);
+
+/// Streams the stock-takes in [branchId] (newest first).
+final stockTakesProvider = StreamProvider.family<List<StockTake>, String>(
+  (ref, branchId) =>
+      ref.watch(stockTakesRepositoryProvider).watchStockTakes(branchId),
 );
 
 /// Whether the signed-in user may manage inventory: stock receive/adjust on the
