@@ -119,5 +119,61 @@ jobs:
               core.warning('Failed to publish ci-output-rules check: ' + e.message);
             }
 
-  # NOTE: the Cloud Functions CI job (Node 20: npm ci + lint + test) is added in
-  # M8 when functions/ has a real package.json.
+  # Cloud Functions (M8): TypeScript build (strict typecheck) + emulator tests.
+  # The logic modules run against the Firestore emulator via the admin SDK
+  # (which bypasses rules), so only the Firestore emulator is needed — the same
+  # infra as the `rules` job (Node 20 + JDK 21 + firebase-tools).
+  functions:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Install firebase-tools and functions deps
+        run: |
+          npm i -g firebase-tools
+          npm install --prefix functions
+      - name: Build (strict typecheck + emit)
+        run: npm --prefix functions run build 2>&1 | tee functions_build.txt
+      - name: Functions tests (Firestore emulator)
+        run: |
+          firebase emulators:exec --only firestore --project demo-sc \
+            "npm --prefix functions test" 2>&1 | tee functions.txt
+      - name: Publish functions output
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const tail = (f) => {
+              try { return fs.readFileSync(f, 'utf8').slice(-6000); }
+              catch (_) { return '(no output captured)'; }
+            };
+            const summary =
+              '### functions build\n```\n' + tail('functions_build.txt') +
+              '\n```\n### functions tests\n```\n' + tail('functions.txt') +
+              '\n```';
+            try {
+              await github.rest.checks.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'ci-output-functions',
+                head_sha: context.sha,
+                status: 'completed',
+                conclusion: 'neutral',
+                output: {
+                  title: 'Cloud Functions output',
+                  summary: summary.slice(0, 65000),
+                },
+              });
+            } catch (e) {
+              core.warning('Failed to publish ci-output-functions: ' + e.message);
+            }
