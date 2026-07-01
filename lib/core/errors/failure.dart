@@ -81,6 +81,9 @@ enum ValidationReason {
   /// A payment was rejected because it would collect more than the invoice's
   /// outstanding balance (over-collection).
   paymentExceedsBalance,
+
+  /// Customer feedback was rejected because the rating was outside 1–5.
+  feedbackRatingInvalid,
 }
 
 /// An operation violated a business rule (e.g. the job delivery gate). Distinct

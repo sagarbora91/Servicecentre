@@ -1131,5 +1131,19 @@
   "auditTitle": "Audit log",
   "@auditTitle": { "description": "Title of the audit-log screen." },
   "auditEmpty": "No activity yet.",
-  "@auditEmpty": { "description": "Empty state on the audit-log screen." }
+  "@auditEmpty": { "description": "Empty state on the audit-log screen." },
+  "feedbackLabel": "Feedback",
+  "@feedbackLabel": { "description": "Label/heading for customer feedback." },
+  "feedbackRecord": "Record feedback",
+  "@feedbackRecord": { "description": "Button that opens the feedback dialog." },
+  "feedbackDialogTitle": "Customer feedback",
+  "@feedbackDialogTitle": { "description": "Title of the feedback dialog." },
+  "feedbackRatingLabel": "Rating",
+  "@feedbackRatingLabel": { "description": "Label for the star rating selector." },
+  "feedbackCommentLabel": "Comment (optional)",
+  "@feedbackCommentLabel": { "description": "Label for the optional feedback comment." },
+  "feedbackSubmitButton": "Submit",
+  "@feedbackSubmitButton": { "description": "Button that submits customer feedback." },
+  "feedbackSaved": "Feedback saved.",
+  "@feedbackSaved": { "description": "Snackbar after feedback is recorded." }
 }

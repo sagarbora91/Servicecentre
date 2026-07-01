@@ -305,5 +305,12 @@
   "dashboardExportGst": "GST अहवाल निर्यात करा (CSV)",
   "openAudit": "ऑडिट लॉग",
   "auditTitle": "ऑडिट लॉग",
-  "auditEmpty": "अजून कोणतीही क्रिया नाही."
+  "auditEmpty": "अजून कोणतीही क्रिया नाही.",
+  "feedbackLabel": "अभिप्राय",
+  "feedbackRecord": "अभिप्राय नोंदवा",
+  "feedbackDialogTitle": "ग्राहक अभिप्राय",
+  "feedbackRatingLabel": "रेटिंग",
+  "feedbackCommentLabel": "टिप्पणी (पर्यायी)",
+  "feedbackSubmitButton": "सबमिट करा",
+  "feedbackSaved": "अभिप्राय जतन केला."
 }

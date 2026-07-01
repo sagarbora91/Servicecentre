@@ -12,6 +12,7 @@ import '../../../../core/errors/failure.dart';
 import '../../../auth/presentation/auth_guard.dart';
 import '../../../customers/domain/entities/customer.dart';
 import '../../../customers/presentation/providers/customers_providers.dart';
+import '../../../feedback/presentation/widgets/feedback_section.dart';
 import '../../../inventory/domain/entities/part.dart';
 import '../../../inventory/presentation/providers/inventory_providers.dart';
 import '../../domain/entities/delivery_gate.dart';
@@ -314,6 +315,13 @@ class _Detail extends ConsumerWidget {
             ),
         const Divider(height: 32),
 
+        // Customer feedback (delivered jobs only).
+        if (job.status == JobStatus.delivered) ...[
+          Text(l10n.feedbackLabel, style: theme.textTheme.titleMedium),
+          FeedbackSection(jobId: job.id),
+          const Divider(height: 32),
+        ],
+
         // Status timeline.
         Text(l10n.detailHistory, style: theme.textTheme.titleMedium),
         for (final change in job.statusHistory)
@@ -453,9 +461,11 @@ String _failureMessage(Failure failure, AppLocalizations l10n) {
     return switch (failure.reason) {
       ValidationReason.deliveryQcIncomplete => l10n.gateQcIncomplete,
       ValidationReason.deliveryNoPhoto => l10n.gateNoPhoto,
-      // Not reachable from job detail (payments live on the invoice screen),
-      // but the switch must stay exhaustive.
-      ValidationReason.paymentExceedsBalance => l10n.saveFailed,
+      // paymentExceedsBalance is handled on the invoice screen; feedback rating
+      // is validated in the dialog. Kept for switch exhaustiveness.
+      ValidationReason.paymentExceedsBalance ||
+      ValidationReason.feedbackRatingInvalid =>
+        l10n.saveFailed,
     };
   }
   return l10n.saveFailed;
