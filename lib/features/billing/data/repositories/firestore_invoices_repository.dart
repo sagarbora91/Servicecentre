@@ -146,6 +146,7 @@ class FirestoreInvoicesRepository implements InvoicesRepository {
         taxablePaise: FirestoreConvert.toInt(data['taxablePaise']),
         taxPaise: FirestoreConvert.toInt(data['taxPaise']),
         totalPaise: FirestoreConvert.toInt(data['totalPaise']),
+        amountPaidPaise: FirestoreConvert.toInt(data['amountPaidPaise']),
         paymentStatus:
             PaymentStatus.fromWire(data['paymentStatus'] as String?) ??
                 PaymentStatus.unpaid,
@@ -165,6 +166,7 @@ class FirestoreInvoicesRepository implements InvoicesRepository {
         'taxablePaise': invoice.taxablePaise,
         'taxPaise': invoice.taxPaise,
         'totalPaise': invoice.totalPaise,
+        'amountPaidPaise': invoice.amountPaidPaise,
         'paymentStatus': invoice.paymentStatus.toWire,
         'place': invoice.place == GstPlace.interState
             ? 'inter_state'

@@ -77,6 +77,10 @@ enum ValidationReason {
 
   /// Delivery was attempted without at least one delivery photo.
   deliveryNoPhoto,
+
+  /// A payment was rejected because it would collect more than the invoice's
+  /// outstanding balance (over-collection).
+  paymentExceedsBalance,
 }
 
 /// An operation violated a business rule (e.g. the job delivery gate). Distinct

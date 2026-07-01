@@ -26,6 +26,7 @@ abstract class Invoice with _$Invoice {
     required int taxPaise,
     required int totalPaise,
     required PaymentStatus paymentStatus,
+    @Default(0) int amountPaidPaise,
     @Default(GstPlace.intraState) GstPlace place,
     DateTime? createdAt,
     String? createdBy,
@@ -36,4 +37,10 @@ abstract class Invoice with _$Invoice {
 
   /// Whether this invoice carries any GST (a tax invoice vs a bill of supply).
   bool get hasTax => taxPaise > 0;
+
+  /// The amount still owed on this invoice, in paise (never negative).
+  int get balancePaise {
+    final balance = totalPaise - amountPaidPaise;
+    return balance < 0 ? 0 : balance;
+  }
 }
