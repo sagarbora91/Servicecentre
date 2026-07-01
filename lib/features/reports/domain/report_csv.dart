@@ -10,14 +10,14 @@ import 'kpi_summary.dart';
 /// two-decimal rupee string.
 String buildKpiCsv(KpiSummary kpi) {
   final rows = <List<String>>[
-    ["Metric", "Value"],
-    ["Received", "${kpi.jobsReceived}"],
-    ["Delivered", "${kpi.jobsDelivered}"],
-    ["Avg TAT (h)", kpi.avgTatHours.toStringAsFixed(1)],
-    ["First-time fix %", kpi.firstTimeFixPct.toStringAsFixed(0)],
-    ["Comebacks", "${kpi.comebacks}"],
-    ["Uncollected", "${kpi.uncollected}"],
-    ["Revenue (INR)", rupeesPlain(kpi.revenuePaise)],
+    ['Metric', 'Value'],
+    ['Received', '${kpi.jobsReceived}'],
+    ['Delivered', '${kpi.jobsDelivered}'],
+    ['Avg TAT (h)', kpi.avgTatHours.toStringAsFixed(1)],
+    ['First-time fix %', kpi.firstTimeFixPct.toStringAsFixed(0)],
+    ['Comebacks', '${kpi.comebacks}'],
+    ['Uncollected', '${kpi.uncollected}'],
+    ['Revenue (INR)', rupeesPlain(kpi.revenuePaise)],
   ];
   return const ListToCsvConverter().convert(rows);
 }
