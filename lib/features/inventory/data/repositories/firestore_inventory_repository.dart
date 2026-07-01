@@ -124,6 +124,22 @@ class FirestoreInventoryRepository implements InventoryRepository {
         by: by,
       );
 
+  @override
+  Future<Result<void>> receiveGrn({
+    required String partId,
+    required int qty,
+    required String orderId,
+    required String by,
+  }) =>
+      _applyMovement(
+        partId: partId,
+        delta: qty,
+        movementQty: qty,
+        type: StockMovementType.grn,
+        by: by,
+        orderId: orderId,
+      );
+
   /// Shared transactional core for [consume]/[receiveStock]/[adjustStock].
   ///
   /// Reads the part, refuses to let `onHand` go below zero (returns
@@ -138,6 +154,7 @@ class FirestoreInventoryRepository implements InventoryRepository {
     required StockMovementType type,
     required String by,
     String? jobId,
+    String? orderId,
   }) async {
     final partRef = _parts.doc(partId);
     final movementRef = _movements.doc();
@@ -168,6 +185,7 @@ class FirestoreInventoryRepository implements InventoryRepository {
             'type': type.wireName,
             'qty': movementQty,
             if (jobId != null) 'jobId': jobId,
+            if (orderId != null) 'orderId': orderId,
             'at': FieldValue.serverTimestamp(),
             'by': by,
             'branchId': FirestoreConvert.toStr(data['branchId']),

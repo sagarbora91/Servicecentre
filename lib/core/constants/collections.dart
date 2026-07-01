@@ -40,4 +40,19 @@ abstract final class Collections {
   /// `settings/{branchId}` — per-branch configuration (tax, rate card,
   /// templates). Backs GST-configurable billing (M7).
   static const String settings = 'settings';
+
+  /// `suppliers/{id}` — parts suppliers (M10).
+  static const String suppliers = 'suppliers';
+
+  /// `orders/{id}` — purchase orders with goods-receipt (M10).
+  static const String orders = 'orders';
+
+  /// `stockTakes/{id}` — physical stock-count reconciliations (M10).
+  static const String stockTakes = 'stockTakes';
+
+  /// `warranties/{id}` — warranty records for jobs (M10).
+  static const String warranties = 'warranties';
+
+  /// `feedback/{id}` — customer feedback on delivered jobs (M11).
+  static const String feedback = 'feedback';
 }

@@ -259,3 +259,32 @@ test('messages/reminders/dailyStats: staff read but never client-write',
       await assertFails(setDoc(doc(sup, path), { x: 1 }));
     }
   });
+
+// --- M10 purchasing/inventory-advanced collections ---
+
+test('suppliers/orders: staff read; inventory keepers write; counter cannot',
+  async () => {
+    await seedUser('store14', { role: 'store', active: true });
+    await seedUser('counter14', { role: 'counter', active: true });
+    const store = env.authenticatedContext('store14').firestore();
+    const counter = env.authenticatedContext('counter14').firestore();
+    for (const path of ['suppliers/s1', 'orders/o1']) {
+      await assertSucceeds(getDoc(doc(counter, path))); // any staff reads
+      await assertFails(setDoc(doc(counter, path), { x: 1 })); // counter can't
+      await assertSucceeds(setDoc(doc(store, path), { branchId: 'b1' }));
+    }
+  });
+
+test('stockTakes: inventory keepers create, never edit; warranties staff-write',
+  async () => {
+    await seedUser('store15', { role: 'store', active: true });
+    await seedUser('tech15', { role: 'technician', active: true });
+    const store = env.authenticatedContext('store15').firestore();
+    const tech = env.authenticatedContext('tech15').firestore();
+    // Stock-take is append-only for inventory keepers.
+    await assertFails(setDoc(doc(tech, 'stockTakes/st1'), { branchId: 'b1' }));
+    await assertSucceeds(setDoc(doc(store, 'stockTakes/st1'), { branchId: 'b1' }));
+    await assertFails(setDoc(doc(store, 'stockTakes/st1'), { branchId: 'b2' }));
+    // Warranty records: any staff (technician sets on delivery).
+    await assertSucceeds(setDoc(doc(tech, 'warranties/w1'), { jobId: 'j1' }));
+  });

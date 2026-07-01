@@ -41,6 +41,10 @@ service cloud.firestore {
       return isStaff() &&
         profile().role in ['owner', 'supervisor', 'counter'];
     }
+    // Inventory keepers: manage parts, suppliers, orders (GRN) and stock-takes.
+    function canManageInventory() {
+      return isStaff() && profile().role in ['owner', 'supervisor', 'store'];
+    }
 
     function jobDeliveryGateOk(d) {
       // Mirrors the client/repo delivery gate (CLAUDE.md #4): a job may only be
@@ -135,6 +139,33 @@ service cloud.firestore {
       // staff may read for the dashboard (M9).
       allow read: if isStaff();
       allow write: if false;
+    }
+    match /suppliers/{id} {
+      // Suppliers: any staff read; inventory keepers manage (M10).
+      allow read: if isStaff();
+      allow write: if canManageInventory();
+    }
+    match /orders/{id} {
+      // Purchase orders + goods-receipt: any staff read; inventory keepers
+      // create/receive (M10).
+      allow read: if isStaff();
+      allow write: if canManageInventory();
+    }
+    match /stockTakes/{id} {
+      // Stock-take reconciliations: staff read; inventory keepers record.
+      // Append-only — never edited/deleted once recorded (M10).
+      allow read: if isStaff();
+      allow create: if canManageInventory();
+      allow update, delete: if false;
+    }
+    match /warranties/{id} {
+      // Warranty records: any staff read/write (set on delivery; drives
+      // billing) (M10).
+      allow read, write: if isStaff();
+    }
+    match /feedback/{id} {
+      // Customer feedback captured by staff on delivery (M11).
+      allow read, write: if isStaff();
     }
 
     // Default deny — anything not explicitly allowed above is blocked.

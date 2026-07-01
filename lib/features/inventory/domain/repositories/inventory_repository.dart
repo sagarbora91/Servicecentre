@@ -58,4 +58,16 @@ abstract interface class InventoryRepository {
     required int delta,
     required String by,
   });
+
+  /// Receives [qty] of part [partId] into stock against goods-receipt for
+  /// [orderId] (a GRN).
+  ///
+  /// In one transaction: increments `onHand` by [qty] and creates a `grn`
+  /// movement tagged with [orderId]. Backs partial/full order receipts (M10).
+  Future<Result<void>> receiveGrn({
+    required String partId,
+    required int qty,
+    required String orderId,
+    required String by,
+  });
 }

@@ -3,13 +3,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/firebase/firebase_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/repositories/firestore_inventory_repository.dart';
+import '../../data/repositories/firestore_purchasing_repository.dart';
 import '../../domain/entities/part.dart';
+import '../../domain/entities/purchase_order.dart';
+import '../../domain/entities/supplier.dart';
 import '../../domain/repositories/inventory_repository.dart';
+import '../../domain/repositories/purchasing_repository.dart';
 
 /// The app's [InventoryRepository]. Override this (or `firestoreProvider` in
 /// `core/firebase/firebase_providers.dart`) in tests.
 final inventoryRepositoryProvider = Provider<InventoryRepository>(
   (ref) => FirestoreInventoryRepository(ref.watch(firestoreProvider)),
+);
+
+/// The app's [PurchasingRepository] (suppliers + purchase orders / GRN).
+final purchasingRepositoryProvider = Provider<PurchasingRepository>(
+  (ref) => FirestorePurchasingRepository(firestore: ref.watch(firestoreProvider)),
+);
+
+/// Streams the suppliers in [branchId] (newest first).
+final suppliersProvider = StreamProvider.family<List<Supplier>, String>(
+  (ref, branchId) =>
+      ref.watch(purchasingRepositoryProvider).watchSuppliers(branchId),
+);
+
+/// Streams the purchase orders in [branchId] (newest first).
+final ordersProvider = StreamProvider.family<List<PurchaseOrder>, String>(
+  (ref, branchId) =>
+      ref.watch(purchasingRepositoryProvider).watchOrders(branchId),
 );
 
 /// Whether the signed-in user may manage inventory: stock receive/adjust on the
