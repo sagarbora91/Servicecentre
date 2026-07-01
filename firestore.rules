@@ -118,6 +118,24 @@ service cloud.firestore {
       allow read: if isStaff();
       allow write: if isStaff() && profile().role == 'owner';
     }
+    match /messages/{id} {
+      // Outbound message queue: written only by Cloud Functions (admin SDK
+      // bypasses rules); staff may read delivery status. No client writes.
+      allow read: if isStaff();
+      allow write: if false;
+    }
+    match /reminders/{id} {
+      // Follow-up reminders: created by the scheduled function (admin SDK);
+      // staff may read. Client actioning (mark done) lands with the reminder UI.
+      allow read: if isStaff();
+      allow write: if false;
+    }
+    match /dailyStats/{id} {
+      // Daily rollups: written only by the scheduled function (admin SDK);
+      // staff may read for the dashboard (M9).
+      allow read: if isStaff();
+      allow write: if false;
+    }
 
     // Default deny — anything not explicitly allowed above is blocked.
     match /{document=**} {

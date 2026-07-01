@@ -245,3 +245,17 @@ test('settings: staff read; only owner writes', async () => {
   await assertFails(setDoc(doc(sup, 'settings/MAIN'), { gstEnabled: true }));
   await assertSucceeds(setDoc(doc(owner, 'settings/MAIN'), { gstEnabled: true }));
 });
+
+// --- M8 function-written collections: staff read, no client writes ---
+
+test('messages/reminders/dailyStats: staff read but never client-write',
+  async () => {
+    await seedUser('sup13', { role: 'supervisor', active: true });
+    const sup = env.authenticatedContext('sup13').firestore();
+    for (const path of ['messages/m1', 'reminders/r1', 'dailyStats/2026-07-01_MAIN']) {
+      // Staff can read (delivery status / reminders / dashboard).
+      await assertSucceeds(getDoc(doc(sup, path)));
+      // Only Cloud Functions (admin SDK) write these — clients cannot.
+      await assertFails(setDoc(doc(sup, path), { x: 1 }));
+    }
+  });
