@@ -1,0 +1,99 @@
+/// Domain-level failure types returned inside an `Err` (see `result.dart`).
+///
+/// Failures are intentionally free of Firebase types so they can cross into
+/// `domain`/`presentation`. The UI maps a failure's machine-readable reason to
+/// a localized string; [message] is a non-localized developer fallback.
+sealed class Failure {
+  const Failure(this.message);
+
+  /// Developer-facing, non-localized description. Not shown to end users.
+  final String message;
+}
+
+/// Reasons an authentication operation can fail. The UI maps each to a
+/// localized message.
+enum AuthFailureReason {
+  /// Email/password did not match an account.
+  invalidCredentials,
+
+  /// The account exists but has been disabled.
+  userDisabled,
+
+  /// The device is offline or the request timed out.
+  network,
+
+  /// Too many attempts; the account is temporarily throttled.
+  tooManyRequests,
+
+  /// An unclassified authentication error.
+  unknown,
+}
+
+/// An authentication failure with a classified [reason].
+final class AuthFailure extends Failure {
+  /// Creates an authentication failure.
+  const AuthFailure(this.reason, super.message);
+
+  /// The classified reason, used by the UI to pick a localized message.
+  final AuthFailureReason reason;
+}
+
+/// The signed-in user is not permitted to perform the action.
+final class PermissionFailure extends Failure {
+  /// Creates a permission failure.
+  const PermissionFailure(super.message);
+}
+
+/// An unexpected or unclassified failure.
+final class UnexpectedFailure extends Failure {
+  /// Creates an unexpected failure.
+  const UnexpectedFailure(super.message);
+}
+
+/// A requested document or entity could not be found.
+final class NotFoundFailure extends Failure {
+  /// Creates a not-found failure.
+  const NotFoundFailure(super.message);
+}
+
+/// A stock operation was rejected because it would drive on-hand below zero.
+final class InsufficientStockFailure extends Failure {
+  /// Creates an insufficient-stock failure.
+  const InsufficientStockFailure(super.message);
+}
+
+/// An operation conflicts with existing data — e.g. a duplicate unique value
+/// such as a customer phone already used within the branch.
+final class ConflictFailure extends Failure {
+  /// Creates a conflict failure.
+  const ConflictFailure(super.message);
+}
+
+/// Why a domain validation rule rejected an operation. The UI maps each to a
+/// localized message.
+enum ValidationReason {
+  /// Delivery was attempted without a complete QC checklist.
+  deliveryQcIncomplete,
+
+  /// Delivery was attempted without at least one delivery photo.
+  deliveryNoPhoto,
+
+  /// A payment was rejected because it would collect more than the invoice's
+  /// outstanding balance (over-collection).
+  paymentExceedsBalance,
+
+  /// Customer feedback was rejected because the rating was outside 1–5.
+  feedbackRatingInvalid,
+}
+
+/// An operation violated a business rule (e.g. the job delivery gate). Distinct
+/// from [PermissionFailure] (a role/auth problem) and [ConflictFailure] (a data
+/// clash): the caller is allowed to act but the data does not yet satisfy the
+/// rule.
+final class ValidationFailure extends Failure {
+  /// Creates a validation failure with a classified [reason].
+  const ValidationFailure(this.reason, super.message);
+
+  /// The classified reason, used by the UI to pick a localized message.
+  final ValidationReason reason;
+}

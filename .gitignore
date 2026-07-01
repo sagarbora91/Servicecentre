@@ -17,6 +17,10 @@ coverage/
 # Generated localization (regenerated via `flutter gen-l10n`)
 lib/app/l10n/app_localizations*.dart
 
+# Generated code (freezed / json_serializable; regenerated via build_runner)
+*.freezed.dart
+*.g.dart
+
 # Environment config — real values are git-ignored; commit only *.example.json
 /config/dev.json
 /config/staging.json
@@ -29,6 +33,8 @@ firebase-debug.log
 
 # Claude Code (local session settings)
 .claude/
+# Session handoff working doc (not part of the app)
+/HANDOFF.md
 
 # OS
 .DS_Store

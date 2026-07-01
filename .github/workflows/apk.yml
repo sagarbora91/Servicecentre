@@ -1,0 +1,71 @@
+name: APK (debug)
+
+# Builds an installable debug Android APK and uploads it as a downloadable
+# artifact, so the owner can test on a real device WITHOUT installing Flutter.
+#
+# The repo is Dart-source-only (no android/ folder committed), so this job
+# regenerates the native Android project with `flutter create` on every run —
+# android/ stays ephemeral and the repo stays Dart-only.
+#
+# Firebase config comes from lib/firebase_options.dart (explicit Dart options
+# passed to Firebase.initializeApp), NOT google-services.json. `flutter create`
+# does not add the com.google.gms.google-services Gradle plugin, so the native
+# build needs no google-services.json. Until firebase_options.dart holds real
+# values the APK boots to the login screen but cannot authenticate (bootstrap()
+# tolerates the init failure) — useful only as a build-health check until then.
+
+on:
+  push:
+    branches: [feat/m1-auth-roles]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      # Recent Android Gradle Plugin needs JDK 17; the runner default is not
+      # guaranteed, so pin it.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter --version
+      # Regenerate the native Android project. --org com.saagar + the pubspec
+      # name (service_centre_app) => applicationId com.saagar.service_centre_app,
+      # which must match the Android app package the owner registers in Firebase.
+      - name: Generate android/ project
+        run: flutter create . --platforms=android --org com.saagar
+      # Several plugins (file_picker -> flutter_plugin_android_lifecycle, etc.)
+      # require compileSdk 36, but the `flutter create` template compiles
+      # against 34. android/ is ephemeral, so patch it here before the build:
+      #  - the app module via sed, and
+      #  - every plugin subproject via a reflection snippet appended to the root
+      #    build script (the app-level setting does not propagate to plugins).
+      - name: Force compileSdk 36 (app + all plugin modules)
+        run: |
+          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/' \
+            android/app/build.gradle.kts
+          cat tool/force_compile_sdk.gradle.kts >> android/build.gradle.kts
+          grep -n 'compileSdk' android/app/build.gradle.kts
+      - run: flutter pub get
+      - run: flutter gen-l10n
+      - name: Codegen (build_runner)
+        run: dart run build_runner build --delete-conflicting-outputs
+      - name: Build debug APK
+        run: flutter build apk --debug
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: service-centre-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error

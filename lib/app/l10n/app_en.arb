@@ -4,8 +4,1146 @@
   "@appTitle": {
     "description": "Application title shown in the app bar and task switcher."
   },
-  "homePlaceholderMessage": "Setup in progress — features arrive milestone by milestone.",
-  "@homePlaceholderMessage": {
-    "description": "Message on the temporary M0 home screen."
-  }
+  "loginTitle": "Sign in",
+  "@loginTitle": {
+    "description": "Title of the login screen."
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label for the email field on the login form."
+  },
+  "passwordLabel": "Password",
+  "@passwordLabel": {
+    "description": "Label for the password field on the login form."
+  },
+  "signInButton": "Sign in",
+  "@signInButton": {
+    "description": "Label of the sign-in submit button."
+  },
+  "signOutButton": "Sign out",
+  "@signOutButton": {
+    "description": "Label/tooltip of the sign-out action."
+  },
+  "emailRequired": "Enter your email",
+  "@emailRequired": {
+    "description": "Validation message when the email field is empty."
+  },
+  "emailInvalid": "Enter a valid email",
+  "@emailInvalid": {
+    "description": "Validation message when the email is malformed."
+  },
+  "passwordRequired": "Enter your password",
+  "@passwordRequired": {
+    "description": "Validation message when the password field is empty."
+  },
+  "authErrorInvalidCredentials": "Incorrect email or password.",
+  "@authErrorInvalidCredentials": {
+    "description": "Shown when sign-in credentials do not match."
+  },
+  "authErrorUserDisabled": "This account has been disabled.",
+  "@authErrorUserDisabled": {
+    "description": "Shown when the account is disabled."
+  },
+  "authErrorNetwork": "No connection. Check your network and try again.",
+  "@authErrorNetwork": {
+    "description": "Shown when sign-in fails due to connectivity."
+  },
+  "authErrorTooManyRequests": "Too many attempts. Try again later.",
+  "@authErrorTooManyRequests": {
+    "description": "Shown when sign-in is throttled."
+  },
+  "authErrorUnknown": "Something went wrong. Please try again.",
+  "@authErrorUnknown": {
+    "description": "Generic sign-in error fallback."
+  },
+  "genericError": "Something went wrong.",
+  "@genericError": {
+    "description": "Generic error message for failed data loads."
+  },
+  "welcomeUser": "Welcome, {name}",
+  "@welcomeUser": {
+    "description": "Greeting on the home screen.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "roleOwner": "Owner",
+  "@roleOwner": {
+    "description": "Label for the owner role."
+  },
+  "roleSupervisor": "Supervisor",
+  "@roleSupervisor": {
+    "description": "Label for the supervisor role."
+  },
+  "roleCounter": "Counter",
+  "@roleCounter": {
+    "description": "Label for the counter role."
+  },
+  "roleTechnician": "Technician",
+  "@roleTechnician": {
+    "description": "Label for the technician role."
+  },
+  "roleStore": "Store keeper",
+  "@roleStore": {
+    "description": "Label for the store/inventory-keeper role."
+  },
+  "noRoleAssigned": "Your account has no role yet. Ask the owner to assign one.",
+  "@noRoleAssigned": {
+    "description": "Shown when a signed-in user has no/invalid profile."
+  },
+  "accountDeactivated": "Your account has been deactivated. Contact the owner.",
+  "@accountDeactivated": {
+    "description": "Shown when a signed-in user's account is inactive."
+  },
+  "openBilling": "Billing",
+  "@openBilling": {
+    "description": "Button that opens the billing area."
+  },
+  "openAdminUsers": "Manage staff",
+  "@openAdminUsers": {
+    "description": "Button that opens staff management."
+  },
+  "billingTitle": "Billing",
+  "@billingTitle": {
+    "description": "Title of the billing screen."
+  },
+  "adminUsersTitle": "Manage staff",
+  "@adminUsersTitle": {
+    "description": "Title of the staff management screen."
+  },
+  "comingSoon": "Coming in a later milestone.",
+  "@comingSoon": {
+    "description": "Placeholder body for screens not yet built."
+  },
+  "staffEmpty": "No staff yet. Add your first team member.",
+  "@staffEmpty": {
+    "description": "Empty state on the manage-staff screen."
+  },
+  "addStaff": "Add staff",
+  "@addStaff": {
+    "description": "Label for the add-staff action and the create form title."
+  },
+  "editStaff": "Edit staff",
+  "@editStaff": {
+    "description": "Title of the staff edit form."
+  },
+  "staffNameLabel": "Name",
+  "@staffNameLabel": {
+    "description": "Label for the staff name field."
+  },
+  "staffPhoneLabel": "Phone",
+  "@staffPhoneLabel": {
+    "description": "Label for the staff phone field."
+  },
+  "staffEmailLabel": "Email (optional)",
+  "@staffEmailLabel": {
+    "description": "Label for the optional staff email field."
+  },
+  "staffUidLabel": "Sign-in account ID",
+  "@staffUidLabel": {
+    "description": "Label for the staff sign-in account id (uid) field."
+  },
+  "staffUidHelper": "The staff member's existing sign-in account ID. Creating new logins from here arrives in a later update.",
+  "@staffUidHelper": {
+    "description": "Helper text explaining the uid field (no account creation yet)."
+  },
+  "staffRoleLabel": "Role",
+  "@staffRoleLabel": {
+    "description": "Label for the staff role dropdown."
+  },
+  "nameRequired": "Enter a name",
+  "@nameRequired": {
+    "description": "Validation message when the staff name is empty."
+  },
+  "phoneRequired": "Enter a phone number",
+  "@phoneRequired": {
+    "description": "Validation message when the staff phone is empty."
+  },
+  "uidRequired": "Enter the sign-in account ID",
+  "@uidRequired": {
+    "description": "Validation message when the staff uid is empty."
+  },
+  "saveButton": "Save",
+  "@saveButton": {
+    "description": "Label of the save button on the staff form."
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "description": "Label of a cancel action in dialogs."
+  },
+  "staffSaved": "Staff saved",
+  "@staffSaved": {
+    "description": "Snackbar shown after a staff member is created or edited."
+  },
+  "staffUpdated": "Staff updated",
+  "@staffUpdated": {
+    "description": "Snackbar shown after activating or deactivating staff."
+  },
+  "saveFailed": "Couldn't save. Please try again.",
+  "@saveFailed": {
+    "description": "Snackbar shown when a staff write fails."
+  },
+  "editAction": "Edit",
+  "@editAction": {
+    "description": "Staff row menu action to edit the member."
+  },
+  "deactivateAction": "Deactivate",
+  "@deactivateAction": {
+    "description": "Staff row menu action / confirm button to deactivate."
+  },
+  "reactivateAction": "Reactivate",
+  "@reactivateAction": {
+    "description": "Staff row menu action to reactivate a disabled member."
+  },
+  "inactiveBadge": "Inactive",
+  "@inactiveBadge": {
+    "description": "Badge shown beside a deactivated staff member."
+  },
+  "confirmDeactivateTitle": "Deactivate this account?",
+  "@confirmDeactivateTitle": {
+    "description": "Title of the deactivate-confirmation dialog."
+  },
+  "confirmDeactivateBody": "They'll lose access until reactivated.",
+  "@confirmDeactivateBody": {
+    "description": "Body of the deactivate-confirmation dialog."
+  },
+  "branchNotConfigured": "No branch is set for your account yet. Ask the owner to set one.",
+  "@branchNotConfigured": {
+    "description": "Shown on manage-staff when the user has no branch id."
+  },
+  "openBoard": "Jobs board",
+  "@openBoard": {
+    "description": "Home-screen button that opens the jobs board."
+  },
+  "boardTitle": "Jobs board",
+  "@boardTitle": {
+    "description": "Title of the Kanban jobs board screen."
+  },
+  "boardEmpty": "No jobs yet.",
+  "@boardEmpty": {
+    "description": "Empty state when the branch has no jobs at all."
+  },
+  "boardColumnEmpty": "None",
+  "@boardColumnEmpty": {
+    "description": "Placeholder inside a board column with no jobs."
+  },
+  "jobUnknownCustomer": "Unknown customer",
+  "@jobUnknownCustomer": {
+    "description": "Fallback on a job card when the customer is not loaded."
+  },
+  "jobDueLabel": "Due",
+  "@jobDueLabel": {
+    "description": "Prefix label for a job's due date on its card."
+  },
+  "jobOverdue": "Overdue",
+  "@jobOverdue": {
+    "description": "Badge on a job card past its due date."
+  },
+  "jobDetailTitle": "Job",
+  "@jobDetailTitle": {
+    "description": "Title of the job detail screen."
+  },
+  "jobDetailComingSoon": "Full job detail is coming next.",
+  "@jobDetailComingSoon": {
+    "description": "Placeholder body on the job detail screen."
+  },
+  "jobStatusReceived": "Received",
+  "@jobStatusReceived": {
+    "description": "Job status: taken in at the counter."
+  },
+  "jobStatusDiagnosed": "Diagnosed",
+  "@jobStatusDiagnosed": {
+    "description": "Job status: fault assessed."
+  },
+  "jobStatusAwaitingPart": "Awaiting part",
+  "@jobStatusAwaitingPart": {
+    "description": "Job status: blocked on a spare part."
+  },
+  "jobStatusInRepair": "In repair",
+  "@jobStatusInRepair": {
+    "description": "Job status: actively being repaired."
+  },
+  "jobStatusQc": "Quality check",
+  "@jobStatusQc": {
+    "description": "Job status: undergoing quality control."
+  },
+  "jobStatusReady": "Ready",
+  "@jobStatusReady": {
+    "description": "Job status: ready for collection."
+  },
+  "jobStatusDelivered": "Delivered",
+  "@jobStatusDelivered": {
+    "description": "Job status: handed back to the customer."
+  },
+  "jobStatusReturned": "Returned",
+  "@jobStatusReturned": {
+    "description": "Job status: returned without repair."
+  },
+  "jobIntakeTitle": "New job",
+  "@jobIntakeTitle": {
+    "description": "Title of the new-job intake screen."
+  },
+  "newJobButton": "New job",
+  "@newJobButton": {
+    "description": "Board FAB that opens new-job intake."
+  },
+  "intakeCustomerLabel": "Customer",
+  "@intakeCustomerLabel": {
+    "description": "Label for the customer picker on intake."
+  },
+  "intakeSelectCustomer": "Select a customer",
+  "@intakeSelectCustomer": {
+    "description": "Validation message when no customer is chosen."
+  },
+  "intakeNoCustomers": "No customers yet. Add one before creating a job.",
+  "@intakeNoCustomers": {
+    "description": "Shown on intake when the branch has no customers."
+  },
+  "intakeWatchLabel": "Watch (optional)",
+  "@intakeWatchLabel": {
+    "description": "Label for the optional watch picker on intake."
+  },
+  "intakeWatchNone": "No watch",
+  "@intakeWatchNone": {
+    "description": "Watch-picker option for no specific watch."
+  },
+  "intakeFaultLabel": "Fault",
+  "@intakeFaultLabel": {
+    "description": "Label for the fault field on intake."
+  },
+  "intakeFaultRequired": "Describe the fault",
+  "@intakeFaultRequired": {
+    "description": "Validation message when the fault is empty."
+  },
+  "intakeWorkLabel": "Work requested",
+  "@intakeWorkLabel": {
+    "description": "Label for the work-requested field on intake."
+  },
+  "intakeWorkRequired": "Describe the work requested",
+  "@intakeWorkRequired": {
+    "description": "Validation message when the work requested is empty."
+  },
+  "intakeTatLabel": "Turnaround (hours)",
+  "@intakeTatLabel": {
+    "description": "Label for the turnaround-hours field on intake."
+  },
+  "intakeTatInvalid": "Enter the turnaround in hours",
+  "@intakeTatInvalid": {
+    "description": "Validation message when turnaround is not a positive number."
+  },
+  "jobCreated": "Job created",
+  "@jobCreated": {
+    "description": "Snackbar shown after a job is created."
+  },
+  "jobNotFound": "Job not found",
+  "@jobNotFound": {
+    "description": "Shown on detail when the job does not exist."
+  },
+  "detailCustomer": "Customer",
+  "@detailCustomer": {
+    "description": "Job detail field label for the customer."
+  },
+  "detailFault": "Fault",
+  "@detailFault": {
+    "description": "Job detail field label for the fault."
+  },
+  "detailWork": "Work requested",
+  "@detailWork": {
+    "description": "Job detail field label for the work requested."
+  },
+  "detailDue": "Due",
+  "@detailDue": {
+    "description": "Job detail field label for the due date."
+  },
+  "detailSourceStore": "Source store",
+  "@detailSourceStore": {
+    "description": "Job detail field label for the originating store (inter-store job)."
+  },
+  "detailHistory": "History",
+  "@detailHistory": {
+    "description": "Job detail section title for the status timeline."
+  },
+  "qcSectionTitle": "Quality check",
+  "@qcSectionTitle": {
+    "description": "Job detail section title for the QC checklist."
+  },
+  "qcTimekeeping": "Timekeeping",
+  "@qcTimekeeping": {
+    "description": "QC checklist item: timekeeping."
+  },
+  "qcGasket": "Gasket",
+  "@qcGasket": {
+    "description": "QC checklist item: gasket."
+  },
+  "qcGlassClean": "Glass clean",
+  "@qcGlassClean": {
+    "description": "QC checklist item: glass cleaned."
+  },
+  "qcStrap": "Strap",
+  "@qcStrap": {
+    "description": "QC checklist item: strap."
+  },
+  "qcCrown": "Crown",
+  "@qcCrown": {
+    "description": "QC checklist item: crown."
+  },
+  "statusActionsTitle": "Update status",
+  "@statusActionsTitle": {
+    "description": "Job detail section title for status actions."
+  },
+  "moveToStatus": "Move to {status}",
+  "@moveToStatus": {
+    "description": "Button label to move a job to another status.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "deliverButton": "Deliver",
+  "@deliverButton": {
+    "description": "Button that delivers a job (gated on QC + photo)."
+  },
+  "gateQcIncomplete": "Complete the QC checklist to deliver.",
+  "@gateQcIncomplete": {
+    "description": "Shown when delivery is blocked by an incomplete QC map."
+  },
+  "gateNoPhoto": "Add a delivery photo to deliver (added in a later update).",
+  "@gateNoPhoto": {
+    "description": "Shown when delivery is blocked by a missing delivery photo."
+  },
+  "statusUpdated": "Status updated",
+  "@statusUpdated": {
+    "description": "Snackbar after a status move."
+  },
+  "qcSaved": "QC saved",
+  "@qcSaved": {
+    "description": "Snackbar after saving the QC checklist."
+  },
+  "deliveredSnack": "Job delivered",
+  "@deliveredSnack": {
+    "description": "Snackbar after a job is delivered."
+  },
+  "openSearch": "Search",
+  "@openSearch": {
+    "description": "Board app-bar action that opens job search."
+  },
+  "searchTitle": "Search jobs",
+  "@searchTitle": {
+    "description": "Title of the job search screen."
+  },
+  "searchHint": "Phone, job no., serial, or name",
+  "@searchHint": {
+    "description": "Hint text in the job search field."
+  },
+  "searchPrompt": "Search by phone, job number, serial, or name.",
+  "@searchPrompt": {
+    "description": "Empty-state prompt before a search is entered."
+  },
+  "searchNoResults": "No matching jobs.",
+  "@searchNoResults": {
+    "description": "Shown when a search returns no jobs."
+  },
+  "openLabel": "Box label",
+  "@openLabel": {
+    "description": "Job detail action that opens the QR box-label."
+  },
+  "labelTitle": "Box label",
+  "@labelTitle": {
+    "description": "Title of the QR box-label screen."
+  },
+  "openCustomers": "Customers",
+  "@openCustomers": {
+    "description": "Home button that opens the customer list."
+  },
+  "customersTitle": "Customers",
+  "@customersTitle": {
+    "description": "Title of the customer list screen."
+  },
+  "customerSearchHint": "Search by name or phone",
+  "@customerSearchHint": {
+    "description": "Hint text in the customer search field."
+  },
+  "customersEmpty": "No customers yet.",
+  "@customersEmpty": {
+    "description": "Empty state when the branch has no customers."
+  },
+  "customersNoMatch": "No matching customers.",
+  "@customersNoMatch": {
+    "description": "Shown when the customer filter matches none."
+  },
+  "customerDetailTitle": "Customer",
+  "@customerDetailTitle": {
+    "description": "Title of the customer detail screen."
+  },
+  "customerNotFound": "Customer not found.",
+  "@customerNotFound": {
+    "description": "Shown on detail when the customer does not exist."
+  },
+  "customerPhoneLabel": "Phone",
+  "@customerPhoneLabel": {
+    "description": "Customer detail field label for phone."
+  },
+  "customerEmailLabel": "Email",
+  "@customerEmailLabel": {
+    "description": "Customer detail field label for email."
+  },
+  "customerAddressLabel": "Address",
+  "@customerAddressLabel": {
+    "description": "Customer detail field label for address."
+  },
+  "customerVisitsLabel": "Visits",
+  "@customerVisitsLabel": {
+    "description": "Customer detail field label for the service count."
+  },
+  "watchesSection": "Watches",
+  "@watchesSection": {
+    "description": "Customer detail section title for watches."
+  },
+  "noWatches": "No watches recorded.",
+  "@noWatches": {
+    "description": "Empty state for a customer's watches."
+  },
+  "serviceHistorySection": "Service history",
+  "@serviceHistorySection": {
+    "description": "Customer detail section title for past jobs."
+  },
+  "noServiceHistory": "No past jobs.",
+  "@noServiceHistory": {
+    "description": "Empty state for a customer's service history."
+  },
+  "addCustomer": "Add customer",
+  "@addCustomer": {
+    "description": "FAB / title for creating a customer."
+  },
+  "editCustomer": "Edit customer",
+  "@editCustomer": {
+    "description": "Title of the edit-customer form."
+  },
+  "customerNameLabel": "Name",
+  "@customerNameLabel": {
+    "description": "Label for the customer name field."
+  },
+  "customerNameRequired": "Enter a name",
+  "@customerNameRequired": {
+    "description": "Validation when the customer name is empty."
+  },
+  "customerPhoneRequired": "Enter a phone number",
+  "@customerPhoneRequired": {
+    "description": "Validation when the customer phone is empty."
+  },
+  "customerConsentLabel": "WhatsApp updates",
+  "@customerConsentLabel": {
+    "description": "Switch label for WhatsApp consent."
+  },
+  "customerPhoneExists": "A customer with this phone already exists.",
+  "@customerPhoneExists": {
+    "description": "Shown when create is blocked by phone de-dupe."
+  },
+  "customerSaved": "Customer saved",
+  "@customerSaved": {
+    "description": "Snackbar after a customer is created or edited."
+  },
+  "addWatchButton": "Add watch",
+  "@addWatchButton": {
+    "description": "Button on customer detail to add a watch."
+  },
+  "watchFormAddTitle": "Add watch",
+  "@watchFormAddTitle": {
+    "description": "Title of the add-watch form."
+  },
+  "watchFormEditTitle": "Edit watch",
+  "@watchFormEditTitle": {
+    "description": "Title of the edit-watch form."
+  },
+  "watchBrandLabel": "Brand",
+  "@watchBrandLabel": {
+    "description": "Label for the watch brand field."
+  },
+  "watchModelLabel": "Model",
+  "@watchModelLabel": {
+    "description": "Label for the watch model field."
+  },
+  "watchSerialLabel": "Serial (optional)",
+  "@watchSerialLabel": {
+    "description": "Label for the optional watch serial field."
+  },
+  "watchBrandRequired": "Enter the brand",
+  "@watchBrandRequired": {
+    "description": "Validation when the watch brand is empty."
+  },
+  "watchModelRequired": "Enter the model",
+  "@watchModelRequired": {
+    "description": "Validation when the watch model is empty."
+  },
+  "watchSaved": "Watch saved",
+  "@watchSaved": {
+    "description": "Snackbar after a watch is added or edited."
+  },
+  "openInventory": "Inventory",
+  "@openInventory": {
+    "description": "Home button that opens the inventory parts list."
+  },
+  "partsTitle": "Inventory",
+  "@partsTitle": {
+    "description": "Title of the inventory parts list screen."
+  },
+  "partsSearchHint": "Search by reference, category, or bin",
+  "@partsSearchHint": {
+    "description": "Hint text in the parts search field."
+  },
+  "partsEmpty": "No parts yet.",
+  "@partsEmpty": {
+    "description": "Empty state when the branch has no parts."
+  },
+  "partsNoMatch": "No matching parts.",
+  "@partsNoMatch": {
+    "description": "Shown when the parts filter matches none."
+  },
+  "partDetailTitle": "Part",
+  "@partDetailTitle": {
+    "description": "Title of the part detail screen."
+  },
+  "partNotFound": "Part not found.",
+  "@partNotFound": {
+    "description": "Shown on detail when the part does not exist."
+  },
+  "partCategoryLabel": "Category",
+  "@partCategoryLabel": {
+    "description": "Part detail field label for category."
+  },
+  "partBinLabel": "Bin",
+  "@partBinLabel": {
+    "description": "Part detail field label for the bin code."
+  },
+  "partSizeLabel": "Size",
+  "@partSizeLabel": {
+    "description": "Part detail field label for size."
+  },
+  "partOnHandLabel": "On hand",
+  "@partOnHandLabel": {
+    "description": "Part detail field label for the on-hand quantity."
+  },
+  "partReservedLabel": "Reserved",
+  "@partReservedLabel": {
+    "description": "Part detail field label for the reserved quantity."
+  },
+  "partAvailableLabel": "Available",
+  "@partAvailableLabel": {
+    "description": "Part detail field label for available (on-hand minus reserved)."
+  },
+  "partReorderLabel": "Reorder point",
+  "@partReorderLabel": {
+    "description": "Part detail field label for the reorder point."
+  },
+  "partMinLevelLabel": "Min level",
+  "@partMinLevelLabel": {
+    "description": "Part detail field label for the minimum stock level."
+  },
+  "partCostLabel": "Cost",
+  "@partCostLabel": {
+    "description": "Part detail field label for cost price."
+  },
+  "partMrpLabel": "MRP",
+  "@partMrpLabel": {
+    "description": "Part detail field label for maximum retail price."
+  },
+  "partLowStock": "Low stock",
+  "@partLowStock": {
+    "description": "Marker/chip shown for a part at or below its reorder point."
+  },
+  "partServiceOnly": "Service only",
+  "@partServiceOnly": {
+    "description": "Note shown for a part that is for service use only."
+  },
+  "receiveStockButton": "Receive",
+  "@receiveStockButton": {
+    "description": "Part detail button that opens the receive-stock dialog."
+  },
+  "adjustStockButton": "Adjust",
+  "@adjustStockButton": {
+    "description": "Part detail button that opens the adjust-stock dialog."
+  },
+  "receiveStockTitle": "Receive stock",
+  "@receiveStockTitle": {
+    "description": "Title of the receive-stock dialog."
+  },
+  "adjustStockTitle": "Adjust stock",
+  "@adjustStockTitle": {
+    "description": "Title of the adjust-stock dialog."
+  },
+  "stockQtyLabel": "Quantity",
+  "@stockQtyLabel": {
+    "description": "Field label for a receive quantity."
+  },
+  "stockDeltaLabel": "Change (+/−)",
+  "@stockDeltaLabel": {
+    "description": "Field label for a signed stock adjustment amount."
+  },
+  "stockQtyRequired": "Enter a quantity",
+  "@stockQtyRequired": {
+    "description": "Validation when the receive quantity is missing."
+  },
+  "stockQtyPositive": "Enter a quantity above zero",
+  "@stockQtyPositive": {
+    "description": "Validation when the receive quantity is not positive."
+  },
+  "stockDeltaRequired": "Enter a change amount",
+  "@stockDeltaRequired": {
+    "description": "Validation when the adjustment amount is missing."
+  },
+  "stockDeltaNonZero": "Enter a non-zero amount",
+  "@stockDeltaNonZero": {
+    "description": "Validation when the adjustment amount is zero."
+  },
+  "stockApply": "Apply",
+  "@stockApply": {
+    "description": "Confirm button in the stock receive/adjust dialog."
+  },
+  "stockReceived": "Stock received",
+  "@stockReceived": {
+    "description": "Snackbar after receiving stock."
+  },
+  "stockAdjusted": "Stock adjusted",
+  "@stockAdjusted": {
+    "description": "Snackbar after adjusting stock."
+  },
+  "stockInsufficient": "Not enough stock for that change.",
+  "@stockInsufficient": {
+    "description": "Shown when a stock change would drive on-hand below zero."
+  },
+  "partsUsedSection": "Parts used",
+  "@partsUsedSection": {
+    "description": "Job detail section title for parts logged on the job."
+  },
+  "noPartsUsed": "No parts logged.",
+  "@noPartsUsed": {
+    "description": "Empty state for a job's parts-used list."
+  },
+  "addPartButton": "Add part",
+  "@addPartButton": {
+    "description": "Job detail button that opens the add-part dialog."
+  },
+  "addPartTitle": "Add part",
+  "@addPartTitle": {
+    "description": "Title of the add-part-to-job dialog."
+  },
+  "addPartLabel": "Part",
+  "@addPartLabel": {
+    "description": "Label for the part picker in the add-part dialog."
+  },
+  "addPartSelect": "Select a part",
+  "@addPartSelect": {
+    "description": "Validation when no part is chosen in the add-part dialog."
+  },
+  "partAddedSnack": "Part added",
+  "@partAddedSnack": {
+    "description": "Snackbar after a part is logged on a job."
+  },
+  "openImport": "Import data",
+  "@openImport": {
+    "description": "Owner home button that opens CSV import."
+  },
+  "importTitle": "Import data",
+  "@importTitle": {
+    "description": "Title of the CSV import screen."
+  },
+  "importModeCustomers": "Customers",
+  "@importModeCustomers": {
+    "description": "Import mode toggle: customers dataset."
+  },
+  "importModeParts": "Parts",
+  "@importModeParts": {
+    "description": "Import mode toggle: parts dataset."
+  },
+  "importCustomersHint": "Columns: name*, phone*, email, address, consent. (* required)",
+  "@importCustomersHint": {
+    "description": "Expected columns for a customers CSV."
+  },
+  "importPartsHint": "Columns: reference*, category, bin, size, onHand, reorderPoint, minLevel, cost, mrp, serviceOnly. (* required)",
+  "@importPartsHint": {
+    "description": "Expected columns for a parts CSV."
+  },
+  "importChooseFile": "Choose CSV file",
+  "@importChooseFile": {
+    "description": "Button that opens the file picker for a CSV."
+  },
+  "importReadyCount": "{count} rows ready to import",
+  "@importReadyCount": {
+    "description": "Count of valid rows in the import preview.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "importProblemsCount": "{count} problems found",
+  "@importProblemsCount": {
+    "description": "Count of rejected rows in the import preview.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "importRowLabel": "Row {line}",
+  "@importRowLabel": {
+    "description": "Source row label for an import error.",
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "importFileLevel": "File",
+  "@importFileLevel": {
+    "description": "Label for a file-level (header) import error."
+  },
+  "importMissingColumn": "Missing column: {name}",
+  "@importMissingColumn": {
+    "description": "A required column is absent from the CSV header.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "importMissingName": "Missing name",
+  "@importMissingName": {
+    "description": "Import error: a customer row has no name."
+  },
+  "importMissingPhone": "Missing phone",
+  "@importMissingPhone": {
+    "description": "Import error: a customer row has no phone."
+  },
+  "importDuplicatePhone": "Duplicate phone in file",
+  "@importDuplicatePhone": {
+    "description": "Import error: a phone repeats earlier in the file."
+  },
+  "importMissingReference": "Missing reference",
+  "@importMissingReference": {
+    "description": "Import error: a part row has no reference."
+  },
+  "importInvalidNumber": "Invalid number",
+  "@importInvalidNumber": {
+    "description": "Import error: a numeric cell is not a whole number."
+  },
+  "importInvalidMoney": "Invalid amount",
+  "@importInvalidMoney": {
+    "description": "Import error: a money cell is not a valid amount."
+  },
+  "importButton": "Import {count}",
+  "@importButton": {
+    "description": "Button that writes the valid rows.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "importDone": "Imported {imported}; {failed} failed",
+  "@importDone": {
+    "description": "Summary after committing an import.",
+    "placeholders": {
+      "imported": {
+        "type": "String"
+      },
+      "failed": {
+        "type": "String"
+      }
+    }
+  },
+  "importDuplicateExisting": "Already exists",
+  "@importDuplicateExisting": {
+    "description": "Write failure: the row conflicts with existing data."
+  },
+  "importWriteFailed": "Couldn't save",
+  "@importWriteFailed": {
+    "description": "Write failure: a generic save error."
+  },
+  "printSlipAction": "Print slip",
+  "@printSlipAction": {
+    "description": "Job detail button that prints/shares the job slip PDF."
+  },
+  "jobSlipTitle": "Job slip",
+  "@jobSlipTitle": {
+    "description": "Heading on the printed job slip."
+  },
+  "photosSection": "Photos",
+  "@photosSection": {
+    "description": "Job detail section title for intake/delivery photos."
+  },
+  "intakePhotosLabel": "Intake photos",
+  "@intakePhotosLabel": {
+    "description": "Label for the intake photo count."
+  },
+  "deliveryPhotosLabel": "Delivery photos",
+  "@deliveryPhotosLabel": {
+    "description": "Label for the delivery photo count."
+  },
+  "addIntakePhoto": "Add intake photo",
+  "@addIntakePhoto": {
+    "description": "Button to capture an intake photo."
+  },
+  "addDeliveryPhoto": "Add delivery photo",
+  "@addDeliveryPhoto": {
+    "description": "Button to capture a delivery photo (unblocks delivery)."
+  },
+  "photoAdded": "Photo added",
+  "@photoAdded": {
+    "description": "Snackbar after a photo is captured and uploaded."
+  },
+  "openScan": "Scan",
+  "@openScan": {
+    "description": "Board action that opens the QR scan-to-open screen."
+  },
+  "scanTitle": "Scan label",
+  "@scanTitle": {
+    "description": "Title of the QR scan screen."
+  },
+  "scanPrompt": "Point the camera at a job's QR label.",
+  "@scanPrompt": {
+    "description": "Instruction on the scan screen."
+  },
+  "estimatesTitle": "Estimates",
+  "@estimatesTitle": {
+    "description": "Title of the estimate (customer quote) screen."
+  },
+  "jobDetailEstimatesButton": "Estimates",
+  "@jobDetailEstimatesButton": {
+    "description": "Job-detail action that opens the estimates screen."
+  },
+  "estimateNewButton": "New estimate",
+  "@estimateNewButton": {
+    "description": "Button that starts a new draft estimate."
+  },
+  "estimateEmpty": "No estimates yet.",
+  "@estimateEmpty": {
+    "description": "Empty state on the estimate screen."
+  },
+  "estimateTotalLabel": "Total",
+  "@estimateTotalLabel": {
+    "description": "Label for the estimate total amount."
+  },
+  "estimateAddLine": "Add line",
+  "@estimateAddLine": {
+    "description": "Button that adds a line to an estimate."
+  },
+  "estimateMarkSent": "Mark sent",
+  "@estimateMarkSent": {
+    "description": "Button that marks a draft estimate as sent to the customer."
+  },
+  "estimateApprove": "Approve",
+  "@estimateApprove": {
+    "description": "Button that records customer approval of an estimate."
+  },
+  "estimateDecline": "Decline",
+  "@estimateDecline": {
+    "description": "Button that records that the customer declined an estimate."
+  },
+  "estimateStatusDraft": "Draft",
+  "@estimateStatusDraft": {
+    "description": "Estimate status label: draft."
+  },
+  "estimateStatusSent": "Sent",
+  "@estimateStatusSent": {
+    "description": "Estimate status label: sent to the customer."
+  },
+  "estimateStatusApproved": "Approved",
+  "@estimateStatusApproved": {
+    "description": "Estimate status label: approved by the customer."
+  },
+  "estimateStatusDeclined": "Declined",
+  "@estimateStatusDeclined": {
+    "description": "Estimate status label: declined by the customer."
+  },
+  "estimateApprovedVia": "Approved via {via}",
+  "@estimateApprovedVia": {
+    "description": "Note showing how the customer approved the estimate.",
+    "placeholders": {
+      "via": { "type": "String" }
+    }
+  },
+  "estimateNewTitle": "New estimate",
+  "@estimateNewTitle": {
+    "description": "Title of the dialog that creates a draft estimate."
+  },
+  "estimateAddLineTitle": "Add line",
+  "@estimateAddLineTitle": {
+    "description": "Title of the dialog that adds a line to an estimate."
+  },
+  "estimateLineDescLabel": "Description",
+  "@estimateLineDescLabel": {
+    "description": "Label for the estimate line description field."
+  },
+  "estimateLineAmountLabel": "Amount (₹)",
+  "@estimateLineAmountLabel": {
+    "description": "Label for the estimate line amount field, in rupees."
+  },
+  "estimateLineDescRequired": "Enter a description.",
+  "@estimateLineDescRequired": {
+    "description": "Validation message when the estimate line description is empty."
+  },
+  "estimateAmountInvalid": "Enter a valid amount.",
+  "@estimateAmountInvalid": {
+    "description": "Validation message when the estimate line amount is not a valid rupee value."
+  },
+  "estimateSaved": "Estimate saved.",
+  "@estimateSaved": {
+    "description": "Snackbar after an estimate is created or updated."
+  },
+  "invoicesTitle": "Invoices",
+  "@invoicesTitle": { "description": "Title of the invoice screen." },
+  "jobDetailInvoicesButton": "Invoices",
+  "@jobDetailInvoicesButton": { "description": "Job-detail action opening the invoice screen." },
+  "invoiceEmpty": "No invoices yet.",
+  "@invoiceEmpty": { "description": "Empty state on the invoice screen." },
+  "invoiceNewButton": "New invoice",
+  "@invoiceNewButton": { "description": "Heading of the new-invoice builder." },
+  "invoiceAddLineButton": "Add line",
+  "@invoiceAddLineButton": { "description": "Button that adds a line to the invoice being built." },
+  "invoiceCreateButton": "Create invoice",
+  "@invoiceCreateButton": { "description": "Button that raises the invoice from the built lines." },
+  "invoiceSaved": "Invoice created.",
+  "@invoiceSaved": { "description": "Snackbar after an invoice is created." },
+  "invoicePrintButton": "Print",
+  "@invoicePrintButton": { "description": "Button that prints/shares an invoice PDF." },
+  "invoiceTotalLabel": "Total",
+  "@invoiceTotalLabel": { "description": "Label for the invoice grand total." },
+  "invoiceTaxableLabel": "Taxable value",
+  "@invoiceTaxableLabel": { "description": "Totals label for the taxable value on a tax invoice." },
+  "invoiceSubtotalLabel": "Subtotal",
+  "@invoiceSubtotalLabel": { "description": "Totals label for the subtotal on a bill of supply." },
+  "invoiceCgstLabel": "CGST",
+  "@invoiceCgstLabel": { "description": "Label for the CGST amount." },
+  "invoiceSgstLabel": "SGST",
+  "@invoiceSgstLabel": { "description": "Label for the SGST amount." },
+  "invoiceIgstLabel": "IGST",
+  "@invoiceIgstLabel": { "description": "Label for the IGST amount." },
+  "invoiceStatusPaid": "Paid",
+  "@invoiceStatusPaid": { "description": "Invoice payment status: paid." },
+  "invoiceStatusPartial": "Partial",
+  "@invoiceStatusPartial": { "description": "Invoice payment status: partially paid." },
+  "invoiceStatusUnpaid": "Unpaid",
+  "@invoiceStatusUnpaid": { "description": "Invoice payment status: unpaid." },
+  "invoiceLineAddTitle": "Add invoice line",
+  "@invoiceLineAddTitle": { "description": "Title of the add-invoice-line dialog." },
+  "invoiceLineQtyLabel": "Quantity",
+  "@invoiceLineQtyLabel": { "description": "Label for the invoice line quantity field." },
+  "invoiceLineRateLabel": "Rate (₹)",
+  "@invoiceLineRateLabel": { "description": "Label for the invoice line unit-rate field, in rupees." },
+  "invoiceLineGstLabel": "GST %",
+  "@invoiceLineGstLabel": { "description": "Label for the invoice line GST percentage field." },
+  "invoiceLineQtyInvalid": "Enter a valid quantity.",
+  "@invoiceLineQtyInvalid": { "description": "Validation message for an invalid quantity." },
+  "invoiceLineGstInvalid": "Enter a valid GST %.",
+  "@invoiceLineGstInvalid": { "description": "Validation message for an invalid GST percentage." },
+  "invoicePdfTaxTitle": "Tax Invoice",
+  "@invoicePdfTaxTitle": { "description": "PDF heading for a GST tax invoice." },
+  "invoicePdfBillTitle": "Bill of Supply",
+  "@invoicePdfBillTitle": { "description": "PDF heading for a non-GST bill of supply." },
+  "invoiceColItem": "Item",
+  "@invoiceColItem": { "description": "Invoice PDF column header: item/description." },
+  "invoiceColHsn": "HSN/SAC",
+  "@invoiceColHsn": { "description": "Invoice PDF column header: HSN/SAC code." },
+  "invoiceColQty": "Qty",
+  "@invoiceColQty": { "description": "Invoice PDF column header: quantity." },
+  "invoiceColRate": "Rate",
+  "@invoiceColRate": { "description": "Invoice PDF column header: unit rate." },
+  "invoiceColGst": "GST%",
+  "@invoiceColGst": { "description": "Invoice PDF column header: GST percentage." },
+  "invoiceColAmount": "Amount",
+  "@invoiceColAmount": { "description": "Invoice PDF column header: line amount." },
+  "invoicePdfFooter": "This is a computer-generated invoice.",
+  "@invoicePdfFooter": { "description": "Footer line on the invoice PDF." },
+  "invoiceBalanceLabel": "Balance",
+  "@invoiceBalanceLabel": { "description": "Label for the invoice outstanding balance." },
+  "invoicePaidLabel": "Paid",
+  "@invoicePaidLabel": { "description": "Label for the amount paid on an invoice." },
+  "invoiceRecordPayment": "Record payment",
+  "@invoiceRecordPayment": { "description": "Button that opens the record-payment dialog." },
+  "invoicePaymentTitle": "Record payment",
+  "@invoicePaymentTitle": { "description": "Title of the record-payment dialog." },
+  "invoicePaymentAmountLabel": "Amount (₹)",
+  "@invoicePaymentAmountLabel": { "description": "Label for the payment amount field, in rupees." },
+  "invoicePaymentModeLabel": "Mode",
+  "@invoicePaymentModeLabel": { "description": "Label for the payment mode selector." },
+  "invoicePaymentRefLabel": "Reference (optional)",
+  "@invoicePaymentRefLabel": { "description": "Label for the optional payment reference field." },
+  "paymentModeCash": "Cash",
+  "@paymentModeCash": { "description": "Payment mode: cash." },
+  "paymentModeUpi": "UPI",
+  "@paymentModeUpi": { "description": "Payment mode: UPI." },
+  "paymentModeCard": "Card",
+  "@paymentModeCard": { "description": "Payment mode: card." },
+  "invoicePaymentSaved": "Payment recorded.",
+  "@invoicePaymentSaved": { "description": "Snackbar after a payment is recorded." },
+  "invoicePaymentExceeds": "Payment exceeds the outstanding balance.",
+  "@invoicePaymentExceeds": { "description": "Error when a payment would over-collect an invoice." },
+  "invoiceWarrantyNoCharge": "No charge — this job is covered (warranty/goodwill).",
+  "@invoiceWarrantyNoCharge": { "description": "Banner on the invoice screen when the job is not billable due to warranty/goodwill." },
+  "openDayBook": "Day-book",
+  "@openDayBook": { "description": "Home button opening the day-book screen." },
+  "dayBookTitle": "Day-book",
+  "@dayBookTitle": { "description": "Title of the day-book screen." },
+  "dayBookPickDate": "Change date",
+  "@dayBookPickDate": { "description": "Button that changes the day-book date." },
+  "dayBookTotal": "Total collected",
+  "@dayBookTotal": { "description": "Label for the day-book grand total." },
+  "dayBookCount": "Payments",
+  "@dayBookCount": { "description": "Label for the day-book payment count." },
+  "dayBookExport": "Export CSV",
+  "@dayBookExport": { "description": "Button that exports the accountant CSV." },
+  "dayBookExported": "CSV saved.",
+  "@dayBookExported": { "description": "Snackbar after the CSV is saved." },
+  "dayBookExportCancelled": "Export cancelled.",
+  "@dayBookExportCancelled": { "description": "Snackbar when the CSV save is cancelled." },
+  "openDashboard": "Dashboard",
+  "@openDashboard": { "description": "Home button opening the KPI dashboard." },
+  "dashboardTitle": "Dashboard",
+  "@dashboardTitle": { "description": "Title of the KPI dashboard screen." },
+  "dashboardRange7": "7 days",
+  "@dashboardRange7": { "description": "Dashboard range option: last 7 days." },
+  "dashboardRange30": "30 days",
+  "@dashboardRange30": { "description": "Dashboard range option: last 30 days." },
+  "kpiReceived": "Received",
+  "@kpiReceived": { "description": "KPI: jobs received in the period." },
+  "kpiDelivered": "Delivered",
+  "@kpiDelivered": { "description": "KPI: jobs delivered in the period." },
+  "kpiAvgTat": "Avg TAT (h)",
+  "@kpiAvgTat": { "description": "KPI: average turnaround time in hours." },
+  "kpiFirstFix": "First-time fix",
+  "@kpiFirstFix": { "description": "KPI: first-time-fix percentage." },
+  "kpiComebacks": "Comebacks",
+  "@kpiComebacks": { "description": "KPI: rework jobs (comebacks)." },
+  "kpiUncollected": "Uncollected",
+  "@kpiUncollected": { "description": "KPI: ready jobs past due, not collected." },
+  "kpiRevenue": "Revenue",
+  "@kpiRevenue": { "description": "KPI: invoiced revenue in the period." },
+  "dashboardExportKpi": "Export KPIs (CSV)",
+  "@dashboardExportKpi": { "description": "Button exporting the KPI summary as CSV." },
+  "dashboardExportGst": "Export GST report (CSV)",
+  "@dashboardExportGst": { "description": "Button exporting the GST report as CSV." },
+  "openAudit": "Audit log",
+  "@openAudit": { "description": "Home button opening the audit-log screen." },
+  "auditTitle": "Audit log",
+  "@auditTitle": { "description": "Title of the audit-log screen." },
+  "auditEmpty": "No activity yet.",
+  "@auditEmpty": { "description": "Empty state on the audit-log screen." },
+  "feedbackLabel": "Feedback",
+  "@feedbackLabel": { "description": "Label/heading for customer feedback." },
+  "feedbackRecord": "Record feedback",
+  "@feedbackRecord": { "description": "Button that opens the feedback dialog." },
+  "feedbackDialogTitle": "Customer feedback",
+  "@feedbackDialogTitle": { "description": "Title of the feedback dialog." },
+  "feedbackRatingLabel": "Rating",
+  "@feedbackRatingLabel": { "description": "Label for the star rating selector." },
+  "feedbackCommentLabel": "Comment (optional)",
+  "@feedbackCommentLabel": { "description": "Label for the optional feedback comment." },
+  "feedbackSubmitButton": "Submit",
+  "@feedbackSubmitButton": { "description": "Button that submits customer feedback." },
+  "feedbackSaved": "Feedback saved.",
+  "@feedbackSaved": { "description": "Snackbar after feedback is recorded." }
 }

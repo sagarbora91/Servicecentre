@@ -146,7 +146,7 @@ storage.rules
 
 ```
 users/{uid}
-  name:string  role:enum[owner,supervisor,counter,technician]  phone:string  active:bool
+  name:string  role:enum[owner,supervisor,counter,technician,store]  phone:string  active:bool
 
 customers/{id}
   name:string  phone:string  email:string?  address:string?

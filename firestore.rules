@@ -1,28 +1,72 @@
 rules_version = '2';
 
-// M0 skeleton (from BUILD_BRIEF.md §5.3). Per-collection rules are expanded and
-// emulator-tested in M2. Default-deny is in force until then.
+// Auth & role rules (M1). Per-collection rules for the remaining entities are
+// expanded and emulator-tested in M2. Default-deny is in force for anything not
+// matched below.
 //
-// NOTE: the parts write rule references a 'store' role that is NOT in the
-// users.role enum (§5.1: owner|supervisor|counter|technician). Reconcile this
-// open question with the owner in M2 before relying on it. [PLACEHOLDER: role set]
+// The client route guards (lib/.../auth_guard.dart) mirror these checks; the
+// server rules here are the real enforcement.
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() {
       return request.auth != null;
     }
-    function role() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    function profileExists() {
+      return exists(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      );
     }
+    function profile() {
+      return get(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data;
+    }
+    function role() {
+      return profile().role;
+    }
+    // Active staff with a recognized role. Inactive accounts are denied, which
+    // matches the client guard (RoleHomeScreen shows a "deactivated" message).
     function isStaff() {
-      return signedIn() && role() in ['owner', 'supervisor', 'counter', 'technician'];
+      return signedIn() && profileExists() && profile().active == true &&
+        profile().role in
+          ['owner', 'supervisor', 'counter', 'technician', 'store'];
     }
     function canFinance() {
-      return signedIn() && role() in ['owner', 'supervisor'];
+      return isStaff() && profile().role in ['owner', 'supervisor'];
+    }
+    // Who may prepare/track customer quotes (estimates): finance plus the
+    // front-desk counter who talks to the customer. Documented default for M7,
+    // to confirm with the owner.
+    function canQuote() {
+      return isStaff() &&
+        profile().role in ['owner', 'supervisor', 'counter'];
+    }
+    // Inventory keepers: manage parts, suppliers, orders (GRN) and stock-takes.
+    function canManageInventory() {
+      return isStaff() && profile().role in ['owner', 'supervisor', 'store'];
     }
 
+    function jobDeliveryGateOk(d) {
+      // Mirrors the client/repo delivery gate (CLAUDE.md #4): a job may only be
+      // set to `delivered` with a complete QC map AND >=1 delivery photo.
+      return d.status != 'delivered' || (
+        d.get('qc', {}).get('timekeeping', false) == true &&
+        d.get('qc', {}).get('gasket', false) == true &&
+        d.get('qc', {}).get('glassClean', false) == true &&
+        d.get('qc', {}).get('strap', false) == true &&
+        d.get('qc', {}).get('crown', false) == true &&
+        d.get('deliveryPhotos', []).size() >= 1
+      );
+    }
     match /jobs/{id} {
-      allow read, write: if isStaff();
+      allow read, create, delete: if isStaff();
+      allow update: if isStaff() && jobDeliveryGateOk(request.resource.data);
+    }
+    match /estimates/{id} {
+      // Customer quotes: any active staff may read; owner/supervisor/counter
+      // prepare and progress them (draft -> sent -> approved/declined).
+      allow read: if isStaff();
+      allow write: if canQuote();
     }
     match /invoices/{id} {
       allow read, write: if canFinance();
@@ -31,12 +75,97 @@ service cloud.firestore {
       allow read, write: if canFinance();
     }
     match /parts/{id} {
+      // Read: any active staff. Write: inventory keepers (owner/supervisor/
+      // store) plus technician, who decrements stock when logging parts used on
+      // a job. Rules can't tell a job-consume from a manual adjust (separate
+      // doc writes), so the client limits technicians to the job-consume action
+      // while store/supervisor/owner get the receive/adjust screens. Counter
+      // (front desk) still cannot write parts.
       allow read: if isStaff();
-      allow write: if signedIn() && role() in ['owner', 'supervisor'];
+      allow write: if isStaff() &&
+        profile().role in ['owner', 'supervisor', 'store', 'technician'];
+    }
+    match /customers/{id} {
+      allow read, write: if isStaff();
+    }
+    match /watches/{id} {
+      allow read, write: if isStaff();
+    }
+    match /stockMovements/{id} {
+      // Append-only stock ledger: staff record movements; never edited/deleted.
+      allow read: if isStaff();
+      allow create: if isStaff();
+      allow update, delete: if false;
     }
     match /users/{id} {
+      // Any signed-in user may read their own profile (so the app can discover
+      // its own role/active status); staff may read others. Only the owner may
+      // create/modify staff docs and thus assign roles.
+      allow read: if (signedIn() && request.auth.uid == id) || isStaff();
+      allow write: if isStaff() && profile().role == 'owner';
+    }
+    match /activityLog/{id} {
+      // Append-only audit trail (CLAUDE.md #9): staff append, never edit/delete.
+      allow read, create: if isStaff();
+      allow update, delete: if false;
+    }
+    match /counters/{id} {
+      // Per-branch/month jobNo sequence counters; staff allocate inside a
+      // transaction. Never deleted (would reuse numbers).
+      allow read, create, update: if isStaff();
+      allow delete: if false;
+    }
+    match /settings/{branchId} {
+      // Per-branch configuration (tax/GST config incl. GSTIN, rate card,
+      // templates). Any active staff may read (billing needs the tax config);
+      // only the owner may change it.
       allow read: if isStaff();
-      allow write: if signedIn() && role() == 'owner';
+      allow write: if isStaff() && profile().role == 'owner';
+    }
+    match /messages/{id} {
+      // Outbound message queue: written only by Cloud Functions (admin SDK
+      // bypasses rules); staff may read delivery status. No client writes.
+      allow read: if isStaff();
+      allow write: if false;
+    }
+    match /reminders/{id} {
+      // Follow-up reminders: created by the scheduled function (admin SDK);
+      // staff may read. Client actioning (mark done) lands with the reminder UI.
+      allow read: if isStaff();
+      allow write: if false;
+    }
+    match /dailyStats/{id} {
+      // Daily rollups: written only by the scheduled function (admin SDK);
+      // staff may read for the dashboard (M9).
+      allow read: if isStaff();
+      allow write: if false;
+    }
+    match /suppliers/{id} {
+      // Suppliers: any staff read; inventory keepers manage (M10).
+      allow read: if isStaff();
+      allow write: if canManageInventory();
+    }
+    match /orders/{id} {
+      // Purchase orders + goods-receipt: any staff read; inventory keepers
+      // create/receive (M10).
+      allow read: if isStaff();
+      allow write: if canManageInventory();
+    }
+    match /stockTakes/{id} {
+      // Stock-take reconciliations: staff read; inventory keepers record.
+      // Append-only — never edited/deleted once recorded (M10).
+      allow read: if isStaff();
+      allow create: if canManageInventory();
+      allow update, delete: if false;
+    }
+    match /warranties/{id} {
+      // Warranty records: any staff read/write (set on delivery; drives
+      // billing) (M10).
+      allow read, write: if isStaff();
+    }
+    match /feedback/{id} {
+      // Customer feedback captured by staff on delivery (M11).
+      allow read, write: if isStaff();
     }
 
     // Default deny — anything not explicitly allowed above is blocked.
