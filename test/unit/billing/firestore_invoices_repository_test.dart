@@ -109,6 +109,30 @@ void main() {
       expect(result.failureOrNull, isA<NotFoundFailure>());
     });
 
+    test('invoicesInRange returns only invoices created in the window',
+        () async {
+      await firestore.collection('invoices').doc('inA').set(<String, dynamic>{
+        'jobId': 'j1',
+        'branchId': 'MAIN',
+        'totalPaise': 100000,
+        'createdAt': Timestamp.fromDate(DateTime.utc(2026, 7, 1, 10)),
+      });
+      await firestore.collection('invoices').doc('inB').set(<String, dynamic>{
+        'jobId': 'j2',
+        'branchId': 'MAIN',
+        'totalPaise': 50000,
+        'createdAt': Timestamp.fromDate(DateTime.utc(2026, 7, 9, 10)),
+      });
+
+      final result = await repo.invoicesInRange(
+        'MAIN',
+        DateTime.utc(2026, 7, 1),
+        DateTime.utc(2026, 7, 2),
+      );
+
+      expect(result.valueOrNull!.map((i) => i.id), ['inA']);
+    });
+
     test('propagates a number-allocation failure', () async {
       final failingRepo = FirestoreInvoicesRepository(
         firestore: firestore,

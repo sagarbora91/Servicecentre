@@ -21,6 +21,7 @@ import '../features/jobs/presentation/screens/job_detail_screen.dart';
 import '../features/jobs/presentation/screens/job_scan_screen.dart';
 import '../features/jobs/presentation/screens/job_search_screen.dart';
 import '../features/jobs/presentation/screens/qr_label_screen.dart';
+import '../features/reports/presentation/screens/dashboard_screen.dart';
 import '../features/reports/presentation/screens/day_book_screen.dart';
 
 /// Provides the app's [GoRouter] with auth-aware redirects (M1).
@@ -67,6 +68,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.dayBook,
         name: 'dayBook',
         builder: (context, state) => const DayBookScreen(),
+      ),
+      GoRoute(
+        path: Routes.dashboard,
+        name: 'dashboard',
+        builder: (context, state) => const DashboardScreen(),
       ),
       GoRoute(
         path: Routes.adminUsers,

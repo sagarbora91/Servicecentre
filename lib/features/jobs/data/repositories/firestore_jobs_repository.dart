@@ -158,6 +158,27 @@ class FirestoreJobsRepository implements JobsRepository {
   }
 
   @override
+  Future<Result<List<Job>>> jobsInRange(
+    String branchId,
+    DateTime from,
+    DateTime to,
+  ) async {
+    try {
+      final snap = await _jobs
+          .where('branchId', isEqualTo: branchId)
+          .where(
+            'createdAt',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(from.toUtc()),
+          )
+          .where('createdAt', isLessThan: Timestamp.fromDate(to.toUtc()))
+          .get();
+      return Ok(_toJobList(snap));
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
   Future<Result<List<Job>>> jobsForCustomers(
     String branchId,
     List<String> customerIds,

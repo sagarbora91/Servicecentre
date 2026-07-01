@@ -35,6 +35,14 @@ abstract interface class JobsRepository {
   /// sensitive prefix). An empty [query] yields no results.
   Future<Result<List<Job>>> searchJobsByJobNo(String branchId, String query);
 
+  /// Returns jobs in [branchId] created within the half-open range
+  /// [from, to) (UTC) — backs the reports dashboard.
+  Future<Result<List<Job>>> jobsInRange(
+    String branchId,
+    DateTime from,
+    DateTime to,
+  );
+
   /// Returns the jobs in [branchId] belonging to any of [customerIds]. An empty
   /// list yields no results (avoids an invalid empty `whereIn`).
   Future<Result<List<Job>>> jobsForCustomers(

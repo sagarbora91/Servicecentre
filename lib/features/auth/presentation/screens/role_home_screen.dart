@@ -147,6 +147,13 @@ class _Dashboard extends StatelessWidget {
                   label: Text(l10n.openDayBook),
                   onPressed: () => context.go(Routes.dayBook),
                 ),
+                const SizedBox(height: 12),
+                FilledButton.tonalIcon(
+                  key: const Key('openDashboardBtn'),
+                  icon: const Icon(Icons.insights_outlined),
+                  label: Text(l10n.openDashboard),
+                  onPressed: () => context.go(Routes.dashboard),
+                ),
               ],
               if (user.role.canManageUsers) ...[
                 const SizedBox(height: 12),

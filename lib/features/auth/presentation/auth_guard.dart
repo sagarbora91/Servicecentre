@@ -18,6 +18,9 @@ abstract final class Routes {
   /// Day-book reconciliation + accountant CSV export — finance roles only.
   static const String dayBook = '/reports/daybook';
 
+  /// KPI dashboard — finance roles only.
+  static const String dashboard = '/reports/dashboard';
+
   /// Staff management — owner only.
   static const String adminUsers = '/admin/users';
 
@@ -87,6 +90,7 @@ const Set<String> _publicRoutes = {Routes.login};
 const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.billing: {UserRole.owner, UserRole.supervisor},
   Routes.dayBook: {UserRole.owner, UserRole.supervisor},
+  Routes.dashboard: {UserRole.owner, UserRole.supervisor},
   Routes.adminUsers: {UserRole.owner},
   Routes.dataImport: {UserRole.owner},
   Routes.board: _anyStaff,

@@ -56,6 +56,27 @@ class FirestoreInvoicesRepository implements InvoicesRepository {
   }
 
   @override
+  Future<Result<List<Invoice>>> invoicesInRange(
+    String branchId,
+    DateTime from,
+    DateTime to,
+  ) async {
+    try {
+      final snap = await _invoices
+          .where('branchId', isEqualTo: branchId)
+          .where(
+            'createdAt',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(from.toUtc()),
+          )
+          .where('createdAt', isLessThan: Timestamp.fromDate(to.toUtc()))
+          .get();
+      return Ok([for (final d in snap.docs) _fromDoc(d.id, d.data())]);
+    } on Object catch (e) {
+      return Err(_failureFor(e));
+    }
+  }
+
+  @override
   Future<Result<Invoice>> createInvoice({
     required String jobId,
     required String branchId,

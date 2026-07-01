@@ -16,6 +16,14 @@ abstract interface class InvoicesRepository {
   /// Fetches an invoice by document [id] (`NotFoundFailure` if absent).
   Future<Result<Invoice>> getInvoice(String id);
 
+  /// Returns invoices in [branchId] created within the half-open range
+  /// [from, to) (UTC) — backs the reports dashboard's revenue figure.
+  Future<Result<List<Invoice>>> invoicesInRange(
+    String branchId,
+    DateTime from,
+    DateTime to,
+  );
+
   /// Raises an invoice for [jobId] from [lines]. The GST totals are computed
   /// from the lines via [GstCalculator] (per [place]), a unique number is
   /// allocated transactionally, and the invoice starts [PaymentStatus.unpaid].

@@ -287,5 +287,16 @@
   "dayBookCount": "पेमेंट्स",
   "dayBookExport": "CSV निर्यात करा",
   "dayBookExported": "CSV जतन केले.",
-  "dayBookExportCancelled": "निर्यात रद्द केले."
+  "dayBookExportCancelled": "निर्यात रद्द केले.",
+  "openDashboard": "डॅशबोर्ड",
+  "dashboardTitle": "डॅशबोर्ड",
+  "dashboardRange7": "७ दिवस",
+  "dashboardRange30": "३० दिवस",
+  "kpiReceived": "स्वीकारले",
+  "kpiDelivered": "वितरित",
+  "kpiAvgTat": "सरासरी TAT (ता)",
+  "kpiFirstFix": "प्रथमच दुरुस्ती",
+  "kpiComebacks": "पुनरागमन",
+  "kpiUncollected": "न घेतलेले",
+  "kpiRevenue": "महसूल"
 }
