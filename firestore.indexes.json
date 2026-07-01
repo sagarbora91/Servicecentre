@@ -89,6 +89,14 @@
         { "fieldPath": "branchId", "order": "ASCENDING" },
         { "fieldPath": "serial", "order": "ASCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "estimates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "jobId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

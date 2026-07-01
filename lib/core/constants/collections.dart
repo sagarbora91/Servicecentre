@@ -27,4 +27,17 @@ abstract final class Collections {
   /// `counters/{branchId_YYMM}` — transactional sequence counters backing
   /// per-branch, per-month job numbers (see `JobNoAllocator`).
   static const String counters = 'counters';
+
+  /// `estimates/{id}` — customer quotes for a job (M7).
+  static const String estimates = 'estimates';
+
+  /// `invoices/{id}` — GST/plain invoices raised for a job (M7).
+  static const String invoices = 'invoices';
+
+  /// `payments/{id}` — payments recorded against an invoice (M7).
+  static const String payments = 'payments';
+
+  /// `settings/{branchId}` — per-branch configuration (tax, rate card,
+  /// templates). Backs GST-configurable billing (M7).
+  static const String settings = 'settings';
 }

@@ -34,6 +34,13 @@ service cloud.firestore {
     function canFinance() {
       return isStaff() && profile().role in ['owner', 'supervisor'];
     }
+    // Who may prepare/track customer quotes (estimates): finance plus the
+    // front-desk counter who talks to the customer. Documented default for M7,
+    // to confirm with the owner.
+    function canQuote() {
+      return isStaff() &&
+        profile().role in ['owner', 'supervisor', 'counter'];
+    }
 
     function jobDeliveryGateOk(d) {
       // Mirrors the client/repo delivery gate (CLAUDE.md #4): a job may only be
@@ -50,6 +57,12 @@ service cloud.firestore {
     match /jobs/{id} {
       allow read, create, delete: if isStaff();
       allow update: if isStaff() && jobDeliveryGateOk(request.resource.data);
+    }
+    match /estimates/{id} {
+      // Customer quotes: any active staff may read; owner/supervisor/counter
+      // prepare and progress them (draft -> sent -> approved/declined).
+      allow read: if isStaff();
+      allow write: if canQuote();
     }
     match /invoices/{id} {
       allow read, write: if canFinance();
@@ -97,6 +110,13 @@ service cloud.firestore {
       // transaction. Never deleted (would reuse numbers).
       allow read, create, update: if isStaff();
       allow delete: if false;
+    }
+    match /settings/{branchId} {
+      // Per-branch configuration (tax/GST config incl. GSTIN, rate card,
+      // templates). Any active staff may read (billing needs the tax config);
+      // only the owner may change it.
+      allow read: if isStaff();
+      allow write: if isStaff() && profile().role == 'owner';
     }
 
     // Default deny — anything not explicitly allowed above is blocked.

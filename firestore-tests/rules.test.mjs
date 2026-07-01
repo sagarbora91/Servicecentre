@@ -215,3 +215,33 @@ test('counters: staff may allocate, unauthenticated denied', async () => {
   await assertFails(setDoc(doc(anon, 'counters/MAIN_2606'), { seq: 1 }));
   await assertSucceeds(setDoc(doc(staff, 'counters/MAIN_2606'), { seq: 1 }));
 });
+
+// --- estimates (M7): any staff read; owner/supervisor/counter write ---
+
+test('estimates: staff read; counter/owner write; technician cannot write',
+  async () => {
+    await seedUser('tech11', { role: 'technician', active: true });
+    await seedUser('counter11', { role: 'counter', active: true });
+    const tech = env.authenticatedContext('tech11').firestore();
+    const counter = env.authenticatedContext('counter11').firestore();
+    // Any active staff may read a quote.
+    await assertSucceeds(getDoc(doc(tech, 'estimates/e1')));
+    // Technician (workshop) cannot prepare/progress quotes.
+    await assertFails(setDoc(doc(tech, 'estimates/e1'), { jobId: 'j1' }));
+    // Counter (front desk) can.
+    await assertSucceeds(setDoc(doc(counter, 'estimates/e2'), { jobId: 'j1' }));
+  });
+
+// --- settings (M7): staff read; owner-only write ---
+
+test('settings: staff read; only owner writes', async () => {
+  await seedUser('sup12', { role: 'supervisor', active: true });
+  await seedUser('owner12', { role: 'owner', active: true });
+  const sup = env.authenticatedContext('sup12').firestore();
+  const owner = env.authenticatedContext('owner12').firestore();
+  // Any active staff may read the tax/rate config billing depends on.
+  await assertSucceeds(getDoc(doc(sup, 'settings/MAIN')));
+  // Only the owner may change settings (GST config, GSTIN, rate card).
+  await assertFails(setDoc(doc(sup, 'settings/MAIN'), { gstEnabled: true }));
+  await assertSucceeds(setDoc(doc(owner, 'settings/MAIN'), { gstEnabled: true }));
+});
