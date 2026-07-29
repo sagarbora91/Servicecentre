@@ -16,7 +16,7 @@ BackupFile buildBackupJson({
     'branchId': branchId,
     'collections': collections,
   });
-  final stamp = utc.toIso8601String().replaceAll(RegExp(r'[:.-]'), '');
+  final stamp = utc.toIso8601String().replaceAll(RegExp('[:.-]'), '');
   return BackupFile(
     fileName: 'service-centre-$branchId-$stamp.json',
     mimeType: 'application/json',
