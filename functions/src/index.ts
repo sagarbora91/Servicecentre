@@ -6,6 +6,7 @@ import {
   onDocumentCreated,
   onDocumentUpdated,
 } from "firebase-functions/v2/firestore";
+import { defineSecret, defineString } from "firebase-functions/params";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { activeBranchIds } from "./logic/branches";
@@ -21,11 +22,17 @@ import {
   type Role,
 } from "./logic/set_user_role";
 import { recomputeStockLevels } from "./logic/stock";
-import { StubBsp } from "./messaging/bsp";
+import { createBsp } from "./messaging/bsp";
 
 initializeApp();
 const db = getFirestore();
-const bsp = new StubBsp();
+const messageBspProvider = defineString("MESSAGE_BSP_PROVIDER", {
+  default: "stub",
+});
+const messageBspEndpoint = defineString("MESSAGE_BSP_ENDPOINT", {
+  default: "",
+});
+const messageBspToken = defineSecret("MESSAGE_BSP_TOKEN");
 
 /** Real claim setter backed by the Auth admin SDK. */
 const adminClaims: ClaimSetter = {
@@ -56,10 +63,22 @@ export const onJobStatusChange = onDocumentUpdated(
  * BUILD_BRIEF §6 `sendMessage`.
  */
 export const sendMessage = onDocumentCreated(
-  "messages/{messageId}",
+  {
+    document: "messages/{messageId}",
+    secrets: [messageBspToken],
+  },
   async (event) => {
     const data = event.data?.data() as MessageView | undefined;
     if (!data) return;
+    const provider = messageBspProvider.value();
+    if (provider !== "stub" && provider !== "webhook") {
+      throw new Error(`Unsupported MESSAGE_BSP_PROVIDER: ${provider}`);
+    }
+    const bsp = createBsp({
+      provider,
+      endpoint: messageBspEndpoint.value(),
+      token: provider === "webhook" ? messageBspToken.value() : undefined,
+    });
     await deliverQueuedMessage(db, bsp, event.params.messageId, data);
   },
 );
