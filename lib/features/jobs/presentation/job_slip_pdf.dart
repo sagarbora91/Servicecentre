@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../../../core/pdf/pdf_theme.dart';
+
 /// One `label: value` line on a job slip.
 class JobSlipRow {
   /// Creates a slip row.
@@ -51,8 +53,8 @@ class JobSlipData {
 /// Renders [data] into a small (A6) job-slip PDF and returns its bytes. Pure
 /// Dart (the `pdf` package builds in memory); printing/sharing is done by the
 /// caller via the `printing` package.
-Future<Uint8List> buildJobSlipPdf(JobSlipData data) {
-  final doc = pw.Document()
+Future<Uint8List> buildJobSlipPdf(JobSlipData data) async {
+  final doc = pw.Document(theme: await loadPdfTheme())
     ..addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a6,

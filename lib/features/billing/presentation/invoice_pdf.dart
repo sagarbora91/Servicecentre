@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
+import '../../../core/pdf/pdf_theme.dart';
+
 /// One line on an invoice PDF. All money fields are pre-formatted `₹` strings
 /// (the caller formats via `formatPaise`) so this builder stays pure.
 class InvoicePdfLine {
@@ -119,10 +121,10 @@ class InvoicePdfData {
 
 /// Renders [data] into an A5 invoice PDF and returns its bytes. Pure Dart (the
 /// `pdf` package builds in memory); printing/sharing is done by the caller via
-/// the `printing` package. Devanagari (mr/hi) needs an embedded font (M11); the
-/// default font is Latin-only.
-Future<Uint8List> buildInvoicePdf(InvoicePdfData data) {
-  final doc = pw.Document()
+/// the `printing` package. The bundled Noto Sans Devanagari family renders
+/// English, Marathi, and Hindi from the same builder.
+Future<Uint8List> buildInvoicePdf(InvoicePdfData data) async {
+  final doc = pw.Document(theme: await loadPdfTheme())
     ..addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a5,

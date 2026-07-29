@@ -72,5 +72,37 @@ void main() {
       expect(bytes, isNotEmpty);
       expect(String.fromCharCodes(bytes.take(4)), '%PDF');
     });
+
+    test('embeds a font that renders Marathi and Hindi invoice text', () async {
+      const data = InvoicePdfData(
+        title: 'कर चलन',
+        number: 'INV-2607-0003',
+        sellerName: 'सेवा केंद्र',
+        customerName: 'आशा',
+        columnDesc: 'वर्णन',
+        columnQty: 'संख्या',
+        columnRate: 'दर',
+        columnAmount: 'रक्कम',
+        lines: [
+          InvoicePdfLine(
+            desc: 'घड़ी की मरम्मत',
+            qty: 1,
+            rate: '₹500.00',
+            amount: '₹500.00',
+          ),
+        ],
+        taxableLabel: 'करपात्र',
+        taxable: '₹500.00',
+        totalLabel: 'एकूण',
+        total: '₹500.00',
+        footer: 'धन्यवाद',
+        showTax: false,
+      );
+
+      final bytes = await buildInvoicePdf(data);
+
+      expect(bytes, isNotEmpty);
+      expect(String.fromCharCodes(bytes.take(4)), '%PDF');
+    });
   });
 }

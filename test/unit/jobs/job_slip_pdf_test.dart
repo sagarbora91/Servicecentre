@@ -37,5 +37,24 @@ void main() {
 
       expect(bytes, isNotEmpty);
     });
+
+    test('embeds a font that renders Marathi and Hindi text', () async {
+      const data = JobSlipData(
+        title: 'जॉब पावती',
+        jobNo: '2607-0001',
+        rows: [
+          JobSlipRow('ग्राहक', 'आशा'),
+          JobSlipRow('समस्या', 'घड़ी बंद है'),
+        ],
+        partsLabel: 'वापरलेले भाग',
+        parts: ['बॅटरी x1'],
+        footer: 'सेवा केंद्र',
+      );
+
+      final bytes = await buildJobSlipPdf(data);
+
+      expect(bytes, isNotEmpty);
+      expect(String.fromCharCodes(bytes.take(4)), '%PDF');
+    });
   });
 }

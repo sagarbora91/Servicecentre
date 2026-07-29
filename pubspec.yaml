@@ -52,4 +52,5 @@ flutter:
   uses-material-design: true
   generate: true # enables l10n (gen-l10n) codegen
   assets:
+    - assets/fonts/
     - assets/images/
