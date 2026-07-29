@@ -1,0 +1,14 @@
+{
+  "name": "firestore-rules-tests",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Firestore security-rules tests (M2 acceptance: rules deny unauthenticated). Runs against the Firebase emulator; no live project required.",
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^11.0.0"
+  }
+}

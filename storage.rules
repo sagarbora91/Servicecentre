@@ -1,9 +1,16 @@
 rules_version = '2';
 
-// M0 skeleton. Storage paths (intake/delivery photos, attachments) are scoped
-// and tested in M6 (photos) and M3 (jobs). Default-deny until then.
+// M6: job photos live under jobs/{jobId}/{intake|delivery}/...; any signed-in
+// staff member may read/write them (the app gates access by auth + role).
+// NOTE: Storage rules can't cheaply read the users role doc, so role-level
+// gating (vs. plain signed-in) is a follow-up via a custom claim. These rules
+// are not emulator-tested in CI (the rules job covers Firestore only).
 service firebase.storage {
   match /b/{bucket}/o {
+    match /jobs/{jobId}/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+    // Default deny — anything else is blocked.
     match /{allPaths=**} {
       allow read, write: if false;
     }

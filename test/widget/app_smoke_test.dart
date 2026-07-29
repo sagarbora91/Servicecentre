@@ -1,17 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:service_centre_app/app/app.dart';
+
+import '../support/auth_harness.dart';
 
 void main() {
-  testWidgets('app boots to the placeholder home', (tester) async {
-    await tester.pumpWidget(
-      const ProviderScope(child: ServiceCentreApp()),
-    );
-    await tester.pumpAndSettle();
+  testWidgets('a signed-out boot lands on the login screen', (tester) async {
+    await pumpAppSignedOut(tester);
 
-    // The placeholder home renders (identified by a stable key, not a
-    // localized string, so the test is language-agnostic).
-    expect(find.byKey(const Key('homePlaceholderIcon')), findsOneWidget);
+    // The sign-in button is the stable, language-agnostic anchor for the
+    // login screen.
+    expect(find.byKey(const Key('signInBtn')), findsOneWidget);
   });
 }

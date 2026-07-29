@@ -1,0 +1,290 @@
+// Firestore security-rules tests — M2 acceptance: "rules deny unauthenticated"
+// (BUILD_BRIEF §12 M2), plus the role checks that mirror the client guards.
+//
+// Runs against the Firebase Firestore emulator via @firebase/rules-unit-testing
+// with a demo project, so it needs no live Firebase project / flutterfire
+// configure. Launched in CI by `firebase emulators:exec --only firestore`.
+import { readFileSync } from 'node:fs';
+import { after, afterEach, before, test } from 'node:test';
+import {
+  assertFails,
+  assertSucceeds,
+  initializeTestEnvironment,
+} from '@firebase/rules-unit-testing';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+
+let env;
+
+before(async () => {
+  env = await initializeTestEnvironment({
+    projectId: 'demo-sc',
+    firestore: {
+      host: '127.0.0.1',
+      port: 8080,
+      rules: readFileSync('firestore.rules', 'utf8'),
+    },
+  });
+});
+
+afterEach(async () => {
+  await env.clearFirestore();
+});
+
+after(async () => {
+  await env?.cleanup();
+});
+
+/// Seeds a `users/{uid}` profile bypassing rules, so a context can act as that
+/// role in the test body.
+async function seedUser(uid, data) {
+  await env.withSecurityRulesDisabled(async (ctx) => {
+    await setDoc(doc(ctx.firestore(), `users/${uid}`), data);
+  });
+}
+
+// --- Unauthenticated is denied everywhere (the core M2 acceptance) ---
+
+test('unauthenticated cannot read jobs', async () => {
+  const db = env.unauthenticatedContext().firestore();
+  await assertFails(getDoc(doc(db, 'jobs/j1')));
+});
+
+test('unauthenticated cannot write jobs', async () => {
+  const db = env.unauthenticatedContext().firestore();
+  await assertFails(setDoc(doc(db, 'jobs/j1'), { fault: 'x' }));
+});
+
+test('unauthenticated cannot read customers / parts / users', async () => {
+  const db = env.unauthenticatedContext().firestore();
+  await assertFails(getDoc(doc(db, 'customers/c1')));
+  await assertFails(getDoc(doc(db, 'parts/p1')));
+  await assertFails(getDoc(doc(db, 'users/u1')));
+});
+
+// --- Signed-in but not (active) staff is still denied ---
+
+test('signed-in without a profile is not staff (jobs denied)', async () => {
+  const db = env.authenticatedContext('ghost').firestore();
+  await assertFails(getDoc(doc(db, 'jobs/j1')));
+});
+
+test('an inactive account is not staff (jobs denied)', async () => {
+  await seedUser('off1', { role: 'counter', active: false });
+  const db = env.authenticatedContext('off1').firestore();
+  await assertFails(getDoc(doc(db, 'jobs/j1')));
+});
+
+// --- Active staff: role-scoped access ---
+
+test('active staff can read and write jobs', async () => {
+  await seedUser('tech1', { role: 'technician', active: true });
+  const db = env.authenticatedContext('tech1').firestore();
+  await assertSucceeds(getDoc(doc(db, 'jobs/j1')));
+  await assertSucceeds(setDoc(doc(db, 'jobs/j2'), { fault: 'tick' }));
+});
+
+test('parts: counter can read but not write; store and technician can write',
+  async () => {
+    await seedUser('counter1', { role: 'counter', active: true });
+    await seedUser('store1', { role: 'store', active: true });
+    await seedUser('tech2', { role: 'technician', active: true });
+    const counter = env.authenticatedContext('counter1').firestore();
+    const store = env.authenticatedContext('store1').firestore();
+    const tech = env.authenticatedContext('tech2').firestore();
+    // Counter (front desk) can read but not write parts.
+    await assertSucceeds(getDoc(doc(counter, 'parts/p1')));
+    await assertFails(setDoc(doc(counter, 'parts/p1'), { onHand: 1 }));
+    // Store keeper manages stock; technician decrements when logging job parts.
+    await assertSucceeds(setDoc(doc(store, 'parts/p2'), { onHand: 1 }));
+    await assertSucceeds(setDoc(doc(tech, 'parts/p3'), { onHand: 1 }));
+  });
+
+test('invoices and payments are finance-only', async () => {
+  await seedUser('tech3', { role: 'technician', active: true });
+  await seedUser('owner3', { role: 'owner', active: true });
+  const tech = env.authenticatedContext('tech3').firestore();
+  const owner = env.authenticatedContext('owner3').firestore();
+  await assertFails(getDoc(doc(tech, 'invoices/i1')));
+  await assertSucceeds(getDoc(doc(owner, 'invoices/i1')));
+  await assertFails(getDoc(doc(tech, 'payments/pay1')));
+  await assertSucceeds(getDoc(doc(owner, 'payments/pay1')));
+});
+
+// --- users: owner-only writes, self-read ---
+
+test('only the owner can write users docs (assign roles)', async () => {
+  await seedUser('owner4', { role: 'owner', active: true });
+  await seedUser('sup4', { role: 'supervisor', active: true });
+  const owner = env.authenticatedContext('owner4').firestore();
+  const sup = env.authenticatedContext('sup4').firestore();
+  await assertSucceeds(
+    setDoc(doc(owner, 'users/new1'), { role: 'counter', active: true }),
+  );
+  await assertFails(
+    setDoc(doc(sup, 'users/new2'), { role: 'counter', active: true }),
+  );
+});
+
+test('a signed-in user may read their own profile but not others', async () => {
+  const db = env.authenticatedContext('self1').firestore();
+  await assertSucceeds(getDoc(doc(db, 'users/self1')));
+  await assertFails(getDoc(doc(db, 'users/other1')));
+});
+
+// --- stockMovements: append-only ledger ---
+
+test('stockMovements can be created by staff but never updated', async () => {
+  await seedUser('store2', { role: 'store', active: true });
+  const db = env.authenticatedContext('store2').firestore();
+  await assertSucceeds(
+    setDoc(doc(db, 'stockMovements/m1'), { partId: 'p1', qty: 1 }),
+  );
+  // Append-only: update/delete are denied for everyone.
+  await assertFails(
+    setDoc(doc(db, 'stockMovements/m1'), { partId: 'p1', qty: 2 }),
+  );
+});
+
+// --- activityLog: append-only audit trail ---
+
+test('activityLog: staff append, unauthenticated denied, no edits', async () => {
+  await seedUser('tech7', { role: 'technician', active: true });
+  const staff = env.authenticatedContext('tech7').firestore();
+  const anon = env.unauthenticatedContext().firestore();
+  await assertFails(setDoc(doc(anon, 'activityLog/a1'), { action: 'x' }));
+  await assertSucceeds(
+    setDoc(doc(staff, 'activityLog/a2'), {
+      actor: 'tech7',
+      action: 'job.deliver',
+      entity: 'jobs',
+      entityId: 'j1',
+    }),
+  );
+  // a2 now exists, so a second setDoc is an update -> denied (append-only).
+  await assertFails(setDoc(doc(staff, 'activityLog/a2'), { action: 'y' }));
+});
+
+// --- jobs: delivery gate mirrored in rules (CLAUDE.md #4 / Golden Rule 8) ---
+
+test('jobs update to delivered needs complete QC + a delivery photo',
+  async () => {
+    await seedUser('tech8', { role: 'technician', active: true });
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), 'jobs/jx'), {
+        status: 'ready',
+        branchId: 'b1',
+      });
+    });
+    const db = env.authenticatedContext('tech8').firestore();
+    // Incomplete (no QC / no photo) -> denied.
+    await assertFails(updateDoc(doc(db, 'jobs/jx'), { status: 'delivered' }));
+    // Complete QC + a delivery photo -> allowed.
+    await assertSucceeds(
+      updateDoc(doc(db, 'jobs/jx'), {
+        status: 'delivered',
+        qc: {
+          timekeeping: true,
+          gasket: true,
+          glassClean: true,
+          strap: true,
+          crown: true,
+        },
+        deliveryPhotos: ['delivery.jpg'],
+      }),
+    );
+  });
+
+test('jobs update to a non-delivered status needs no QC', async () => {
+  await seedUser('tech9', { role: 'technician', active: true });
+  await env.withSecurityRulesDisabled(async (ctx) => {
+    await setDoc(doc(ctx.firestore(), 'jobs/jy'), {
+      status: 'received',
+      branchId: 'b1',
+    });
+  });
+  const db = env.authenticatedContext('tech9').firestore();
+  await assertSucceeds(updateDoc(doc(db, 'jobs/jy'), { status: 'in_repair' }));
+});
+
+// --- counters: jobNo allocation, staff-only ---
+
+test('counters: staff may allocate, unauthenticated denied', async () => {
+  await seedUser('tech10', { role: 'technician', active: true });
+  const staff = env.authenticatedContext('tech10').firestore();
+  const anon = env.unauthenticatedContext().firestore();
+  await assertFails(setDoc(doc(anon, 'counters/MAIN_2606'), { seq: 1 }));
+  await assertSucceeds(setDoc(doc(staff, 'counters/MAIN_2606'), { seq: 1 }));
+});
+
+// --- estimates (M7): any staff read; owner/supervisor/counter write ---
+
+test('estimates: staff read; counter/owner write; technician cannot write',
+  async () => {
+    await seedUser('tech11', { role: 'technician', active: true });
+    await seedUser('counter11', { role: 'counter', active: true });
+    const tech = env.authenticatedContext('tech11').firestore();
+    const counter = env.authenticatedContext('counter11').firestore();
+    // Any active staff may read a quote.
+    await assertSucceeds(getDoc(doc(tech, 'estimates/e1')));
+    // Technician (workshop) cannot prepare/progress quotes.
+    await assertFails(setDoc(doc(tech, 'estimates/e1'), { jobId: 'j1' }));
+    // Counter (front desk) can.
+    await assertSucceeds(setDoc(doc(counter, 'estimates/e2'), { jobId: 'j1' }));
+  });
+
+// --- settings (M7): staff read; owner-only write ---
+
+test('settings: staff read; only owner writes', async () => {
+  await seedUser('sup12', { role: 'supervisor', active: true });
+  await seedUser('owner12', { role: 'owner', active: true });
+  const sup = env.authenticatedContext('sup12').firestore();
+  const owner = env.authenticatedContext('owner12').firestore();
+  // Any active staff may read the tax/rate config billing depends on.
+  await assertSucceeds(getDoc(doc(sup, 'settings/MAIN')));
+  // Only the owner may change settings (GST config, GSTIN, rate card).
+  await assertFails(setDoc(doc(sup, 'settings/MAIN'), { gstEnabled: true }));
+  await assertSucceeds(setDoc(doc(owner, 'settings/MAIN'), { gstEnabled: true }));
+});
+
+// --- M8 function-written collections: staff read, no client writes ---
+
+test('messages/reminders/dailyStats: staff read but never client-write',
+  async () => {
+    await seedUser('sup13', { role: 'supervisor', active: true });
+    const sup = env.authenticatedContext('sup13').firestore();
+    for (const path of ['messages/m1', 'reminders/r1', 'dailyStats/2026-07-01_MAIN']) {
+      // Staff can read (delivery status / reminders / dashboard).
+      await assertSucceeds(getDoc(doc(sup, path)));
+      // Only Cloud Functions (admin SDK) write these — clients cannot.
+      await assertFails(setDoc(doc(sup, path), { x: 1 }));
+    }
+  });
+
+// --- M10 purchasing/inventory-advanced collections ---
+
+test('suppliers/orders: staff read; inventory keepers write; counter cannot',
+  async () => {
+    await seedUser('store14', { role: 'store', active: true });
+    await seedUser('counter14', { role: 'counter', active: true });
+    const store = env.authenticatedContext('store14').firestore();
+    const counter = env.authenticatedContext('counter14').firestore();
+    for (const path of ['suppliers/s1', 'orders/o1']) {
+      await assertSucceeds(getDoc(doc(counter, path))); // any staff reads
+      await assertFails(setDoc(doc(counter, path), { x: 1 })); // counter can't
+      await assertSucceeds(setDoc(doc(store, path), { branchId: 'b1' }));
+    }
+  });
+
+test('stockTakes: inventory keepers create, never edit; warranties staff-write',
+  async () => {
+    await seedUser('store15', { role: 'store', active: true });
+    await seedUser('tech15', { role: 'technician', active: true });
+    const store = env.authenticatedContext('store15').firestore();
+    const tech = env.authenticatedContext('tech15').firestore();
+    // Stock-take is append-only for inventory keepers.
+    await assertFails(setDoc(doc(tech, 'stockTakes/st1'), { branchId: 'b1' }));
+    await assertSucceeds(setDoc(doc(store, 'stockTakes/st1'), { branchId: 'b1' }));
+    await assertFails(setDoc(doc(store, 'stockTakes/st1'), { branchId: 'b2' }));
+    // Warranty records: any staff (technician sets on delivery).
+    await assertSucceeds(setDoc(doc(tech, 'warranties/w1'), { jobId: 'j1' }));
+  });
