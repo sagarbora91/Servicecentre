@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:service_centre_app/features/jobs/presentation/job_slip_pdf.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('buildJobSlipPdf', () {
     test('produces a non-empty PDF with the %PDF header', () async {
       const data = JobSlipData(

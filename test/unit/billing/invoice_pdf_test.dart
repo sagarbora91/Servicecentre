@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:service_centre_app/features/billing/presentation/invoice_pdf.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('buildInvoicePdf', () {
     const lines = [
       InvoicePdfLine(
