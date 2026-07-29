@@ -271,7 +271,9 @@ Future<void> _openReservation(
       ? await controller.reserveStock(partId: part.id, qty: qty)
       : await controller.releaseStock(partId: part.id, qty: qty);
   final successMessage = reserve ? l10n.stockReserved : l10n.stockReleased;
-  messenger.showSnackBar(
+  messenger
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
     SnackBar(
       content: Text(
         failure == null ? successMessage : _stockFailure(failure, l10n),
