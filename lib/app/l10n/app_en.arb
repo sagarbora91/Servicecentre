@@ -1159,5 +1159,17 @@
   "backupCancelled": "Backup save cancelled.",
   "@backupCancelled": { "description": "Snackbar when backup file-save is cancelled." },
   "backupFailed": "Couldn't create the backup.",
-  "@backupFailed": { "description": "Snackbar when backup generation fails." }
+  "@backupFailed": { "description": "Snackbar when backup generation fails." },
+  "reserveStockButton": "Reserve",
+  "@reserveStockButton": { "description": "Button reserving available stock." },
+  "releaseStockButton": "Release",
+  "@releaseStockButton": { "description": "Button releasing reserved stock." },
+  "reserveStockTitle": "Reserve stock",
+  "@reserveStockTitle": { "description": "Title of the reserve-stock dialog." },
+  "releaseStockTitle": "Release stock",
+  "@releaseStockTitle": { "description": "Title of the release-stock dialog." },
+  "stockReserved": "Stock reserved.",
+  "@stockReserved": { "description": "Snackbar after stock is reserved." },
+  "stockReleased": "Stock released.",
+  "@stockReleased": { "description": "Snackbar after reserved stock is released." }
 }

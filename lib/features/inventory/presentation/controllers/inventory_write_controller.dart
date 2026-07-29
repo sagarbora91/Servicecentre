@@ -33,6 +33,21 @@ class InventoryWriteController extends AutoDisposeAsyncNotifier<void> {
             .receiveStock(partId: partId, qty: qty, by: _uid),
       );
 
+  /// Reserves available stock for a future job/order.
+  Future<Failure?> reserveStock({required String partId, required int qty}) =>
+      _run(
+        () => ref
+            .read(inventoryRepositoryProvider)
+            .reserveStock(partId: partId, qty: qty, by: _uid),
+      );
+
+  /// Releases stock that is no longer required.
+  Future<Failure?> releaseStock({required String partId, required int qty}) =>
+      _run(
+        () => ref
+            .read(inventoryRepositoryProvider)
+            .releaseStock(partId: partId, qty: qty, by: _uid),
+      );
   /// Adjusts on-hand of part [partId] by [delta] (may be negative; guarded at
   /// zero, transactional `adjust`).
   Future<Failure?> adjustStock({required String partId, required int delta}) =>

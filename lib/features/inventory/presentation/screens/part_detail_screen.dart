@@ -140,6 +140,36 @@ class _Detail extends ConsumerWidget {
               ),
             ],
           ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  key: const Key('reserveStockBtn'),
+                  onPressed: isLoading
+                      ? null
+                      : () => unawaited(
+                            _openReservation(context, ref, part, l10n, true),
+                          ),
+                  icon: const Icon(Icons.lock_outline),
+                  label: Text(l10n.reserveStockButton),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: OutlinedButton.icon(
+                  key: const Key('releaseStockBtn'),
+                  onPressed: isLoading
+                      ? null
+                      : () => unawaited(
+                            _openReservation(context, ref, part, l10n, false),
+                          ),
+                  icon: const Icon(Icons.lock_open_outlined),
+                  label: Text(l10n.releaseStockButton),
+                ),
+              ),
+            ],
+          ),
         ],
         const Divider(height: 32),
         _InfoRow(
@@ -219,6 +249,36 @@ Future<void> _openAdjust(
   );
 }
 
+Future<void> _openReservation(
+  BuildContext context,
+  WidgetRef ref,
+  Part part,
+  AppLocalizations l10n,
+  bool reserve,
+) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final qty = await showDialog<int>(
+    context: context,
+    builder: (_) => _StockAmountDialog(
+      title: reserve ? l10n.reserveStockTitle : l10n.releaseStockTitle,
+      label: l10n.stockQtyLabel,
+      allowNegative: false,
+    ),
+  );
+  if (qty == null) return;
+  final controller = ref.read(inventoryWriteControllerProvider.notifier);
+  final failure = reserve
+      ? await controller.reserveStock(partId: part.id, qty: qty)
+      : await controller.releaseStock(partId: part.id, qty: qty);
+  final successMessage = reserve ? l10n.stockReserved : l10n.stockReleased;
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        failure == null ? successMessage : _stockFailure(failure, l10n),
+      ),
+    ),
+  );
+}
 /// Localizes a stock-write [failure]: insufficient stock gets its own message,
 /// anything else the generic save-failed text.
 String _stockFailure(Failure failure, AppLocalizations l10n) =>

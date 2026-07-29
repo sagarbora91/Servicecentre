@@ -140,6 +140,84 @@ class FirestoreInventoryRepository implements InventoryRepository {
         orderId: orderId,
       );
 
+  @override
+  Future<Result<void>> reserveStock({
+    required String partId,
+    required int qty,
+    required String by,
+  }) =>
+      _applyReservation(
+        partId: partId,
+        qty: qty,
+        type: StockMovementType.reserve,
+        by: by,
+      );
+
+  @override
+  Future<Result<void>> releaseStock({
+    required String partId,
+    required int qty,
+    required String by,
+  }) =>
+      _applyReservation(
+        partId: partId,
+        qty: qty,
+        type: StockMovementType.release,
+        by: by,
+      );
+
+  Future<Result<void>> _applyReservation({
+    required String partId,
+    required int qty,
+    required StockMovementType type,
+    required String by,
+  }) async {
+    if (qty <= 0) {
+      return const Err(UnexpectedFailure('Quantity must be positive'));
+    }
+    final partRef = _parts.doc(partId);
+    final movementRef = _movements.doc();
+    try {
+      return await _firestore.runTransaction<Result<void>>((txn) async {
+        final snap = await txn.get(partRef);
+        final data = snap.data();
+        if (!snap.exists || data == null) {
+          return Err(NotFoundFailure('Part $partId not found'));
+        }
+        final onHand = FirestoreConvert.toInt(data['onHand']);
+        final reserved = FirestoreConvert.toInt(data['reserved']);
+        final isReserve = type == StockMovementType.reserve;
+        if ((isReserve && onHand - reserved < qty) ||
+            (!isReserve && reserved < qty)) {
+          return Err(
+            InsufficientStockFailure(
+              'Part $partId cannot ${isReserve ? 'reserve' : 'release'} $qty',
+            ),
+          );
+        }
+        final newReserved = reserved + (isReserve ? qty : -qty);
+        txn
+          ..update(partRef, {
+            'reserved': newReserved,
+            'updatedAt': FieldValue.serverTimestamp(),
+          })
+          ..set(movementRef, {
+            'partId': partId,
+            'type': type.wireName,
+            'qty': qty,
+            'at': FieldValue.serverTimestamp(),
+            'by': by,
+            'branchId': FirestoreConvert.toStr(data['branchId']),
+            'createdAt': FieldValue.serverTimestamp(),
+            'createdBy': by,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        return const Ok(null);
+      });
+    } on Object catch (error) {
+      return Err(UnexpectedFailure(error.toString()));
+    }
+  }
   /// Shared transactional core for [consume]/[receiveStock]/[adjustStock].
   ///
   /// Reads the part, refuses to let `onHand` go below zero (returns

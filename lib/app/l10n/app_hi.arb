@@ -319,5 +319,11 @@
   "backupCreate": "बैकअप बनाएँ",
   "backupSaved": "बैकअप सहेजा गया।",
   "backupCancelled": "बैकअप सहेजना रद्द किया गया।",
-  "backupFailed": "बैकअप नहीं बनाया जा सका।"
+  "backupFailed": "बैकअप नहीं बनाया जा सका।",
+  "reserveStockButton": "आरक्षित करें",
+  "releaseStockButton": "जारी करें",
+  "reserveStockTitle": "स्टॉक आरक्षित करें",
+  "releaseStockTitle": "आरक्षित स्टॉक जारी करें",
+  "stockReserved": "स्टॉक आरक्षित किया गया।",
+  "stockReleased": "आरक्षित स्टॉक जारी किया गया।"
 }

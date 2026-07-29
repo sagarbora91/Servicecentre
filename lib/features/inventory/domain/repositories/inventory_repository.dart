@@ -70,4 +70,25 @@ abstract interface class InventoryRepository {
     required String orderId,
     required String by,
   });
+
+  /// Reserves [qty] from the currently available stock.
+  ///
+  /// In one transaction: requires `onHand - reserved >= qty`, increments
+  /// `reserved`, and appends a `reserve` movement. Rejected reservations write
+  /// nothing.
+  Future<Result<void>> reserveStock({
+    required String partId,
+    required int qty,
+    required String by,
+  });
+
+  /// Releases [qty] from reserved stock.
+  ///
+  /// In one transaction: requires `reserved >= qty`, decrements `reserved`, and
+  /// appends a `release` movement. Rejected releases write nothing.
+  Future<Result<void>> releaseStock({
+    required String partId,
+    required int qty,
+    required String by,
+  });
 }
