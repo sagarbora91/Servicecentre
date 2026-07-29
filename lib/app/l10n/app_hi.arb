@@ -312,5 +312,12 @@
   "feedbackRatingLabel": "रेटिंग",
   "feedbackCommentLabel": "टिप्पणी (वैकल्पिक)",
   "feedbackSubmitButton": "सबमिट करें",
-  "feedbackSaved": "प्रतिक्रिया सहेजी गई."
+  "feedbackSaved": "प्रतिक्रिया सहेजी गई.",
+  "openBackup": "बैकअप",
+  "backupTitle": "शाखा बैकअप",
+  "backupDescription": "इस शाखा का पोर्टेबल JSON बैकअप बनाएँ। अभी इसे स्थानीय रूप से सहेजें; OAuth कॉन्फ़िगर होने पर यही फ़ाइल Drive पर अपलोड की जा सकती है।",
+  "backupCreate": "बैकअप बनाएँ",
+  "backupSaved": "बैकअप सहेजा गया।",
+  "backupCancelled": "बैकअप सहेजना रद्द किया गया।",
+  "backupFailed": "बैकअप नहीं बनाया जा सका।"
 }

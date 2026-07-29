@@ -9,6 +9,7 @@ import '../features/auth/presentation/screens/guarded_placeholder_screens.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/auth/presentation/screens/manage_staff_screen.dart';
 import '../features/auth/presentation/screens/role_home_screen.dart';
+import '../features/backup/presentation/screens/backup_screen.dart';
 import '../features/billing/presentation/screens/estimate_screen.dart';
 import '../features/billing/presentation/screens/invoice_screen.dart';
 import '../features/customers/presentation/screens/customer_detail_screen.dart';
@@ -89,6 +90,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.auditLog,
         name: 'auditLog',
         builder: (context, state) => const AuditLogScreen(),
+      ),
+      GoRoute(
+        path: Routes.backup,
+        name: 'backup',
+        builder: (context, state) => const BackupScreen(),
       ),
       GoRoute(
         path: Routes.board,

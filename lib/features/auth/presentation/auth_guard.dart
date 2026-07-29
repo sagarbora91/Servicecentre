@@ -30,6 +30,9 @@ abstract final class Routes {
   /// Audit trail (activityLog) — owner only.
   static const String auditLog = '/admin/audit';
 
+  /// Portable branch backup export — owner only.
+  static const String backup = '/admin/backup';
+
   /// Kanban jobs board — any active staff.
   static const String board = '/board';
 
@@ -97,6 +100,7 @@ const Map<String, Set<UserRole>> routeRoleRequirements = {
   Routes.adminUsers: {UserRole.owner},
   Routes.dataImport: {UserRole.owner},
   Routes.auditLog: {UserRole.owner},
+  Routes.backup: {UserRole.owner},
   Routes.board: _anyStaff,
   Routes.jobs: _anyStaff,
   Routes.customers: _anyStaff,

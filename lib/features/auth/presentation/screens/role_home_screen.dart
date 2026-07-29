@@ -177,6 +177,13 @@ class _Dashboard extends StatelessWidget {
                   label: Text(l10n.openAudit),
                   onPressed: () => context.go(Routes.auditLog),
                 ),
+                const SizedBox(height: 12),
+                FilledButton.tonalIcon(
+                  key: const Key('openBackupBtn'),
+                  icon: const Icon(Icons.backup_outlined),
+                  label: Text(l10n.openBackup),
+                  onPressed: () => context.go(Routes.backup),
+                ),
               ],
             ],
           ),

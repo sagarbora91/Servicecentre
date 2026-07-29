@@ -1145,5 +1145,19 @@
   "feedbackSubmitButton": "Submit",
   "@feedbackSubmitButton": { "description": "Button that submits customer feedback." },
   "feedbackSaved": "Feedback saved.",
-  "@feedbackSaved": { "description": "Snackbar after feedback is recorded." }
+  "@feedbackSaved": { "description": "Snackbar after feedback is recorded." },
+  "openBackup": "Backup",
+  "@openBackup": { "description": "Home button opening the backup screen." },
+  "backupTitle": "Branch backup",
+  "@backupTitle": { "description": "Title of the branch backup screen." },
+  "backupDescription": "Create a portable JSON backup of this branch. Save it locally now; the same file can be uploaded to Drive when OAuth is configured.",
+  "@backupDescription": { "description": "Explanation on the branch backup screen." },
+  "backupCreate": "Create backup",
+  "@backupCreate": { "description": "Button that generates and saves a backup." },
+  "backupSaved": "Backup saved.",
+  "@backupSaved": { "description": "Snackbar after a backup is saved." },
+  "backupCancelled": "Backup save cancelled.",
+  "@backupCancelled": { "description": "Snackbar when backup file-save is cancelled." },
+  "backupFailed": "Couldn't create the backup.",
+  "@backupFailed": { "description": "Snackbar when backup generation fails." }
 }

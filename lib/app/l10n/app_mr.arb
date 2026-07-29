@@ -312,5 +312,12 @@
   "feedbackRatingLabel": "रेटिंग",
   "feedbackCommentLabel": "टिप्पणी (पर्यायी)",
   "feedbackSubmitButton": "सबमिट करा",
-  "feedbackSaved": "अभिप्राय जतन केला."
+  "feedbackSaved": "अभिप्राय जतन केला.",
+  "openBackup": "बॅकअप",
+  "backupTitle": "शाखेचा बॅकअप",
+  "backupDescription": "या शाखेचा पोर्टेबल JSON बॅकअप तयार करा. सध्या तो स्थानिकरीत्या जतन करा; OAuth कॉन्फिगर केल्यावर हीच फाइल Drive वर अपलोड करता येईल.",
+  "backupCreate": "बॅकअप तयार करा",
+  "backupSaved": "बॅकअप जतन केला.",
+  "backupCancelled": "बॅकअप जतन करणे रद्द केले.",
+  "backupFailed": "बॅकअप तयार करता आला नाही."
 }
